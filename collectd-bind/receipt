@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="collectd-bind"
+VERSION="4.7.0"
+CATEGORY="network"
+SHORT_DESC="Apache plugin for Collectd"
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="libcurl libxml2"
+BUILD_DEPENDS="libcurl curl-dev libxml2 libxml2-dev"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://collectd.org"
+#CONFIG_FILES="/etc/collectd/collectd.conf"
+WANTED="collectd"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--localstatedir=/var \
+		--enable-bind \
+		--disable-all-plugins \
+		--sysconfdir=/etc/collectd \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/collectd
+
+	cp -a $_pkg/usr/lib/collectd/bind.so* $fs/usr/lib/collectd
+}
+
