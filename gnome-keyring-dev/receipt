@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-keyring-dev"
+VERSION="2.28.1"
+CATEGORY="develoement"
+SHORT_DESC=""
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="gnome-keyring"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.gnome.org"
+WANTED="gnome-keyring"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+
+	cp -a $_pkg/usr/include $fs/usr
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/gnome-keyring $fs/usr/lib
+	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
+	
+	# remove archive lib
+	find $fs/usr/lib -name *.so* -exec rm -f {} \;
+		
+}
