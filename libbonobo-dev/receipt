@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="libbonoboui-dev"
+VERSION="2.24.2"
+CATEGORY="development"
+SHORT_DESC="Librairies for GNOME"
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="libbonoboui"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.gnome.org"
+WANTED="libbonoboui"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/lib/*.a* $fs/usr/lib
+	cp -a $_pkg/usr/lib/bonobo* $fs/usr/lib
+	cp -a $_pkg/usr/lib/libglade $fs/usr/lib
+	
+	# remove archive lib
+	find $fs/usr/lib -name *.so* -exec rm -f {} \;
+}
+
