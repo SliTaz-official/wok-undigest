@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="evolution-data-server"
+VERSION="2.28.1"
+CATEGORY="internet"
+SHORT_DESC=""
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="libgnomeui libsoup"
+BUILD_DEPENDS="libglade-dev libsoup-dev gtk+-dev ORBit2-dev libbonobo-dev gconf-dev libical-dev
+ firefox-dev db-dev libxcb-dev"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://projects.gnome.org/evolution/download.shtml"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/${VERSION%.*}/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--libexecdir=/usr/lib/evolution-data-server-1.2 \
+		--mandir=/usr/share/man \
+		--without-weather \
+		--enable-ipv6=no \
+		--enable-libdb \
+		--with-db=/usr/lib \
+		--with-nspr-include=/usr/include/firefox-3.5.3/stable \
+		--with-nspr-libs=/usr/lib/firefox-devel-3.5.3/sdk/lib \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+
+	cp -a $_pkg/usr/share/pixmaps $fs/usr/share
+	cp -a $_pkg/usr/share/evolution-data-server-2.28 $fs/usr/share
+	cp -a $_pkg/usr/share/idl $fs/usr/share
+	
+	cp -a $_pkg/usr/lib/bonobo $fs/usr/lib
+	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
+	cp -a $_pkg/usr/lib/evolution-data-server-1.2 $fs/usr/lib
+	
+		# Clean unwated files
+	cd $fs/usr/lib  ; find . -name "*.*a" -exec rm -f {} \;
+	
+	# Stripping all
+	find . -name "*.so" -exec strip -s {} \;
+	
+}
+
