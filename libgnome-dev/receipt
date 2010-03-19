@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnome-dev"
+VERSION="2.28.0"
+CATEGORY="development"
+SHORT_DESC="GNOME Library dev files"
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="libgnome"
+BUILD_DEPENDS=""
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.gnome.org"
+WANTED="libgnome"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+	
+	cp -a $_pkg/usr/include $fs/usr
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/bonobo $fs/usr/lib
+	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
+
+	
+	# Clean unwated files
+	cd $fs/usr/lib ; find . -name "*.so*" -exec rm -f {} \;
+	
+}
+
