@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-vfs-dev"
+VERSION="2.24.2"
+CATEGORY="development"
+SHORT_DESC="The GNOME Virtual File System libraries dev files"
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="dbus-glib gconf gnome-mime-data gnome-vfs"
+BUILD_DEPENDS="gtk+-dev dbus-glib-dev gconf-dev  bzip2-dev gnome-mime-data"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.gnome.org"
+WANTED="gnome-vfs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $_pkg/usr/include $fs/usr
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/gnome-vfs-2.0 $fs/usr/lib
+	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
+	
+	# Clean unwated files
+	cd $fs/usr/lib ; find . -name "*.so*" -exec rm -f {} \;
+}
