@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="billardgl"
+VERSION="1.75"
+CATEGORY="games"
+SHORT_DESC="OpenGL billard game."
+MAINTAINER="pascal.bellard@slitaz.org"
+SOURCE="BillardGL"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.billardgl.de/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+DEPENDS="libglu"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	sed -i 's/stream.h/stream/' bmp.cpp
+	grep -q namespace bmp.cpp ||
+	sed -i 's/"bmp.h"/"bmp.h"\nusing namespace std;/' bmp.cpp
+	make || return 1
+	cd ..
+	mkdir -p _pkg/usr/share/BillardGL  _pkg/usr/games
+	cp src/BillardGL _pkg/usr/games
+	cp -R src/Texturen _pkg/usr/share/BillardGL
+	cp -R src/lang _pkg/usr/share/BillardGL
+	cp -R src/README _pkg/usr/share/BillardGL
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $_pkg/usr $fs
+}
+
