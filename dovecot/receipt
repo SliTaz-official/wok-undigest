@@ -1,31 +1,37 @@
 # SliTaz package receipt.
 
+PACKED_SIZE="8.0k"
+UNPACKED_SIZE="4.0k"
 PACKAGE="dovecot"
-VERSION=""
-CATEGORY=""
-SHORT_DESC=""
-MAINTAINER=""
-DEPENDS=""
+VERSION="1.2.11"
+CATEGORY="network"
+SHORT_DESC="Dovecot IMAP and POP3 Server."
+MAINTAINER="l.lemarinel@gmail.com"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE=""
-WGET_URL=""
+WEB_SITE="www.dovecot.org"
+WGET_URL="http://www.dovecot.org/releases/1.2/$TARBALL"
+BUILD_DEPENDS="openssl-dev libcap-dev"
+DEPENDS="openssl libcap"
+
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	./configure \
-		--prefix=/usr \
-		--infodir=/usr/share/info \
+	./configure  --prefix=/usr \
+		--sysconfdir=/etc/dovecot \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--localstatedir=/var \
 		--mandir=/usr/share/man \
-		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+		--infodir=/usr/share/info
+
+	make 
+	make DESTDIR=$PWD/_pkg install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
-	cp -a $_pkg/usr/bin $fs/usr
+	mkdir -p $fs
+	cp -a $_pkg/* $fs
 }
-

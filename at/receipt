@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="at"
+VERSION="3.1.10ubuntu4"
+CATEGORY="base-system"
+SHORT_DESC="Delayed job execution and batch processing."
+MAINTAINER="l.lemarinel@gmail.com"
+TARBALL="${PACKAGE}_${VERSION}.tar.gz"
+WGET_URL="http://archive.ubuntu.com/ubuntu/pool/main/a/at/$TARBALL"
+BUILD_DEPENDS="bison flex-dev flex"
+DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export SENDMAIL=/bin/true
+	cd $src
+	./configure --with-daemon_username=root \
+		--with-daemon_groupname=root \
+		--with-jobdir=/var/spool/cron/atjobs \
+		--with-atspool=/var/spool/cron/atspool \
+		--without-pam --bindir=$PWD/_pkg/usr/bin \
+		--sbindir=$PWD/_pkg/usr/bin --prefix=$PWD/_pkg/usr
+	make
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $_pkg/usr/bin $fs/usr
+}
+
+#Post install actions :
+post_install()
+{
+	mkdir -m 755 -p /var/spool/cron/atspool /var/spool/cron/atjobs
+	chmod 1770 /var/spool/cron/atspool /var/spool/cron/atjobs
+	touch /var/spool/cron/atjobs/.SEQ
+	chmod 600 /var/spool/cron/atjobs/.SEQ
+	chown root:root /var/spool/cron/atjobs/.SEQ
+	touch /etc/at.deny
+	touch /etc/at.allow
+	chmod 640 /etc/at.deny /etc/at.allow
+	ln -s -f at /usr/bin/atq
+	ln -s -f at /usr/bin/atrm
+}
