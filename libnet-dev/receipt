@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libnet-dev"
+VERSION="1.1.4"
+CATEGORY="development"
+SHORT_DESC="Libnet devel files"
+MAINTAINER="claudinei@slitaz.org"
+DEPENDS=""
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://github.com/sam-github/libnet"
+WANTED="libnet"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib
+	cp $_pkg/usr/bin/libnet-config $fs/usr/bin
+	chmod +x $fs/usr/bin/libnet-config
+	cp -a $_pkg/usr/include $fs/usr
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+}
+

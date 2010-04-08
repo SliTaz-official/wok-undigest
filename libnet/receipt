@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libnet"
+SOURCE="libnet-dev"
+VERSION="1.1.4"
+CATEGORY="development"
+SHORT_DESC="Libnet provides a portable framework for low-level network packet construction."
+MAINTAINER="claudinei@slitaz.org"
+DEPENDS=""
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://github.com/sam-github/libnet"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	src="$PACKAGE-$VERSION"
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	_pkg="$WOK/$PACKAGE/$PACKAGE-$VERSION/_pkg"
+	mkdir -p $fs/usr/lib
+	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
+}
+
