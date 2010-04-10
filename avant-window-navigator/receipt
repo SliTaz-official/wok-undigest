@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="avant-window-navigator"
+VERSION="0.3.2.1"
+CATEGORY="x-window"
+SHORT_DESC="Dock-like bar which sits at the bottom of the screen."
+MAINTAINER="pankso@slitaz.org"
+DEPENDS="dbus librsvg libwnck xorg-xcompmgr pygtk"
+BUILD_DEPENDS="dbus-dev librsvg-dev libwnck-dev pygtk-dev"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://launchpad.net/awn/"
+WGET_URL="http://launchpad.net/awn/0.2/$VERSION/+download/$TARBALL"
+TAGS="window-manager wm"
+
+# We can split AWN manager so we dont have pygtk as dependency.
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-desktop=agnostic \
+		--without-gconf \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
+	cp -a $_pkg/usr/lib/python* $fs/usr/lib
+	cp -a $_pkg/usr/share/$PACKAGE $fs/usr/share
+	cp -a $_pkg/usr/share/applications $fs/usr/share
+	cp -a $_pkg/usr/share/icons/hicolor/32x32/apps \
+		$fs/usr/share/pixmaps
+	# Custom autostart script so we ensure xcompmgr is also started.
+	cat > $fs/usr/bin/awn-autostart << _EOT_
+#!/bin/sh
+xcompmgr &
+sleep 4 && avant-window-navigator
+_EOT_
+	# Fix missing icon
+	cd $fs/usr/share/pixmaps
+	ln -s avant-window-navigator.png awn-manager.png
+}
