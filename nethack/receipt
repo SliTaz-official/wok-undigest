@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="nethack"
+VERSION="3.4.3"
+CATEGORY="games"
+SHORT_DESC="NetHack is a single player dungeon exploration game."
+MAINTAINER="claudinei@slitaz.org"
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev bison flex"
+TARBALL="$PACKAGE-343-src.tgz"
+WEB_SITE="http://www.nethack.org"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sh sys/unix/setup.sh x
+	sed -i "s|\/\* #define LINUX \*\/|#define LINUX|" include/unixconf.h
+	sed -i "s|WINTTYLIB = -ltermlib|# WINTTYLIB = -ltermlib|" src/Makefile
+	sed -i "s|# WINTTYLIB = -lncurses|WINTTYLIB = -lncurses|" src/Makefile
+	sed -i "s|= /usr|= $WOK/$PACKAGE/$PACKAGE-$VERSION/_pkg|" Makefile	
+	sed -i "s|= games|= root|" Makefile
+	sed -i "s|= bin|= root|" Makefile
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin
+	cp -a $_pkg/games/nethack  $fs/usr/bin
+	cp -a $_pkg/games/lib/nethackdir $fs/usr/lib
+	sed -i "s|$WOK/$PACKAGE/$PACKAGE-$VERSION/_pkg/games|/usr|" $fs/usr/bin/nethack
+}
+
