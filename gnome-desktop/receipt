@@ -22,6 +22,8 @@ compile_rules()
 		--enable-gtk-doc-html=no \
 		--enable-gtk-doc=no \
 		--disable-scrollkeeper \
+		--disable-static \
+		--with-gnome-distributor="SliTaz GNU/Linux" \
 		$CONFIGURE_ARGS &&
 	make && make DESTDIR=$PWD/_pkg install
 }
@@ -29,7 +31,10 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $_pkg/etc $fs
 	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
+	cp -a $_pkg/usr/share/dbus-1 $fs/usr/share
 }
 
