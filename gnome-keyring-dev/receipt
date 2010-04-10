@@ -13,14 +13,10 @@ WANTED="gnome-keyring"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
-
-	cp -a $_pkg/usr/include $fs/usr
-	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
-	cp -a $_pkg/usr/lib/gnome-keyring $fs/usr/lib
+	mkdir -p $fs/usr/lib/$WANTED
 	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
-	
-	# remove archive lib
-	find $fs/usr/lib -name *.so* -exec rm -f {} \;
-		
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/$WANTED/devel $fs/usr/lib/$WANTED
+	cp -a $_pkg/usr/lib/$WANTED/*.*a $fs/usr/lib/$WANTED
+	cp -a $_pkg/usr/include $fs/usr	
 }

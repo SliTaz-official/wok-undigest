@@ -20,6 +20,7 @@ compile_rules()
 		--prefix=/usr \
 		--libexecdir=/usr/lib/$PACKAGE \
 		--sysconfdir=/etc/gnome \
+		--disable-pam \
 		$CONFIGURE_ARGS &&
 	make && make DESTDIR=$PWD/_pkg install
 }
@@ -28,16 +29,16 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/share
-	
-	cp -a $_pkg/etc $fs/
+	cp -a $_pkg/etc $fs
 	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
-	cp -a $_pkg/usr/lib/gnome-keyring $fs/usr/lib
-	
+	cp -a $_pkg/usr/lib/$PACKAGE $fs/usr/lib
+	cp -a $_pkg/usr/share $fs/usr/share
+	cp -a $_pkg/usr/share/dbus-1 $fs/usr/share
+	cp -a $_pkg/usr/share/gcr $fs/usr/share
+	rm -rf $fs/usr/lib/gnome-keyring/devel
+	strip -s $fs/usr/lib/$PACKAGE/* 2>/dev/null
 	# remove archive lib
-	find $fs/usr/lib -name *.*a -exec rm -f {} \;
-	
-	test -d $WOK/$PACKAGE-dev && tazwok cook $PACKAGE-dev
-		
+	find $fs/usr/lib -name *.*a -exec rm -f {} \;	
 }
 
