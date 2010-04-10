@@ -26,19 +26,23 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
-	
+mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $_pkg/etc $fs
 	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
 	cp -a $_pkg/usr/lib/bonobo $fs/usr/lib
-	cp -a $_pkg/usr/share/gnome-* $fs/usr/share
+	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
+
+	# Background
+	cp -a $_pkg/usr/share/gnome-background-* $fs/usr/share
 	cp -a $_pkg/usr/share/pixmaps $fs/usr/share
-	
+	mkdir -p $fs/usr/share/images && cd $fs/usr/share/images
+	ln -s ../pixmaps/backgrounds/gnome/background-default.jpg \
+		gnome-default.jpg
+		
 	# Clean unwated files
 	cd $fs/usr/lib ; find . -name "*.*a" -exec rm -f {} \;
 	
 	# Stripping all
 	find . -name "*.so" -exec strip -s {} \;
-	
 }
 
