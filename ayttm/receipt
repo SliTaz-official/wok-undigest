@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="ayttm"
+VERSION="0.6.2"
+CATEGORY="internet"
+SHORT_DESC="Universal instant messenger client"
+MAINTAINER="devl547@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://ayttm.sourceforge.net/"
+WGET_URL="http://downloads.sourceforge.net/project/$PACKAGE/$PACKAGE/$VERSION/$TARBALL"
+BUILD_DEPENDS="gtk+-dev zlib-dev audiofile-dev xcb-util-dev openssl-dev flex enchant-dev"
+DEPENDS="gtk+ zlib audiofile xcb-util openssl enchant aspell"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr --infodir=/usr/share/info \
+	--mandir=/usr/share/man $CONFIGURE_ARGS \
+	--disable-webcam --disable-esd --disable-arts --disable-webcam \
+	--enable-lj &&
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/
+	mkdir -p $fs/etc/
+	cp -a $src/_pkg/usr/bin $fs/usr
+	cp -a $src/_pkg/usr/lib $fs/usr
+	cp -a $src/_pkg/usr/share/ $fs/usr
+	cp $src/_pkg/usr/etc/ayttmrc $fs/etc/ayttmrc
+}
