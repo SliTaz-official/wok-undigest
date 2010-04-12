@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="bleachbit"
+VERSION="0.7.4beta"
+CATEGORY="utilites"
+SHORT_DESC="Deletes unneeded files to free disk space and maintain privacy"
+MAINTAINER="devl547@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://bleachbit.sourceforge.net/"
+WGET_URL="http://downloads.sourceforge.net/project/$PACKAGE/$PACKAGE/$VERSION/$TARBALL"
+BUILD_DEPENDS="python"
+DEPENDS="pygtk python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make -C po local &&
+	make prefix=/usr DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/share $fs/usr
+}
