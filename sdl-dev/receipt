@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="sdl-dev"
+VERSION="1.2.14"
+CATEGORY="development"
+MAINTAINER="jozee@slitaz.org"
+SHORT_DESC="sdl devel files"
+WEB_SITE="http://www.libsdl.org"
+WANTED="sdl"
+SOURCE="SDL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	_pkg="$WOK/$WANTED/$SOURCE-$VERSION/_pkg"
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $_pkg/usr/include $fs/usr
+	cp -a $_pkg/usr/share/aclocal $fs/usr/share
+}
