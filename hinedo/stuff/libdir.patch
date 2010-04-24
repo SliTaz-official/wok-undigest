@@ -1,0 +1,33 @@
+--- hinedo-0.4/hinedo.c.orig	Tue Jun 23 14:44:11 2009
++++ hinedo-0.4/hinedo.c	Tue Jun 23 14:44:28 2009
+@@ -27,7 +27,7 @@
+ 
+ #include "eggtrayicon.h"
+ 
+-#define LIBDIR        PREFIX"/lib/hinedo"
++#define LIBDIR        PREFIX"/share/hinedo"
+ 
+ static const char* current = NULL;
+ static GPid pid = 0;
+--- hinedo-0.4/Makefile.orig	Tue Jun 23 14:47:18 2009
++++ hinedo-0.4/Makefile	Tue Jun 23 14:47:36 2009
+@@ -20,16 +20,16 @@
+ 
+ install: all
+ 	install -s hinedo $(PREFIX)/bin/hinedo
+-	mkdir -p $(PREFIX)/lib/hinedo
++	mkdir -p $(PREFIX)/share/hinedo
+ 	mkdir -p $(PREFIX)/share/applications
+ 	mkdir -p $(PREFIX)/share/pixmaps
+ 	install hinedo.desktop $(PREFIX)/share/applications/hinedo.desktop
+ 	install hinedo.png $(PREFIX)/share/pixmaps/hinedo.png
+-	install update $(PREFIX)/lib/hinedo/update
++	install update $(PREFIX)/share/hinedo/update
+ 
+ uninstall:
+ 	rm $(PREFIX)/bin/hinedo
+-	rm -rf $(PREFIX)/lib/hinedo
++	rm -rf $(PREFIX)/share/hinedo
+ 	rm $(PREFIX)/share/pixmaps/hinedo.png
+ 	rm $(PREFIX)/share/applications/hinedo.desktop
+ 

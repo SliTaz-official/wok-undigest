@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="hinedo"
+VERSION="0.4"
+CATEGORY="multimedia"
+SHORT_DESC="Hinet radio client."
+MAINTAINER="rocky@slitaz.org"
+DEPENDS="python mplayer gtk+"
+BUILD_DEPENDS="gtk+-dev"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://hinedo.openfoundry.org/"
+WGET_URL="http://of.openfoundry.org/download_path/hinedo/2007.11.18/$TARBALL"
+TAG="radio chinese"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+    cd $src
+    while read file; do
+        [ -f done.$file ] && continue
+        echo "Apply $file..."
+        patch -p1 < ../stuff/$file || return 1
+        touch done.$file
+    done <<EOT
+libdir.patch
+EOT
+    make || return 1
+    mkdir -p $src/_pkg/usr/bin
+    make install DESTDIR=$PWD/_pkg
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr
+    cp -a $_pkg/usr/bin $fs/usr
+    cp -a $_pkg/usr/share $fs/usr
+}
