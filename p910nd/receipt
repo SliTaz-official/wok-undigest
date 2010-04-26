@@ -14,7 +14,7 @@ TAGS="printer"
 compile_rules()
 {
 	cd $src
-	make &&
+	make CFLAGS=-DLOCKFILE_DIR=\\\"/var/lock\\\" &&
 	make DESTDIR=$PWD/_pkg install
 }
 
