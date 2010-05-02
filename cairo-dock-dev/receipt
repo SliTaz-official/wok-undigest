@@ -7,7 +7,7 @@ SHORT_DESC="Cairo dock devel file."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="cairo-dock"
 WANTED="cairo-dock"
-WEB_SITE="http://www.cairo-dock.org/"
+WEB_SITE="http://www.glx-dock.org/"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

@@ -9,7 +9,7 @@ DEPENDS="gtk+ cairo librsvg xorg-xcompmgr mesa gtkglext dbus"
 BUILD_DEPENDS="gtk+-dev cairo-dev librsvg-dev mesa-dev gtkglext-dev \
 dbus-dev dbus-glib-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://www.cairo-dock.org/"
+WEB_SITE="http://www.glx-dock.org/"
 WGET_URL="http://launchpad.net/cairo-dock-core/2.1/2.1.3/+download/$TARBALL"
 
 # Rules to configure and make the package.
