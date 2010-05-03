@@ -17,16 +17,18 @@ compile_rules()
 {
 	cd $src
 	
-	# From 0.10.0 VirtIO paravirtual device are supported.
-	#[ -f done.virtio.u ] || patch -p1 < ../stuff/virtio.u
-	#touch done.virtio.u
-	
-	#./configure --prefix=/usr --enable-alsa --disable-gfx-check
-	
-	./configure \
+	TARGET="i386-softmmu,i386-linux-user, \
+	x86_64-softmmu,x86_64-linux-user, \
+	arm-softmmu,arm-linux-user, \
+	ppc-softmmu,ppc-linux-user"
+
+		./configure \
 		--prefix=/usr \
 		--disable-curl \
-		--target-list="i386-softmmu,x86_64-softmmu,arm-softmmu,ppc-softmmu" &&
+		--enable-system \
+		--enable-user \
+		--enable-linux-user \
+		--target-list="$TARGET"&&
 	make &&
 	make DESTDIR=$PWD/_pkg install
 }
@@ -34,14 +36,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $_pkg/usr $fs
-	
-	# move softmmu to separate packages.
-	rm -f $fs/usr/bin/qemu-system*
-	
-	# Remove unneeded bios binaries
-	rm -f $fs/usr/share/qemu/*ppc*
-	rm -f $fs/usr/share/qemu/*sparc*
-	
-	
+	mkdir -p $fs/usr/bin
+	cp -a $_pkg/usr/bin/qemu $fs/usr/bin
+	cp -a $_pkg/usr/bin/qemu-io $fs/ur/bin
+	cp -a $_pkg/usr/bin/qemu-img $fs/usr/bin
+	cp -a $_pkg/usr/bin/qemu-nbd $fs/usr/bin
 }
