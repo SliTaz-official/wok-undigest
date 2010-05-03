@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="gtklp"
+VERSION="1.2.7"
+CATEGORY="utilities"
+MAINTAINER="jozee@slitaz.org"
+SHORT_DESC="Tools to use and administrate CUPS"
+BUILD_DEPENDS=" gtk+-dev autoconf automake"
+WEB_SITE="http://gtklp.sourceforge.net/"
+DEPENDS="cups gtk+"
+TARBALL="$PACKAGE-$VERSION.src.tar.gz"
+WGET_URL="http://downloads.sourceforge.net/gtklp/$TARBALL"
+TAGS=""
+
+# Rules to configure and make the package.
+
+compile_rules() {
+  cd $src
+  chmod +x autogen.sh 
+  ./autogen.sh 
+  ./configure --prefix=/usr 
+  make 
+  make DESTDIR=$PWD/_pkg install 
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $_pkg/usr/bin $fs/usr
+	
+}
