@@ -16,6 +16,7 @@ WANTED="qemu"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/bin 
-	cp -a $_pkg/usr/bin/qemu-system-${PACKAGE#qemu-} $fs/usr/bin
+	cp -a $_pkg/usr/bin/qemu-*${PACKAGE#qemu-} $fs/usr/bin
+	
 }
 
