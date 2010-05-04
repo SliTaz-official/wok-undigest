@@ -11,10 +11,11 @@ WANTED="libcanberra"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $_pkg/usr/lib/*a $fs/usr/lib
+	mkdir -p $fs/usr/lib/$WANTED-$VERSION $fs/usr/share
+	cp -a $_pkg/usr/lib/*.*a $fs/usr/lib
+	cp -a $_pkg/usr/lib/$WANTED-$VERSION/*.*a $fs/usr/lib/$WANTED-$VERSION
 	cp -a $_pkg/usr/include $fs/usr
-	cp -a $_pkg/usr/share $fs/usr
+	cp -a $_pkg/usr/share/vala $fs/usr/share
 	cp -a $_pkg/usr/lib/pkgconfig $fs/usr/lib
 }
 

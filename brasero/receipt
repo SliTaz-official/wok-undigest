@@ -15,9 +15,16 @@ DEPENDS="glib gtk+ GConf gstreamer gst-plugins-base libxml2 libunique dbus-glib 
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr --disable-schemas-install --disable-scrollkeeper \
-	--disable-caches --disable-dependency-tracking --disable-gtk-doc-html \
-	--disable-nautilus --disable-gtk-doc --disable-search --disable-playlist &&
+	./configure \
+		--prefix=/usr \
+		--disable-schemas-install \
+		--disable-scrollkeeper \
+		--disable-caches \
+		--disable-gtk-doc-html \
+		--disable-nautilus \
+		--disable-gtk-doc \
+		--disable-search \
+		--disable-playlist &&
 	make &&
 	make DESTDIR=$PWD/_pkg install
 }
