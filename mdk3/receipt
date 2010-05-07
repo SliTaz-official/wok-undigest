@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="mdk3"
+VERSION="v6"
+CATEGORY="network"
+SHORT_DESC="Wireless network penetration testing"
+MAINTAINER="devl547@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://homepages.tu-darmstadt.de/~p_larbig/wlan/"
+WGET_URL="$WEB_SITE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $_pkg/usr/local/sbin/mdk3 $fs/usr/bin
+}
