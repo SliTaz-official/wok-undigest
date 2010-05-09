@@ -6,7 +6,7 @@ CATEGORY="development"
 SHORT_DESC="PHP extension for PAM"
 MAINTAINER="erjo@slitaz.org"
 DEPENDS="php-apache pam"
-BUILD_DEPENDS="php-dev pam pam-dev"
+BUILD_DEPENDS="php-dev pam pam-dev autoconf automake"
 TARBALL="${PACKAGE}_${VERSION}.orig.tar.gz"
 WEB_SITE="http://packages.debian.org/"
 WGET_URL="http://ftp.de.debian.org/debian/pool/main/p/php-auth-pam/$TARBALL"
@@ -30,8 +30,8 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir $fs/usr
-	cp -a $_pkg/usr $fs/
+	mkdir -p $fs/usr/share/php
+	cp -a $_pkg/usr/lib/php/extensions/*/*.so $fs/usr/share/php
 }
 
 post_install()
