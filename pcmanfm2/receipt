@@ -12,11 +12,11 @@ xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdamage xorg-libXdmcp \
 xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender libfm"
 BUILD_DEPENDS="gtk+-dev gamin-dev gamin shared-mime-info intltool hal-dev \
 dbus-glib-dev dbus-dev startup-notification-dev libxcb-dev xcb-util-dev \
-libfm-dev"
+libfm libfm-dev menu-cache-dev"
 SOURCE="pcmanfm"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://pcmanfm.sourceforge.net/"
-WGET_URL="$SF_MIRROR/$PACKAGE/files/$TARBALL"
+WGET_URL="$SF_MIRROR/pcmanfm/files/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()
