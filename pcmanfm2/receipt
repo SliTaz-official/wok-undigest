@@ -16,7 +16,7 @@ libfm libfm-dev menu-cache-dev"
 SOURCE="pcmanfm"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://pcmanfm.sourceforge.net/"
-WGET_URL="$SF_MIRROR/pcmanfm/files/$TARBALL"
+WGET_URL="$SF_MIRROR/$SOURCE/files/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()
