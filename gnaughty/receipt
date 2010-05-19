@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="gnaughty"
+VERSION="1.2.4"
+CATEGORY="utilities"
+SHORT_DESC="Gnaughty is an utility to automatically download adult sex content."
+MAINTAINER="devl547@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gnaughty.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+BUILD_DEPENDS="curl-dev gtk+-dev glib-dev pcre-dev libglade-dev"
+DEPENDS="curl gtk+ glib libpcre libglade"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr &&
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/share/ $fs/usr/
+}
