@@ -1,0 +1,16 @@
+# SliTaz package receipt.
+
+PACKAGE="kdelibs-dev"
+VERSION="4.4.3"
+CATEGORY="development"
+SHORT_DESC="KDElibs include files."
+MAINTAINER="pankso@slitaz.org"
+WANTED="kdelibs"
+WEB_SITE="http://www.kde.org/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $_pkg/usr/include $fs/usr
+}

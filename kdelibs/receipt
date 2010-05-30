@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="kdelibs"
+VERSION="4.4.3"
+CATEGORY="x-window"
+SHORT_DESC="The KDE library."
+MAINTAINER="pankso@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+DEPENDS="pcre qt4-phonon libQtCore libQtGui libQtScript giflib libxslt \
+strigi attica"
+BUILD_DEPENDS="$DEPENDS pcre-dev cmake qmake automoc4 Qt4-dev giflib-dev \
+libxslt-dev strigi-dev attica-dev"
+WEB_SITE="http://www.kde.org/"
+WGET_URL="http://mirrors.isc.org/pub/kde/stable/$VERSION/src/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	mkdir -p build && cd build
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DSYSCONF_INSTALL_DIR=/etc/kde \
+	.. &&
+	make &&
+	make DESTDIR=$src/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/lib $fs/usr
+	strip -s $fs/usr/lib/kde4/libexec/* 2>/dev/null
+	for d in apps config dbus-1 icons kde4 locale mime
+	do
+		cp -a $_pkg/usr/share/$d $fs/usr/share
+	done
+}
