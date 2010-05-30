@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="blackbox"
+VERSION="0.70.1"
+CATEGORY="x-window"
+SHORT_DESC="A small, fast, full-featured window manager for X"
+MAINTAINER="devl547@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://blackboxwm.sourceforge.net/"
+WGET_URL="$SF_MIRROR/blackboxwm/$TARBALL"
+BUILD_DEPENDS="xorg-libXt-dev xorg-libXft-dev"
+DEPENDS="xorg-libXt xorg-libXft sed xorg-xextproto"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr --sysconfdir=/etc \
+	--libexecdir=/usr/bin --mandir=/usr/share/man \
+	$CONFIGURE_ARGS &&
+	patch -p1 < ../files/blackbox-0.70.1-gcc-4.3.patch
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $_pkg/usr/share/blackbox $fs/usr/share
+}
+	
