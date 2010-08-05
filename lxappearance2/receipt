@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="lxappearance2"
+VERSION="beta"
+CATEGORY="x-window"
+SHORT_DESC="Desktop setting configuration utility from LXDE."
+MAINTAINER="gokhlayeh@mailoo.org"
+DEPENDS="gtk+"
+BUILD_DEPENDS="gtk+-dev gettext xorg-xproto git automake autoconf intltool"
+WEB_SITE="http://lxde.org"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	git clone git://lxde.git.sourceforge.net/gitroot/lxde/lxappearance2 $src
+	cd $src
+	./autogen.sh --prefix=/usr --sysconfdir=/etc
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$PWD/_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr
+    cp -a $_pkg/usr/bin $fs/usr
+    cp -a $_pkg/usr/* $fs/usr
+}
