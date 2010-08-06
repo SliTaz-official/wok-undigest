@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pcmanfm2"
-VERSION="0.9.5"
+VERSION="0.9.7"
 CATEGORY="system-tools"
 SHORT_DESC="Light and easy to use file manager."
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,7 @@ xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdamage xorg-libXdmcp \
 xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender libfm"
 BUILD_DEPENDS="gtk+-dev gamin-dev gamin shared-mime-info intltool hal-dev \
 dbus-glib-dev dbus-dev startup-notification-dev libxcb-dev xcb-util-dev \
-libfm libfm-dev menu-cache-dev"
+libfm libfm-dev menu-cache-dev expat-dev"
 SOURCE="pcmanfm"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://pcmanfm.sourceforge.net/"
@@ -35,5 +35,5 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/share
 	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/share/pcmanfm2 $fs/usr/share
+	cp -a $_pkg/usr/share/pcmanfm $fs/usr/share
 }
