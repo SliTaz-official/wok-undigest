@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
-PACKAGE="lxappearance2"
-VERSION="beta"
+PACKAGE="lxappearance"
+VERSION="git"
 CATEGORY="x-window"
 SHORT_DESC="Desktop setting configuration utility from LXDE."
 MAINTAINER="gokhlayeh@mailoo.org"
@@ -12,7 +12,7 @@ WEB_SITE="http://lxde.org"
 # Rules to configure and make the package.
 compile_rules()
 {
-	git clone git://lxde.git.sourceforge.net/gitroot/lxde/lxappearance2 $src
+	git clone git://lxde.git.sourceforge.net/gitroot/lxde/lxappearance $src
 	cd $src
 	./autogen.sh --prefix=/usr --sysconfdir=/etc
 	./configure \
@@ -27,6 +27,5 @@ compile_rules()
 genpkg_rules()
 {
     mkdir -p $fs/usr
-    cp -a $_pkg/usr/bin $fs/usr
     cp -a $_pkg/usr/* $fs/usr
 }
