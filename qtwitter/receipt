@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="qtwitter"
+VERSION="0.10.0"
+CATEGORY="internet"
+SHORT_DESC="A Qt-based, cross-network microblogging client."
+MAINTAINER="ben@seawolfsanctuary.com"
+DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
+libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
+libQtOpenGL libQtSql libQtWebkit qoauth"
+BUILD_DEPENDS="xorg-libX11-dev dbus-dev Qt4-dev qoauth slitaz-toolchain"
+TARBALL="$PACKAGE-$VERSION-src.tar.gz"
+WEB_SITE="http://www.ayoy.net/$PACKAGE"
+WGET_URL="http://files.ayoy.net/$PACKAGE/release/$VERSION/src/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	echo -n "Linking..."
+		ln -s $WOK/$PACKAGE-$VERSION-src $src
+	status
+
+	cd $src
+	
+	qmake PREFIX="/usr" && \
+	make -j4 && make DESTDIR=$_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin
+
+	# Binaries
+	for FILE in qtwitter ; do
+		cp -a $src/$FILE $fs/usr/bin
+	done
+	# Libraries
+	for FILE in \
+	liburlshortener.so.1.0.0 \
+	liburlshortener.so.1.0 \
+	liburlshortener.so.1 \
+	liburlshortener.so \
+	libtwitterapi.so.0.9.1 \
+	libtwitterapi.so.0.9 \
+	libtwitterapi.so.0 \
+	libtwitterapi.so ; do
+		cp -a $src/$FILE $fs/usr/lib
+	done
+
+	# Copy .desktop file:
+#	cp -a $WOK/$PACKAGE/stuff/* $fs/usr
+}

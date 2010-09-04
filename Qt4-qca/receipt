@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+NAME="qca"
+PACKAGE="Qt4-$NAME"
+MAJORVERSION="2.0"
+VERSION="2.0.2"
+CATEGORY="development"
+SHORT_DESC="The Qt Cryptographic Architecture (QCA)."
+MAINTAINER="ben@seawolfsanctuary.com"
+DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
+libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
+libQtOpenGL libQtSql libQtWebkit"
+BUILD_DEPENDS="xorg-libX11-dev dbus-dev Qt4-dev slitaz-toolchain"
+TARBALL="$NAME-$VERSION.tar.bz2"
+WEB_SITE="http://delta.affinix.com/$NAME"
+WGET_URL="http://delta.affinix.com/download/$NAME/$MAJORVERSION/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $NAME-$VERSION
+	
+	chmod +x configure
+	./configure \
+		--prefix=/usr \
+		--disable-tests && \
+	make -j4 && make DESTDIR=$_pkg install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	for DIR in bin lib include ; do
+		cp -a $WOK/$PACKAGE/$NAME-$VERSION/$DIR $fs/usr
+	done
+
+	# Copy .desktop file:
+#	cp -a $WOK/$PACKAGE/stuff/* $fs/usr
+}
