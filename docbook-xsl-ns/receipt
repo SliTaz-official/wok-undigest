@@ -30,19 +30,19 @@ post_install()
 
 	xmlcatalog --noout --add "delegateURI" \
            	"http://docbook.sourceforge.net/release/xsl-ns/1.75.2" \
-           	"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/$VERSION/catalog.xml" \
+           	"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/catalog.xml" \
 	/etc/xml/catalog
 	xmlcatalog --noout --add "delegateSystem" \
 		"http://docbook.sourceforge.net/release/xsl-ns/1.75.2" \
-		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/$VERSION/catalog.xml" \
+		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/catalog.xml" \
 	/etc/xml/catalog
 	xmlcatalog --noout --add "delegateURI" \
 		"http://docbook.sourceforge.net/release/xsl-ns/current" \
-		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/$VERSION/catalog.xml" \
+		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/catalog.xml" \
 	/etc/xml/catalog &&
 	xmlcatalog --noout --add "delegateSystem" \
 		"http://docbook.sourceforge.net/release/xsl-ns/current" \
-		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/$VERSION/catalog.xml" \
+		"file:///usr/share/xml/docbook/stylesheet/$PACKAGE/catalog.xml" \
 	/etc/xml/catalog
 	status
 }
