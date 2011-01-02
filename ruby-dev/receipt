@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="ruby-dev"
+VERSION="1.8.7-p72"
+CATEGORY="development"
+SHORT_DESC="Devel file for Ruby (to compile ruby-modules)."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://www.ruby-lang.org/"
+WANTED="ruby"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/ruby/${VERSION%.*}/i486-linux/
+	
+	cp -a $_pkg/usr/lib/*.a $fs/usr/lib
+	cp -a $_pkg/usr/lib/ruby/${VERSION%.*}/i486-linux/*.h $fs/usr/lib/ruby/${VERSION%.*}/i486-linux/
+	
+	cp -a $_pkg/usr/lib/ruby/${VERSION%.*}/mkmf.rb $fs/usr/lib/ruby/${VERSION%.*}
+}
