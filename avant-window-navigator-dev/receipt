@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="avant-window-navigator-dev"
-VERSION="0.3.2.1"
+VERSION="0.4.0"
 CATEGORY="development"
 SHORT_DESC="The AWN devel files."
 MAINTAINER="pankso@slitaz.org"

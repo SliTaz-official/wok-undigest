@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="avant-window-navigator"
-VERSION="0.3.2.1"
+VERSION="0.4.0"
 CATEGORY="x-window"
 SHORT_DESC="Dock-like bar which sits at the bottom of the screen."
 MAINTAINER="pankso@slitaz.org"
@@ -9,9 +9,8 @@ DEPENDS="dbus librsvg libwnck xorg-xcompmgr"
 BUILD_DEPENDS="dbus-dev librsvg-dev libwnck libwnck-dev pygtk-dev xcb-util-dev libxcb-dev startup-notification-dev pycairo-dev pygobject-dev libffi-dev python-xdg intltool acl dbus-glib-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://launchpad.net/awn/"
-WGET_URL="http://launchpad.net/awn/0.2/$VERSION/+download/$TARBALL"
+WGET_URL="http://launchpad.net/awn/0.4/$VERSION/+download/$TARBALL"
 TAGS="window-manager wm panel"
-
 
 # Rules to configure and make the package.
 compile_rules()
