@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gcompris-voices-de"
-VERSION="8.4.13"
+VERSION="9.5"
 CATEGORY="games"
 SHORT_DESC="Gcompris Education games - German voices."
 MAINTAINER="pankso@slitaz.org"
