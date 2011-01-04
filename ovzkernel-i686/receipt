@@ -47,15 +47,17 @@ EOT
 	
 	# Add LOCALVERSION support
 	sed -i s/CONFIG_LOCALVERSION_AUTO.*/CONFIG_LOCALVERSION_AUTO=y/ .config 
+	#sed -i s/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION=\"-ovz\"/ .config 
 	
+	[ -f scripts/setlocalversion ] && mv scripts/setlocalversion scripts/setlocalversion.disabled
 	make  oldconfig && \
 		make LOCALVERSION=${LOCALVERSION} prepare 
-		
+	exit 
 	make bzImage && \
 	make modules
 
 	make INSTALL_MOD_PATH=$PWD/_pkg modules_install
-	make  INSTALL_HDR_PATH=$PWD/_pkg/usr headers_install 
+	make INSTALL_HDR_PATH=$PWD/_pkg/usr headers_install 
 	
 	KERNELRELEASE=$( cat include/config/kernel.release 2> /dev/null) ; export KERNELRELEASE
 
@@ -64,7 +66,7 @@ EOT
 	cp -a  arch/x86/boot/bzImage $PWD/_pkg/boot/vmlinuz-${KERNELRELEASE}
 	
 	# Compress all modules.
-	#$WOK/$PACKAGE/stuff/gztazmod.sh $PWD/_pkg/lib/modules/$VERSION-slitaz
+	$WOK/$PACKAGE/stuff/gztazmod.sh $PWD/_pkg/lib/modules/${KERNELRELEASE}
 	ln System.map System.map-modules
 	ln Module.symvers Module.symvers-modules
 }
@@ -101,6 +103,7 @@ genpkg_rules()
 post_install()
 {
     echo "Processing post-install commands..."
+	# TODO: Remove hardcoded KERNELRELEASE
     KERNELRELEASE=2.6.32.25-ovz
     
     chroot "$1/" depmod -a $KERNELRELEASE
