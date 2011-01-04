@@ -52,7 +52,6 @@ EOT
 	[ -f scripts/setlocalversion ] && mv scripts/setlocalversion scripts/setlocalversion.disabled
 	make  oldconfig && \
 		make LOCALVERSION=${LOCALVERSION} prepare 
-	exit 
 	make bzImage && \
 	make modules
 
