@@ -10,6 +10,7 @@ WANTED="ovzkernel"
 WEB_SITE="http://www.kernel.org/"
 EXTRAVERSION="-i686"
 SOURCE="linux"
+PROVIDE="linux-bridge"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
