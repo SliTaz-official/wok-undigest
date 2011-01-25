@@ -1,0 +1,159 @@
+# SliTaz package receipt.
+
+PACKAGE="ovzkernel"
+VERSION="2.6.32"
+CATEGORY="system"
+SHORT_DESC="Vanilla Linux Kernel for OpenVZ"
+MAINTAINER="erjo@slitaz.org"
+DEPENDS="depmod"
+BUILD_DEPENDS="slitaz-toolchain perl"
+SOURCE="linux"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="http://www.kernel.org/"
+WGET_URL="http://www.eu.kernel.org/pub/linux/kernel/v${VERSION:0:3}/$TARBALL"
+PROVIDE="linux"
+EXTRAVERSION="-i686"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	LOCALVERSION="-ovz" ; export LOCALVERSION
+	
+	cd $src
+	
+	[ -d OpenVZ ] && rm -rf openvz || mkdir OpenVZ	
+	
+	zcat ../stuff/patch-dzhanibekov.1-combined.gz > OpenVZ/patch-dzhanibekov.1-combined.u
+	cp ../stuff/*.ovz OpenVZ
+	cp ../stuff/*.sh OpenVZ
+	
+	# Apply patches
+	while read patch_file; do
+		echo "$patch_file" >> OpenVZ/patches
+		#~ cp ../stuff/$patch_file OpenVZ
+		if [ -f done.$patch_file ]; then
+			echo "Skipping $patch_file"
+			continue
+		fi
+		echo "Apply $patch_file"
+		patch -p1 < OpenVZ/$patch_file || exit 1
+		touch done.$patch_file
+	done <<EOT
+patch-dzhanibekov.1-combined.u
+EOT
+	# Prepare to build
+	make mrproper 
+
+	# Copy old kernel config
+	cp OpenVZ/linux-2.6.32-i686.config.ovz .config 
+	
+	# Add LOCALVERSION support
+	sed -i s/CONFIG_LOCALVERSION_AUTO.*/CONFIG_LOCALVERSION_AUTO=y/ .config 
+	
+	# Disable Source Versio Control detection
+	[ -f scripts/setlocalversion ] && mv scripts/setlocalversion scripts/setlocalversion.disabled
+	
+	# Apply kernel config and build
+	make  oldconfig && \
+		make LOCALVERSION=${LOCALVERSION} prepare 
+	make bzImage && \
+	make modules
+	
+	# Install modules and headers
+	make INSTALL_MOD_PATH=$PWD/_pkg modules_install
+	make INSTALL_HDR_PATH=$PWD/_pkg/usr headers_install 
+	
+	# Get kernel release 
+	KERNELRELEASE=$( cat include/config/kernel.release 2> /dev/null) ; export KERNELRELEASE
+
+	[ -s arch/x86/boot/bzImage ] || return 1
+	mkdir -p $PWD/_pkg/boot 2> /dev/null
+	cp -a  arch/x86/boot/bzImage $PWD/_pkg/boot/vmlinuz-${KERNELRELEASE}
+	
+	# Compress all modules.
+	$WOK/$PACKAGE/stuff/gztazmod.sh $PWD/_pkg/lib/modules/${KERNELRELEASE}
+	ln System.map System.map-modules
+	ln Module.symvers Module.symvers-modules
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	local path
+	KERNELRELEASE=$( cat $src/include/config/kernel.release 2> /dev/null) 
+	path=$fs/lib/modules/${KERNELRELEASE}/kernel
+
+    mkdir -p $fs/lib \
+		$fs/boot \
+		$fs/lib/modules/${KERNELRELEASE} \
+		$path \
+		$fs/etc/ovzkernel
+		 
+    #cp -a $_pkg/lib/modules $fs/lib
+    cp -a $_pkg/lib/firmware $fs/lib
+    cp -a $_pkg/boot $fs/
+    		
+    #~ # Get the base modules
+    export src
+    export _pkg
+	
+	cp -a $src/include/config/kernel.release $fs/etc/ovzkernel
+	cp -a $_pkg/lib/modules/${KERNELRELEASE}/mo* \
+		$fs/lib/modules/${KERNELRELEASE}
+
+	$src/OpenVZ/list_modules.sh ${KERNELRELEASE} \
+		$(cat stuff/modules-$VERSION.list)  > $src/modules.list
+    while read module; do
+    	dir=$(dirname $module) 
+    	[ -d $path/$dir ] || mkdir -p $path/$dir
+        cp -a $_pkg/lib/modules/${KERNELRELEASE}/kernel/$module $path/$dir
+    done < $src/modules.list
+	
+    # Remove unresolved links
+    rm -f $fs/lib/modules/${KERNELRELEASE}/build
+    rm -f $fs/lib/modules/${KERNELRELEASE}/source
+	# Cook all packages with a kernel module   
+	#~ for i in $(cd $WOK ; ls -d ovzkernel-*; cd -)
+    #~ do
+    	#~ tazwok cook ${i%/receipt}
+    #~ done
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+    echo "Processing post-install commands..."
+    KERNELRELEASE=$(cat $1/etc/ovzkernel/kernel.release)
+    
+    chroot "$1/" depmod -a ${KERNELRELEASE}
+    
+    # GRUB stuff.
+    if [ -f "$1/boot/grub/menu.lst" ]; then
+    	root_dev=`cat $1/boot/grub/menu.lst | grep root= | sed 's/.*root=\([^ ]*\).*/\1/' | head -n 1`
+		grub_dev=`cat $1/boot/grub/menu.lst | grep "root (" | head -n 1`
+		# Add new kernel entry in case of upgrade for installed system.
+		if ! grep -q ${KERNELRELEASE} $1/boot/grub/menu.lst; then
+    		cat >> $1/boot/grub/menu.lst << EOT
+
+title SliTaz GNU/Linux (Kernel ${KERNELRELEASE})
+$grub_dev
+kernel /boot/vmlinuz-${KERNELRELEASE} root=$root_dev
+EOT
+		fi
+		# Display information message.
+    	cat <<EOT
+----
+GRUB is installed, these tree lines must be in your /boot/grub/menu.lst:
+
+title  SliTaz GNU/Linux (Kernel ${KERNELRELEASE})
+$grub_dev
+kernel /boot/vmlinuz-${KERNELRELEASE} root=$root_dev
+----
+EOT
+	fi
+}
+
+clean_wok()
+{
+		[ -d ${SOURCE}-${VERSION} ] && rm -rf $SOURCE-$VERSION
+}

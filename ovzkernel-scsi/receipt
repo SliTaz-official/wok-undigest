@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="ovzkernel-scsi"
+VERSION="2.6.32"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel scsi modules."
+MAINTAINER="devel@slitaz.org"
+DEPENDS="ovzkernel"
+WANTED="ovzkernel"
+WEB_SITE="http://www.kernel.org/"
+EXTRAVERSION="-i686"
+SOURCE="linux"
+PROVIDE="linux-scsi"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    local path
+	src=$WOK/$WANTED/$SOURCE-$VERSION
+	_pkg=$WOK/$WANTED/$SOURCE-$VERSION/_pkg
+	KERNELRELEASE=$( cat $src/include/config/kernel.release 2> /dev/null)
+    path=lib/modules/${KERNELRELEASE}/kernel
+    mkdir -p $fs/$path
+    export src
+    export _pkg
+    $src/OpenVZ/list_modules.sh ${KERNELRELEASE} drivers/scsi drivers/message | while read module; do
+    	dir=$path/$(dirname $module)
+    	[ -d $fs/$dir ] || mkdir -p $fs/$dir
+        cp -a $_pkg/$path/$module $fs/$dir
+    done
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+KERNELRELEASE=$(cat $1/etc/ovzkernel/kernel.release)
+	chroot "$1/" depmod -a ${KERNELRELEASE}
+}
+
+post_remove()
+{
+		KERNELRELEASE=$(cat $1/etc/ovzkernel/kernel.release)
+	depmod -a ${KERNELRELEASE}
+}
+
