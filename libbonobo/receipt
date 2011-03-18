@@ -1,11 +1,12 @@
 # SliTaz package receipt.
 
 PACKAGE="libbonobo"
-VERSION="2.24.2"
-CATEGORY="misc"
-SHORT_DESC="Librairies for GNOME"
-MAINTAINER="erjo@slitaz.org"
-DEPENDS=""
+VERSION="2.32.0"
+CATEGORY="x-window"
+SHORT_DESC="Component and compound document system for GNOME-2."
+MAINTAINER="pankso@slitaz.org"
+DEPENDS="dbus-glib ORBit2 libxml2 popt"
+BUILD_DEPENDS="dbus-glib-dev ORBit2-dev libxml2-dev popt-dev bison flex intltool pkg-config"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.gnome.org"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
@@ -15,25 +16,21 @@ compile_rules()
 {
 	cd $src
 	./configure \
-		--prefix=/usr \
 		--sysconfdir=/etc/gnome \
-		--libexecdir=/usr/lib/bonobo \
-		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+		--libexecdir=/usr/lib/bonobo &&
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib
 	cp -a $_pkg/etc $fs/
 	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/sbin $fs/usr
 	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
 	cp -a $_pkg/usr/lib/orbit-2.0 $fs/usr/lib
 	cp -a $_pkg/usr/lib/bonobo $fs/usr/lib/bonobo
-	CP -a $_pkg/usr/share/applications $fs/usr/share
-	CP -a $_pkg/usr/share/gnome* $fs/usr/share
 	
 	# Clean unwated files
 	cd $fs/usr/lib ; find . -name "*.*a" -exec rm -f {} \;
@@ -41,4 +38,3 @@ genpkg_rules()
 	# Stripping all
 	find . -name "*.so" -exec strip -s {} \;
 }
-
