@@ -18,8 +18,8 @@ genpkg_rules()
 	cp -a stuff/* $fs
 
 	# translate
-	sed -i 's/Daten werden geladen ... (Grafiken)/Loading graphics.../' \
-		$fs/usr/share/diggerjs/*.html
+	sed -i 's/Daten werden geladen .*)/Loading graphics.../' \
+		$fs/usr/share/diggerjs/*.*
 
 	# remove TODO stuff...
 	sed -i '/HighScorefunktion programmieren/d' \
