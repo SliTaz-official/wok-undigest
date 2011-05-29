@@ -3,23 +3,19 @@
 PACKAGE="cairo-compmgr"
 VERSION="0.3.0"
 CATEGORY="x-window"
-SHORT_DESC=" Cairo Composite Manager"
+SHORT_DESC="Cairo Composite Manager"
 MAINTAINER="pankso@slitaz.org"
-DEPENDS="gtk+ cairo librsvg"
-BUILD_DEPENDS="gtk+-dev cairo-dev librsvg-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://cairo-compmgr.tuxfamily.org/"
 WGET_URL="http://download.tuxfamily.org/ccm/cairo-compmgr/$TARBALL"
 
+DEPENDS="gtk+ cairo librsvg"
+BUILD_DEPENDS="gtk+-dev cairo-dev librsvg-dev vala"
+
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	./configure \
-		--prefix=/usr
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$PWD/_pkg install
+	./configure $CONFIGURE_ARGS && make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
