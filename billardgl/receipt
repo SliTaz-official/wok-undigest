@@ -9,7 +9,9 @@ SOURCE="BillardGL"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://www.billardgl.de/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
 DEPENDS="libglu"
+BUILD_DEPENDS="mesa-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -19,12 +21,11 @@ compile_rules()
 	grep -q namespace bmp.cpp ||
 	sed -i 's/"bmp.h"/"bmp.h"\nusing namespace std;/' bmp.cpp
 	make || return 1
-	cd ..
-	mkdir -p _pkg/usr/share/BillardGL  _pkg/usr/games
-	cp src/BillardGL _pkg/usr/games
-	cp -R src/Texturen _pkg/usr/share/BillardGL
-	cp -R src/lang _pkg/usr/share/BillardGL
-	cp -R src/README _pkg/usr/share/BillardGL
+	mkdir -p $DESTDIR/usr/share/BillardGL  $DESTDIR/usr/games
+	cp $src/src/BillardGL $DESTDIR/usr/games
+	cp -R $src/src/Texturen $DESTDIR/usr/share/BillardGL
+	cp -R $src/src/lang $DESTDIR/usr/share/BillardGL
+	cp -R $src/src/README $DESTDIR/usr/share/BillardGL
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

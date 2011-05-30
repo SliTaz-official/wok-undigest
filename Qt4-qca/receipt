@@ -3,23 +3,24 @@
 NAME="qca"
 PACKAGE="Qt4-$NAME"
 MAJORVERSION="2.0"
-VERSION="2.0.2"
+VERSION="2.0.3"
 CATEGORY="development"
 SHORT_DESC="The Qt Cryptographic Architecture (QCA)."
 MAINTAINER="ben@seawolfsanctuary.com"
-DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
-libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
-libQtOpenGL libQtSql libQtWebkit"
-BUILD_DEPENDS="xorg-libX11-dev dbus-dev Qt4-dev slitaz-toolchain"
 TARBALL="$NAME-$VERSION.tar.bz2"
 WEB_SITE="http://delta.affinix.com/$NAME"
 WGET_URL="http://delta.affinix.com/download/$NAME/$MAJORVERSION/$TARBALL"
 
+DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
+libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
+libQtOpenGL libQtSql libQtWebkit"
+BUILD_DEPENDS="xorg-libX11-dev dbus-dev Qt4-dev qmake slitaz-toolchain"
+
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $NAME-$VERSION
-	
+	[ -d $NAME-$VERSION ] && mv $NAME-$VERSION $src
+	cd $src
 	chmod +x configure
 	./configure \
 		--prefix=/usr \

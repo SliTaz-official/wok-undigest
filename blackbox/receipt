@@ -21,9 +21,9 @@ compile_rules()
 	./configure --prefix=/usr --sysconfdir=/etc \
 	--libexecdir=/usr/bin --mandir=/usr/share/man \
 	$CONFIGURE_ARGS &&
-	patch -p1 < ../stuff/blackbox-0.70.1-gcc-4.3.patch
+	patch -p1 < $stuff/blackbox-0.70.1-gcc-4.3.patch
 	make &&
-	make DESTDIR=$PWD/_pkg install
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
