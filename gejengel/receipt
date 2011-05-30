@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="gejengel"
+VERSION="0.1.4"
+CATEGORY="network"
+SHORT_DESC="A simple, light and clean audio player."
+MAINTAINER="pabkso@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://code.google.com/p/gejengel/"
+WGET_URL="http://gejengel.googlecode.com/files/$TARBALL"
+
+DEPENDS="glibmm cairomm gtkmm libsigc++ taglib imagemagick"
+BUILD_DEPENDS="glibmm-dev cairomm-dev gtkmm-dev libsigc++-dev taglib-dev \
+imagemagick-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc
+	cp -a $_pkg/usr/bin $fs/usr
+}
