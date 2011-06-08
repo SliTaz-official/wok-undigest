@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="soprano"
-VERSION="2.4.3"
+VERSION="2.6.0"
 CATEGORY="system-tools"
 SHORT_DESC="Soprano is the Qt/C++ RDF framework"
 MAINTAINER="pankso@slitaz.org"
@@ -14,10 +14,10 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir -p $src/build
-	cd $src/build
+	mkdir -p build && cd build
 	cmake \
-		-DCMAKE_INSTALL_PREFIX=/usr .. &&
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		.. &&
 	make && make install
 }
 
@@ -25,8 +25,8 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
-	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
-	cp -a $_pkg/usr/lib/soprano $fs/usr/lib
-	cp -a $_pkg/usr/share $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/soprano $fs/usr/lib
+	cp -a $install/usr/share $fs/usr
 }

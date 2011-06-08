@@ -1,33 +1,36 @@
 # SliTaz package receipt.
 
 PACKAGE="kdelibs"
-VERSION="4.6.1"
+VERSION="4.6.0"
 CATEGORY="x-window"
 SHORT_DESC="The KDE library."
 MAINTAINER="pankso@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
-DEPENDS="pcre qt4-phonon libQtCore libQtGui libQtScript giflib libxslt qca \
-strigi attica dbus polkit-qt openssl udev libdbusmenu-qt enchant mesa librsvg"
-BUILD_DEPENDS="$DEPENDS pcre-dev cmake qmake automoc4 Qt4-dev giflib-dev \
-libxslt-dev strigi-dev attica-dev docbook-xml docbook-xsl dbus-dev \
-polkit-qt-dev openssl-dev udev-dev libdbusmenu-qt-dev enchant-dev mesa-dev \
-librsvg-dev qca-dev"
 WEB_SITE="http://www.kde.org/"
 WGET_URL="http://mirrors.isc.org/pub/kde/stable/$VERSION/src/$TARBALL"
+
+DEPENDS="qt4-phonon libQtCore libQtGui libQtScript giflib libxslt qca \
+strigi attica dbus polkit-qt openssl udev libdbusmenu-qt enchant mesa librsvg \
+soprano shared-mime-info"
+BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev giflib-dev libxslt-dev strigi-dev \
+attica-dev docbook-xml docbook-xsl dbus-dev polkit-qt-dev openssl-dev udev-dev \
+libdbusmenu-qt-dev enchant-dev mesa-dev librsvg-dev qca-dev soprano-dev \
+shared-mime-info-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	#-DDOCBOOKXML_CURRENTDTD_DIR=/usr/share/xml/docbook/xml-dtd-4.5
 	mkdir -p build && cd build
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DKDE_DISTRIBUTION_TEXT='SliTaz GNU/Linux' \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DSYSCONF_INSTALL_DIR=/etc/kde \
-		-DKDE_DEFAULT_HOME=.kde \
-		-DDOCBOOKXML_CURRENTDTD_DIR=/usr/share/xml/docbook/xml-dtd-4.5 \
-	.. &&
+		-DKDE_DEFAULT_HOME=.config/kde \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DKAUTH_BACKEND=PolkitQt-1 \
+		.. &&
 	make && make install
 }
 
@@ -35,11 +38,11 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share
-	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/lib $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
 	strip -s $fs/usr/lib/kde4/libexec/* 2>/dev/null
 	for d in apps config dbus-1 icons kde4 locale mime
 	do
-		cp -a $_pkg/usr/share/$d $fs/usr/share
+		cp -a $install/usr/share/$d $fs/usr/share
 	done
 }
