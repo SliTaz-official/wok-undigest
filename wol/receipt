@@ -7,6 +7,7 @@ SHORT_DESC="wol implements Wake On LAN functionality in a small program."
 MAINTAINER="l.lemarinel@gmail.com"
 TARBALL="${PACKAGE}-${VERSION}.tar.gz"
 WGET_URL="$SF_MIRROR/ahh/$TARBALL"
+WEB_SITE="http://wake-on-lan.sourceforge.net/"
 BUILD_DEPENDS=""
 DEPENDS=""
 
@@ -14,16 +15,13 @@ DEPENDS=""
 compile_rules()
 {
 	cd $src
-	./configure --bindir=/usr/bin \
-		--sbindir=/usr/bin \
-		--prefix=/usr
-	make
-	make DESTDIR=$PWD/_pkg install
+	./configure $CONFIGURE_ARGS &&
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $install/usr/bin $fs/usr
 }
