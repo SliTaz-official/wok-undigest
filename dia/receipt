@@ -24,7 +24,7 @@ compile_rules()
 	./configure --with-python \
 		--disable-gnome \
 		$CONFIGURE_ARGS &&
-	sed -i 's#SUBDIRS = lib objects plug-ins shapes app bindings samples po sheets data doc tests installer#SUBDIRS = lib objects plug-ins shapes app bindings samples po sheets data tests installer#' Makefile &&
+	sed -i 's# data doc tests installer# data tests installer#' Makefile &&
 	make -j 4 &&
 	make DESTDIR=$DESTDIR install
 }
