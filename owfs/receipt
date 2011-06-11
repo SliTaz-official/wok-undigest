@@ -9,7 +9,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="www.owfs.org"
 #WGET_URL="http://downloads.sourceforge.net/project/owfs/owfs/$VERSION/$TARBALL?use_mirror=freefr"
 WGET_URL="http://freefr.dl.sourceforge.net/project/owfs/owfs/2.7p33/owfs-2.7p33.tar.gz"
-BUILD_DEPENDS="fuse-dev libusb-dev"
+BUILD_DEPENDS="fuse-dev libusb libusb-dev"
 DEPENDS="fuse libusb"
 
 
