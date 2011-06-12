@@ -2,7 +2,7 @@
 
 PACKAGE="ipcalc"
 VERSION="0.41"
-CATEGORY="utilities"
+CATEGORY="network"
 SHORT_DESC="IP Calculator."
 MAINTAINER="paul@slitaz.org"
 WEB_SITE="http://jodies.de/ipcalc"
