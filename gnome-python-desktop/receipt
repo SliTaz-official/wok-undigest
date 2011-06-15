@@ -7,7 +7,7 @@ SHORT_DESC="Python bindings for GNOME desktop (gnomekeyring, rsvg, wnck)."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="python GConf gnome-python gnome-keyring librsvg libwnck"
 BUILD_DEPENDS="python-dev GConf-dev gnome-python gnome-keyring-dev \
-librsvg-dev libwnck-dev"
+librsvg-dev libwnck-dev pygtk-dev"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.gnome.org/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/2.26/$TARBALL"
@@ -19,7 +19,7 @@ compile_rules()
 	./waf configure --prefix=/usr \
 		--enable-module "gnomekeyring,rsvg,wnck" &&
 	./waf build &&
-	./waf install --destdir=$PWD/_pkg
+	./waf install --destdir=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
