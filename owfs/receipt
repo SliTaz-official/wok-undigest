@@ -9,7 +9,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="www.owfs.org"
 #WGET_URL="http://downloads.sourceforge.net/project/owfs/owfs/$VERSION/$TARBALL?use_mirror=freefr"
 WGET_URL="http://freefr.dl.sourceforge.net/project/owfs/owfs/2.7p33/owfs-2.7p33.tar.gz"
-BUILD_DEPENDS="fuse-dev libusb libusb-dev"
+BUILD_DEPENDS="fuse-dev libusb libusb-dev libusb-compat"
 DEPENDS="fuse libusb"
 
 
@@ -17,9 +17,9 @@ DEPENDS="fuse libusb"
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr --bindir=/usr/bin 
-	make 
-	make DESTDIR=$PWD/_pkg install
+	./configure --prefix=/usr --bindir=/usr/bin &&
+	make &&
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
