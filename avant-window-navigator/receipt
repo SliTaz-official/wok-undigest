@@ -6,7 +6,9 @@ CATEGORY="x-window"
 SHORT_DESC="Dock-like bar which sits at the bottom of the screen."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="dbus librsvg libwnck xorg-xcompmgr"
-BUILD_DEPENDS="dbus-dev librsvg-dev libwnck libwnck-dev pygtk-dev xcb-util-dev libxcb-dev startup-notification-dev pycairo-dev pygobject-dev libffi-dev python-xdg intltool acl dbus-glib-dev"
+BUILD_DEPENDS="dbus-dev librsvg-dev libwnck libwnck-dev pygtk-dev xcb-util-dev \
+libxcb-dev startup-notification-dev pycairo-dev pygobject-dev libffi-dev \
+python-xdg intltool acl dbus-glib-dev python-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://launchpad.net/awn/"
 WGET_URL="http://launchpad.net/awn/0.4/$VERSION/+download/$TARBALL"
@@ -23,7 +25,7 @@ compile_rules()
 		--without-gconf \
 		$CONFIGURE_ARGS &&
 	make &&
-	make DESTDIR=$PWD/_pkg install
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
