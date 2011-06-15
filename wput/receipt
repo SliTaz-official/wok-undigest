@@ -15,7 +15,8 @@ DEPENDS=""
 compile_rules()
 {
 	cd $src
-	./configure --prefix=$DESTDIR/usr \
+	sed -i "s|^prefix *=.*|prefix = $DESTDIR/usr|" Makefile.in
+	./configure --prefix=/usr \
 		--disable-g-switch \
 		--without-ssl &&
 	make &&
