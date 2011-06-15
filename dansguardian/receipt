@@ -2,7 +2,7 @@
 
 PACKAGE="dansguardian"
 VERSION="2.10.1.1"
-CATEGORY="networking"
+CATEGORY="network"
 SHORT_DESC="Web content filter"
 MAINTAINER="erjo@slitaz.org"
 BUILD_DEPENDS="pcre-dev"
@@ -24,7 +24,7 @@ compile_rules()
 		--with-proxyuser=nobody \
 		--with-proxygroup=nogroup \
 		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+	make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
