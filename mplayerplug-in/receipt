@@ -23,14 +23,14 @@ compile_rules()
 {
 	cd $src
 	sed -i 's/npupp\.h/npfunctions.h/' */np*
-	cp ../stuff/slitaz-hack.h include
+	cp $stuff/slitaz-hack.h include
 	grep -q slitaz-hack include/npplat.h || sed -i \
 		's/ne _NPPLAT_H_/ne _NPPLAT_H_\n#include "slitaz-hack.h"/' \
 		include/npplat.h
 	while read file; do
 		[ -f done.$file ] && continue
 		echo "Apply $file..."
-		patch -p1 < ../stuff/$PACKAGE-$VERSION-$file || return 1
+		patch -p1 < $stuff/$PACKAGE-$VERSION-$file || return 1
 		touch done.$file
 	done <<EOT
 glibc210.u
@@ -48,7 +48,7 @@ EOT
 		MOZILLA_HOME="/usr/lib/firefox-$FIREFOX_VER" \
 		GECKO_IDLDIR="/usr/share/idl/firefox-$FIREFOX_VER" &&
 	make -j 4 &&
-	make DESTDIR=$PWD/_pkg install
+	make DESTDIR=$DESTDIR install
 }
 
 genpkg_rules()
