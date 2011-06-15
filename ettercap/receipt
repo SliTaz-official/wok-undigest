@@ -6,7 +6,7 @@ CATEGORY="network"
 SHORT_DESC="Ettercap is a suite for man in the middle attacks on LAN"
 MAINTAINER="claudinei@slitaz.org"
 DEPENDS="libpthread-stubs libpcap libnet libtool zlib"
-BUILD_DEPENDS="libpthread-stubs libpcap libnet-dev libtool zlib-dev"
+BUILD_DEPENDS="libpthread-stubs libpcap libpcap-dev libnet-dev libtool zlib-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://ettercap.sourceforge.net"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
@@ -22,7 +22,7 @@ compile_rules()
 		--enable-plugins \
 		--disable-gtk \
 		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+	make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
