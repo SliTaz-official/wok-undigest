@@ -15,7 +15,7 @@ DEPENDS=""
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr \
+	./configure --prefix=$DESTDIR/usr \
 		--disable-g-switch \
 		--without-ssl &&
 	make &&
