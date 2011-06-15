@@ -2,7 +2,7 @@
 
 PACKAGE="qtwitter"
 VERSION="0.10.0"
-CATEGORY="internet"
+CATEGORY="network"
 SHORT_DESC="A Qt-based, cross-network microblogging client."
 MAINTAINER="ben@seawolfsanctuary.com"
 DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
@@ -23,7 +23,7 @@ compile_rules()
 	cd $src
 	
 	qmake PREFIX="/usr" && \
-	make -j4 && make DESTDIR=$_pkg install
+	make -j4 && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
