@@ -14,10 +14,10 @@ TAGS="power-management"
 compile_rules(){
   [ -d $PACKAGE$VERSION ] && mv $PACKAGE$VERSION $PACKAGE-$VERSION
   cd $src
-   patch -Np1 -i ../stuff/$PACKAGE-$VERSION-install.patch 
+   patch -Np1 -i $stuff/$PACKAGE-$VERSION-install.patch 
   ./configure --prefix=/usr --bindir=/usr/bin &&
   make  &&
-  make DESTDIR=$PWD/_pkg install 
+  make DESTDIR=$DESTDIR install 
 }
 	
 # Rules to gen a SliTaz package suitable for Tazpkg.
