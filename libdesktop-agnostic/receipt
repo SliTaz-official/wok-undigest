@@ -18,8 +18,7 @@ compile_rules()
 	./waf configure \
 		--config-backends=keyfile \
 		--vfs-backends=gio \
-		--desktop-entry-backends=glib \
-		--disable-gui &&
+		--desktop-entry-backends=glib &&
 	./waf &&
 	./waf install \
 		--prefix=/usr \
