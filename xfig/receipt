@@ -11,7 +11,8 @@ WGET_URL="http://downloads.sourceforge.net/mcj/$TARBALL"
 SUGGESTED="transfig"
 
 DEPENDS="jpeg libpng xorg"
-BUILD_DEPENDS="xorg-imake xorg-cf-files xorg-gccmakedep jpeg-dev libpng-dev"
+BUILD_DEPENDS="xorg-imake xorg-cf-files xorg-gccmakedep jpeg-dev \
+libpng-dev xorg-libXp"
 
 # Rules to configure and make the package.
 compile_rules()
