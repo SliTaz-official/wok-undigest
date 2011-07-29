@@ -42,7 +42,18 @@ EOT
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin $fs/usr/share/doc/slitaz
+	mkdir -p $fs/usr/bin $fs/usr/share/doc/slitaz $fs/usr/share/applications
 	cp $src/xv $src/bggen $src/vdcomp $src/xcmap $src/xvpictoppm $fs/usr/bin
 	cp $src/README $fs/usr/share/doc/slitaz/README.xv
+	cat > $fs/usr/share/applications/xv.desktop <<EOT
+[Desktop Entry]
+Encoding=UTF-8
+Categories=Application;Graphics;Utility
+Exec=xv %f
+Icon=image
+StartupNotify=true
+Type=Application
+Terminal=false
+Name=Image manipulation
+EOT
 }
