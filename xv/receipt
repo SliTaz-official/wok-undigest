@@ -10,8 +10,6 @@ WEB_SITE="http://www.trilon.com/xv/xv.html"
 WGET_URL="ftp://ftp.trilon.com/pub/$PACKAGE/$TARBALL"
 PATCH1="$SF_MIRROR/png-mng/xv-3.10a-jumbo-patches-20070520.tar.gz"
 PATCH2="http://sonic.net/~roelofs/code/xv-3.10a-enhancements.20070520-20081216.diff"
-#http://prdownloads.sourceforge.net/png-mng/xv-3.10a-jumbo-patches-20070520.tar.gz?download
-#http://sonic.net/~roelofs/code/xv-3.10a-enhancements.20070520-20081216.diff
 
 DEPENDS="xorg"
 BUILD_DEPENDS="xorg-dev"
@@ -26,14 +24,18 @@ compile_rules()
 	done
 	cd .. ; tar xzf $SOURCES_REPOSITORY/$(basename $PATCH1) ; cd $src
 	#patch -p0 < $SOURCES_REPOSITORY/$(basename $PATCH2)
+	sed -i 's/.*stdio.*/&\n#include <stdlib.h>/' xcmap.c bggen.c
+	sed -i 's/ gets *(\(.*\))/ fgets(\1,sizeof(\1)-1,stdin)/' vdcomp.c
+	sed -i 's/mktemp/mkstemp/' *.c
 	cat > tiff/RANLIB.csh <<EOT
 #!/bin/sh
 exec ranlib \$@
 EOT
 	chmod +x tiff/RANLIB.csh
-	sed -i 's|.*extern.*sys_errlist.*|//&|' xv.h
-	sed -i -e 's|undef USE_GUNZIP|define USE_GUNZIP|' \
+	sed -i 's|.*extern.*sys_errlist.*|//&|;s|sys_errlist.x.|strerror(x)|' xv.h
+	sed -i -e 's|undef USE_GUNZIP|define USE_GUNZIP\n#define USE_GETCWD|' \
 		-e 's|/usr/local/bin/gunzip -q|/bin/gunzip|' config.h
+	make jpeg/libjpeg.a &&
 	make
 }
 
