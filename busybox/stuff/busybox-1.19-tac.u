@@ -1,0 +1,33 @@
+Shrink using sed code.
+   text	   data	    bss	    dec	    hex	filename
+    301	      0	      0	    301	    12d	coreutils.org/tac.o
+     94	      0	      0	     94	     5e	coreutils/tac.o
+
+--- busybox-1.19.0/coreutils/tac.c
++++ busybox-1.19.0/coreutils/tac.c
+@@ -33,6 +33,19 @@
+ int tac_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int tac_main(int argc UNUSED_PARAM, char **argv)
+ {
++#ifdef CONFIG_SED
++	int status = 0, i = 1;
++	char *s, *sed_argv[4];
++	
++	sed_argv[1] = "1!G;h;$!d";
++	sed_argv[3] = NULL;
++	do {
++		s = sed_argv[2] = argv[i];
++		if (!s || *s != '-')
++			status = sed_main(0, sed_argv);
++	} while (status == 0 && s && argv[++i]);
++	return status;
++#else
+ 	char **name;
+ 	FILE *f;
+ 	struct lstring *line = NULL;
+@@ -108,4 +121,5 @@
+ 	}
+ 
+ 	return retval;
++#endif
+ }
