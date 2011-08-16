@@ -89,7 +89,7 @@ Add framebuffer support + small shrink
  #define FLAG(x) (1 << FLAG_##x)
  #define BW (option_mask32 & FLAG(n))
  
-+static void putsci(const char *s)
++static void putcsi(const char *s)
 +{
 +	fputs(ESC"[", stdout);
 +	fputs(s, stdout);
@@ -99,7 +99,7 @@ Add framebuffer support + small shrink
  {
  	// Home, clear till end of screen
 -	fputs(ESC"[1;1H" ESC"[J", stdout);
-+	putsci("1;1H" ESC"[J");
++	putcsi("1;1H" ESC"[J");
  	G.col = G.line = 0;
  }
  
@@ -108,7 +108,7 @@ Add framebuffer support + small shrink
  	if (G.curoff != state) {
  		G.curoff = state;
 -		fputs(ESC"[?25", stdout);
-+		putsci("?25");
++		putcsi("?25");
  		bb_putchar("h?l"[1 + state]);
  	}
  }
@@ -128,7 +128,7 @@ Add framebuffer support + small shrink
  	// Reset attributes
  	if (!BW)
 -		fputs(ESC"[0m", stdout);
-+		putsci("0m");
++		putcsi("0m");
  	bb_putchar('\n');
 -	if (code > 1)
 +	if (code > EXIT_FAILURE)
@@ -185,7 +185,7 @@ Add framebuffer support + small shrink
  				ptr[-1] = 'm';
  				*ptr = '\0';
 -				fputs(G.attrbuf, stdout);
-+				putsci(G.attrbuf);
++				putcsi(G.attrbuf);
  			}
  		}
  	}
