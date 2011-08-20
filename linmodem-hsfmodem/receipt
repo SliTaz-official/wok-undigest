@@ -21,6 +21,9 @@ compile_rules()
 	echo "Apply $file..."
 	patch -p1 < $(ls $stuff/$SOURCE-*.diff) || return 1
 	grep -rl 'uname -r' . | xargs sed -i "s/uname -r/echo $kvers/g"
+	sed -i 's/DECLARE_MUTEX/DEFINE_SEMAPHORE/' \
+		modules/osnvm.c modules/GPL/serial_cnxt.c
+	sed -i 's/\.ioctl/.unlocked_ioctl/' modules/osdiag.c
 	# build driver
 	echo "Build driver"
 	make ROOT=$DESTDIR install
