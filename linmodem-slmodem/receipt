@@ -27,6 +27,8 @@ compile_rules() {
 	done
 	sed -i 's|^obj-m := slamr.o slusb.o|obj-m := slamr.o|' drivers/Makefile
 	sed -i 's/\.ioctl/.unlocked_ioctl/' drivers/amrmo_init.c
+	sed -i -e 's/DECLARE_MUTEX/DEFINE_SEMAPHORE/' \
+		-e 's/init_MUTEX\([^)]*\)/sema_init\1, 1/' drivers/st7554.c
 	make KERNEL_DIR=/usr/src/linux SUPPORT_ALSA=1 DESTDIR=$DESTDIR drivers
 }
 	
