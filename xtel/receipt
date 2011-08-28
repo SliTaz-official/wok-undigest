@@ -26,7 +26,7 @@ compile_rules()
 	sed -i 's/, \(\$(...DIR)\)/,\1/;s/install_iminitel$/true/' \
 		Imakefile */Imakefile
 	xmkmf &&
-	make Xtel &&
+	make -j 1 Xtel &&
 	make all &&
 	make DESTDIR=$DESTDIR install
 }
