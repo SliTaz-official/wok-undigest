@@ -15,6 +15,7 @@ compile_rules()
 {
 	mv $PACKAGE $src 2> /dev/null
 	cd $src
+	sed -i 's/all %/%/' device/lib/pic/Makefile.in
 	find -name getline.h | xargs sed -i \
 	  's/char.*getline/#define getline sdcc_getline\nchar *sdcc_getline/'
 	./configure --prefix=/usr --infodir=/usr/share/info \
