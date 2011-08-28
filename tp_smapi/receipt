@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="tp_smapi"
+VERSION="0.41"
+CATEGORY="base-system"
+SHORT_DESC="IBM ThinkPad SMAPI BIOS driver"
+MAINTAINER="domcox@slitaz.org"
+BUILD_DEPENDS="linux-module-headers linux-source"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/evgeni/tp_smapi"
+WGET_URL="https://github.com/downloads/evgeni/$PACKAGE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make modules HDAPS=1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	MOD_DIR=lib/modules/`uname -r`/extra
+	mkdir -p $fs/$MOD_DIR
+	cp -a $src/*.ko $fs/$MOD_DIR
+}
+
+post_install()
+{
+	/sbin/depmod -a
+}
