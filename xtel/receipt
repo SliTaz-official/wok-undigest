@@ -12,12 +12,17 @@ CONFIG_FILES="/etc/xtel"
 
 DEPENDS="ncurses-extra jpeg xorg-libXp xorg"
 BUILD_DEPENDS="xorg-imake xorg-cf-files xorg-gccmakedep xorg-xbitmaps \
-xorg-libXp xorg-bdftopcf xorg-mkfontdir"
+xorg-libXp xorg-bdftopcf xorg-mkfontdir xorg-mkfontscale"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src &&
+	sed -i 's/sys_errlist.errno./strerror(errno)/' procedure.c teleinfo.c \
+		mdmdetect.c xteld.c Xsra/SelFile.c
+	sed -i 's/sys_errlist.code_erreur./strerror(code_erreur)/' xaw.c xm.c
+	sed -i '/sys_nerr;/d;s/errno <= sys_nerr/1/' Xsra/SelFile.c
+	sed -i 's/getwd.SFstartDir/getcwd(SFstartDir, MAXPATHLEN/' Xsra/SelFile.c
 	sed -i 's/, \(\$(...DIR)\)/,\1/;s/install_iminitel$/true/' \
 		Imakefile */Imakefile
 	xmkmf &&
