@@ -13,8 +13,9 @@ WGET_URL="http://www.kernel.org/pub/linux/libs/$PACKAGE/$TARBALL"
 compile_rules()
 {
 	cd $src
-	make prefix=/usr/lib/diet && 
-	make dyn prefix=/usr/lib/diet && 
+	mkdir -p $PWD/_pkg/etc
+	make -j 1 prefix=/usr/lib/diet && 
+	make -j 1 dyn prefix=/usr/lib/diet && 
 	make prefix=/usr/lib/diet DESTDIR=$PWD/_pkg install
 }
 
