@@ -16,7 +16,7 @@ compile_rules(){
   cd $src
    patch -Np1 -i $stuff/$PACKAGE-$VERSION-install.patch 
   ./configure --prefix=/usr --bindir=/usr/bin &&
-  make  &&
+  make -j 1 &&
   make DESTDIR=$DESTDIR install 
 }
 	

@@ -8,7 +8,7 @@ MAINTAINER="ben@seawolfsanctuary.com"
 DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
 libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
 libQtOpenGL libQtSql libQtWebkit qoauth"
-BUILD_DEPENDS="xorg-libX11-dev dbus-dev Qt4-dev qoauth slitaz-toolchain"
+BUILD_DEPENDS="qmake xorg-libX11-dev dbus-dev Qt4-dev qoauth slitaz-toolchain"
 TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WEB_SITE="http://www.ayoy.net/$PACKAGE"
 WGET_URL="http://files.ayoy.net/$PACKAGE/release/$VERSION/src/$TARBALL"
