@@ -17,7 +17,7 @@ BUILD_DEPENDS="osip-dev"
 compile_rules()
 {
 	cd $src
-	sed -i 's/.*const ident.*/#undef lt_preloaded_symbols\n&/' src/plugins.c
+	sed -i 's/.*const ident.*/#undef lt_preloaded_symbols\n#define lt_preloaded_symbols lt_libltdl_LTX_preloaded_symbols\nextern const lt_dlsymlist lt_preloaded_symbols[];\n&/' src/plugins.c
 	./configure --prefix=/usr --mandir=/usr/share/man \
 		--sysconfdir=/etc/siproxd \
 		--localstatedir=/var \
