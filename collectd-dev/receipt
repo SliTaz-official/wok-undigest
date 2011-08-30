@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE="collectd"
+PACKAGE="collectd-dev"
 VERSION="4.7.0"
 CATEGORY="network"
 SHORT_DESC="System Stattistics Collection Daemon"
