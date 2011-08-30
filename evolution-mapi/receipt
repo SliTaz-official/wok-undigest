@@ -2,8 +2,8 @@
 
 PACKAGE="evolution-mapi"
 VERSION="0.28.1"
-CATEGORY="internet"
-SHORT_DESC=""
+CATEGORY="network"
+SHORT_DESC="Integrated mail, addressbook and calendaring."
 MAINTAINER="erjo@slitaz.org"
 DEPENDS=""
 BUILD_DEPENDS="evolution-data-server-dev"

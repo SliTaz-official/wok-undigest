@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="evolution-plugin"
-VERSION=""
-CATEGORY=""
-SHORT_DESC=""
-MAINTAINER=""
+VERSION="0.28.1"
+CATEGORY="network"
+SHORT_DESC="Integrated mail, addressbook and calendaring plugins."
+MAINTAINER="erjo@slitaz.org"
 DEPENDS=""
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE=""
-WGET_URL=""
+WEB_SITE="http://projects.gnome.org/evolution/download.shtml"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/${VERSION%.*}/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()

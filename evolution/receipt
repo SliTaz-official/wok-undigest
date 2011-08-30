@@ -3,7 +3,7 @@
 PACKAGE="evolution"
 VERSION="2.28.1"
 CATEGORY="network"
-SHORT_DESC=""
+SHORT_DESC="Integrated mail, addressbook and calendaring"
 MAINTAINER="erjo@slitaz.org"
 DEPENDS=""
 BUILD_DEPENDS="shared-mime-info-dev"

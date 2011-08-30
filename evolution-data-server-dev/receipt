@@ -2,11 +2,10 @@
 
 PACKAGE="evolution-data-server-dev"
 VERSION="2.28.1"
-CATEGORY="developemet"
-SHORT_DESC=""
+CATEGORY="developement"
+SHORT_DESC="Integrated mail, addressbook and calendaring, server developement files."
 MAINTAINER="erjo@slitaz.org"
 DEPENDS="evolution-data-server"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://projects.gnome.org/evolution/download.shtml"
 WANTED="evolution-data-server"
 # Rules to gen a SliTaz package suitable for Tazpkg.
