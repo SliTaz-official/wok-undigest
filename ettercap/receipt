@@ -15,6 +15,7 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 compile_rules()
 {
 	cd $src
+	sed -i 's/ettercap_LDFLAGS = -export-dynamic @EC_LIBS@/ettercap_LDADD += @EC_LIBS@\nettercap_LDFLAGS = -export-dynamic/' src/Makefile.*
 	./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
