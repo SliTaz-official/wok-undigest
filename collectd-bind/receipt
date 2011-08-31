@@ -1,21 +1,22 @@
 # SliTaz package receipt.
 
 PACKAGE="collectd-bind"
+SOURCE="collectd"
 VERSION="4.7.0"
 CATEGORY="network"
 SHORT_DESC="Apache plugin for Collectd"
 MAINTAINER="erjo@slitaz.org"
 DEPENDS="libcurl libxml2"
 BUILD_DEPENDS="libcurl curl-dev libxml2 libxml2-dev"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://collectd.org"
 #CONFIG_FILES="/etc/collectd/collectd.conf"
-WANTED="collectd"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	sed -i 's/ipt_error_target/ipt2_error_target/' src/libiptc/libiptc.c
 	./configure \
 		--prefix=/usr \
 		--localstatedir=/var \
