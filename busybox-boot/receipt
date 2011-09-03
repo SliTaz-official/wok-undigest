@@ -13,13 +13,13 @@ CONFIG_FILES=""
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-    mkdir -p $fs/bin
+    mkdir -p $fs/bin $fs/etc/init.d
     cp -a $src/busybox-static $fs/bin/busybox
     ln -s bin/busybox $fs/init
     cat > $fs/etc/init.d/rcS <<EOT
 #!/bin/busybox sh
-busybox mount proc
-for i in \$(busybox --list) ; do busybox ln -s busybox /bin/\$i; done
+for i in \$(busybox --list) ; do busybox ln /bin/busybox /bin/\$i; done
+mount proc
 [ -d /proc/bus/usb ] && mount -t usbfs usbfs /proc/bus/usb
 mount sys
 ifconfig lo 127.0.0.1
