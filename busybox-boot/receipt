@@ -25,7 +25,7 @@ mount proc
 mount sys
 ifconfig lo 127.0.0.1
 ifconfig eth0 0.0.0.0 up
-udhcpc -b
+udhcpc -b -i eth0 -s /usr/share/udhcpc/default.script
 busybox | sed '/Current/,\$!d'
 EOT
     # Udhcpc stuff.
