@@ -23,13 +23,21 @@ mount proc
 [ -d /proc/bus/usb ] && mount -t usbfs usbfs /proc/bus/usb
 mount sys
 ifconfig lo 127.0.0.1
+udhcpc -b -i eth0
 busybox | sed '/Current/,\$!d'
 EOT
-    chmod +x $fs/etc/init.d/rcS
+    # Udhcpc stuff.
+    mkdir -p $fs/usr/share/udhcpc
+    cp $WOK/$WANTED/stuff/udhcp.script $fs/usr/share/udhcpc/default.script
+    chmod +x $fs/usr/share/udhcpc/default.script $fs/etc/init.d/rcS
+}
+
+pre_install()
+{
+	rm -rf $1/lib $1/usr $1/var $1/bin $1/sbin $1/home $1/root $1/media
 }
 
 post_install()
 {
 	sed -i 's|sbin/getty.*|bin/sh|;/tty[3-9]/d' $1/etc/inittab
-	rm -rf $1/lib $1/usr $1/var $1/sbin $1/home $1/root $1/media
 }
