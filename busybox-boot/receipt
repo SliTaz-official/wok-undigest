@@ -19,11 +19,13 @@ genpkg_rules()
     cat > $fs/etc/init.d/rcS <<EOT
 #!/bin/busybox sh
 for i in \$(busybox --list) ; do busybox ln /bin/busybox /bin/\$i; done
+for i in /sbin /usr/bin /usr/sbin ; do ln -s /bin \$i; done
 mount proc
 [ -d /proc/bus/usb ] && mount -t usbfs usbfs /proc/bus/usb
 mount sys
 ifconfig lo 127.0.0.1
-udhcpc -b -i eth0
+ifconfig eth0 0.0.0.0 up
+udhcpc -b
 busybox | sed '/Current/,\$!d'
 EOT
     # Udhcpc stuff.
@@ -34,10 +36,11 @@ EOT
 
 pre_install()
 {
-	rm -rf $1/lib $1/usr $1/var $1/bin $1/sbin $1/home $1/root $1/media
+	rm -rf $1/usr $1/bin
 }
 
 post_install()
 {
+	rm -rf $1/lib $1/var $1/sbin $1/home $1/root $1/media
 	sed -i 's|sbin/getty.*|bin/sh|;/tty[3-9]/d' $1/etc/inittab
 }
