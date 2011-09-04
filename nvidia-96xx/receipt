@@ -19,6 +19,8 @@ BUILD_DEPENDS="linux-module-headers coreutils-file-summarize"
 compile_rules()
 {
 	cd $src/usr/src/nv/
+	# Only use .unblocked_ioctl since 2.6.36
+	sed -i 's|\.ioctl|// &|' nv.c
 	make SYSSRC="/usr/src/linux" module 2>&1 | sed s'/ERROR:/error:/'
 }
 	
