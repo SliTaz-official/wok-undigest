@@ -18,6 +18,8 @@ WGET_URL="$SF_MIRROR/pcmanfm/files/$TARBALL"
 compile_rules()
 {
 	cd $src
+	grep -rl gio/gdesktopappinfo.h . | xargs sed -i \
+'s|.*gio/gdesktopappinfo.h.*|#ifdef G_DISABLE_DEPRECATED\n#undef G_DISABLE_DEPRECATED\n&\n#define G_DISABLE_DEPRECATED\n#else\n&\n#endif|'
 	chmod +x install-sh
 	./configure \
 		--prefix=/usr \
