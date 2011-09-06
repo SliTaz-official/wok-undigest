@@ -6,7 +6,9 @@ CATEGORY="x-window"
 SHORT_DESC="Compiz main plugins."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="compiz-core compiz-libcompizconfig"
-BUILD_DEPENDS="$DEPENDS compiz-core-dev compiz-libcompizconfig-dev"
+BUILD_DEPENDS="$DEPENDS compiz-core-dev compiz-libcompizconfig-dev \
+cmake libxslt-dev glibmm-dev startup-notification-dev libboost-dev mesa-dev \
+libboost-serialization-dev"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.compiz.org/"
 WGET_URL="http://releases.compiz.org/0.9.4/$TARBALL"
