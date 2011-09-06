@@ -16,7 +16,7 @@ WGET_URL="http://www.directfb.org/downloads/Core/$SOURCE-1.4/$TARBALL"
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr --sysconfdir=/etc &&
+	./configure --prefix=/usr --sysconfdir=/etc --with-dither-rgb16=none &&
 	make &&
 	make DESTDIR=$PWD/_pkg install
 }
