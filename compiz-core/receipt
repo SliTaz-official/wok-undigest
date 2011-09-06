@@ -9,7 +9,7 @@ DEPENDS="librsvg libxslt startup-notification libboost-serialization \
 glibmm mesa"
 BUILD_DEPENDS="$DEPENDS cmake intltool librsvg-dev libxslt-dev \
 startup-notification-dev libboost-dev libboost-serialization-dev \
-glibmm-dev mesa-dev"
+glibmm-dev mesa-dev file"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.compiz.org/"
 WGET_URL="http://releases.compiz.org/0.9.4/$TARBALL"
