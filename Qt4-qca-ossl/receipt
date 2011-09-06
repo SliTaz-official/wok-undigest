@@ -10,7 +10,7 @@ MAINTAINER="ben@seawolfsanctuary.com"
 DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
 libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
 libQtOpenGL libQtSql libQtWebkit qca openssl"
-BUILD_DEPENDS="xorg-libX11-dev dbus-dev openssl-dev Qt4-dev qca-dev"
+BUILD_DEPENDS="qmake xorg-libX11-dev dbus-dev openssl-dev Qt4-dev qca-dev"
 TARBALL="$NAME-$VERSION.tar.bz2"
 WEB_SITE="http://delta.affinix.com/$NAME"
 WGET_URL="http://delta.affinix.com/download/qca/$MAJORVERSION/plugins/$TARBALL"
@@ -18,7 +18,7 @@ WGET_URL="http://delta.affinix.com/download/qca/$MAJORVERSION/plugins/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $NAME-$VERSION
+	cd $src
 	
 	patch -u <<EOP
 --- qca-ossl.cpp
@@ -73,8 +73,8 @@ EOP
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib/qt/plugins/crypto
-	cp -a $WOK/$PACKAGE/$NAME-$VERSION/lib/* $fs/usr/lib/qt/plugins/crypto/
+	cp -a $src/lib/* $fs/usr/lib/qt/plugins/crypto/
 
 	# Copy .desktop file:
-#	cp -a $WOK/$PACKAGE/stuff/* $fs/usr
+#	cp -a $stuff/* $fs/usr
 }
