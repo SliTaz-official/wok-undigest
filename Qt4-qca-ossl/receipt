@@ -9,9 +9,8 @@ SHORT_DESC="OpenSSL plug-in for the Qt Cryptographic Architecture (QCA)."
 MAINTAINER="ben@seawolfsanctuary.com"
 DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
 libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
-libQtOpenGL libQtSql libQtWebkit Qt4-qca openssl"
-BUILD_DEPENDS="xorg-libX11-dev dbus-dev openssl-dev Qt4-dev Qt4-qca \
-slitaz-toolchain"
+libQtOpenGL libQtSql libQtWebkit qca openssl"
+BUILD_DEPENDS="xorg-libX11-dev dbus-dev openssl-dev Qt4-dev qca-dev"
 TARBALL="$NAME-$VERSION.tar.bz2"
 WEB_SITE="http://delta.affinix.com/$NAME"
 WGET_URL="http://delta.affinix.com/download/qca/$MAJORVERSION/plugins/$TARBALL"
