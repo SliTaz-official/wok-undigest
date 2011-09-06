@@ -9,14 +9,16 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://code.google.com/p/gejengel/"
 WGET_URL="http://gejengel.googlecode.com/files/$TARBALL"
 
-DEPENDS="glibmm cairomm gtkmm libsigc++ taglib imagemagick"
+DEPENDS="glibmm cairomm gtkmm libsigc++ taglib imagemagick libxdg-basedir \
+alsa-lib flac ffmpeg"
 BUILD_DEPENDS="glibmm-dev cairomm-dev gtkmm-dev libsigc++-dev taglib-dev \
-imagemagick-dev imagemagick"
+imagemagick-dev imagemagick libxdg-basedir-dev alsa-lib-dev flac-dev ffmpeg-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure $CONFIGURE_ARGS && make && make install
+	./configure --enable-alsa --enable-ffmpeg --enable-flac \
+		$CONFIGURE_ARGS && make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
