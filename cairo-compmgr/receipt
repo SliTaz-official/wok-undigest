@@ -9,12 +9,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://cairo-compmgr.tuxfamily.org/"
 WGET_URL="http://download.tuxfamily.org/ccm/cairo-compmgr/$TARBALL"
 
-DEPENDS="gtk+ cairo librsvg"
-BUILD_DEPENDS="gtk+-dev cairo-dev librsvg-dev vala"
+DEPENDS="gtk+ cairo librsvg util-linux-ng-uuid"
+BUILD_DEPENDS="gtk+-dev cairo-dev librsvg-dev vala util-linux-ng-uuid-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	sed -i "s/vala-1.0/$(basename /usr/lib/pkgconfig/libvala-*.pc .pc)/" configure
 	./configure $CONFIGURE_ARGS && make && make install
 }
 
