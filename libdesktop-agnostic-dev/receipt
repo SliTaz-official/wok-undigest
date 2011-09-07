@@ -6,6 +6,7 @@ CATEGORY="development"
 SHORT_DESC="Config API, a unified vfs API, and a desktop item editor for GLib."
 MAINTAINER="pankso@slitaz.org"
 WEB_SITE="https://launchpad.net/libdesktop-agnostic"
+WANTED="libdesktop-agnostic"
 DEPENDS="libdesktop-agnostic"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
