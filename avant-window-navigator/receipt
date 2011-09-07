@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 DEPENDS="dbus librsvg libwnck xorg-xcompmgr libgtop"
 BUILD_DEPENDS="dbus-dev librsvg-dev libwnck libwnck-dev pygtk-dev xcb-util-dev \
 libxcb-dev startup-notification-dev pycairo-dev pygobject-dev libffi-dev \
-python-xdg intltool acl dbus-glib-dev python-dev libdesktop-agnostic \
+python-xdg intltool acl dbus-glib-dev python-dev libdesktop-agnostic-dev \
 GConf libgtop-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://launchpad.net/awn/"

@@ -31,7 +31,7 @@ compile_rules()
 		-DCMAKE_SKIP_RPATH=ON \
 		-DKAUTH_BACKEND=PolkitQt-1 \
 		.. &&
-	make && make install
+	make -j 1 && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
