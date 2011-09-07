@@ -14,6 +14,7 @@ compile_rules()
 	[ -s $SOURCES_REPOSITORY/$_TARBALL ] || 
 	  wget -O $SOURCES_REPOSITORY/$_TARBALL \
 	   $WEB_SITE/snapshot/e42bc02b14b3331e7c7f45c6b42179d0af99ed7b.tar.gz
+	mkdir -p $src
 	cd $src
 	tar xzf $SOURCES_REPOSITORY/$_TARBALL
 	mkdir $DESTDIR
