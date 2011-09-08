@@ -65,8 +65,8 @@ Exec=/usr/lib/ICAClient/wfcmgr -icaroot /usr/lib/ICAClient
 Terminal=false
 Categories=Application;Network
 EOT
-#ln -s ../lib/ICAClient/wfica usr/bin
-#ln -s ../lib/ICAClient/wfcmgr usr/bin
+ln -s ../lib/ICAClient/wfica usr/bin
+ln -s ../lib/ICAClient/wfcmgr usr/bin
 
 if [ "$INSTALL_USB" == "yes" ]; then
 	dpkg-deb -x usr/lib/ICAClient/ctxusb*.deb .
