@@ -74,6 +74,12 @@ if [ "$INSTALL_USB" == "yes" ]; then
 	chmod 4555 usr/lib/ICAClient/ctxusb
 	chmod 444 usr/lib/ICAClient/usb.conf
 	chmod 700 etc/init.d/ctxusbd
+	[ -s usr/lib/ICAClient/config/module.ini ] ||
+	cat > usr/lib/ICAClient/config/module.ini <<EOT
+[File Type Associations]
+[KeyboardLayout]
+[KeyboardType]
+EOT
 	sed -i  -e 's/^[ \t]*VirtualDriver[ \t]*=.*$/&, GenericUSB/' \
 	  -e '/\[ICA 3.0\]/a\GenericUSB=on' usr/lib/ICAClient/config/module.ini
 	cat >> usr/lib/ICAClient/config/module.ini <<EOT
