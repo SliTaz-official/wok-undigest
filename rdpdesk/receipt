@@ -9,8 +9,10 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://rdpdesk.com/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="gtk+-dev wxWidgets-dev xorg-imake jpeg-dev zlib-dev \
+DEPENDS="wxWidgets xorg-libXp xorg-libXaw libssl"
+BUILD_DEPENDS="wxWidgets-dev xorg-imake jpeg-dev zlib-dev \
 openssl-dev xorg-libXp"
+SUGGESTED="wfica rdesktop"
 
 # Rules to configure and make the package.
 compile_rules()
