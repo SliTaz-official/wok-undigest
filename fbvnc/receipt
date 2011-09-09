@@ -19,6 +19,7 @@ compile_rules()
 	tar xzf $SOURCES_REPOSITORY/$_TARBALL
 	mkdir $DESTDIR
 	cd fbvnc
+	patch -p0 < $stuff/fbvnc.u &&
 	make && cp fbvnc $DESTDIR
 }
 
