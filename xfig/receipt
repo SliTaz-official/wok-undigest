@@ -10,7 +10,7 @@ WEB_SITE="http://www.xfig.org/"
 WGET_URL="http://downloads.sourceforge.net/mcj/$TARBALL"
 SUGGESTED="transfig"
 
-DEPENDS="jpeg libpng xorg"
+DEPENDS="jpeg libpng xorg xorg-libXp"
 BUILD_DEPENDS="xorg-imake xorg-cf-files xorg-gccmakedep jpeg-dev \
 libpng-dev xorg-libXp"
 
@@ -29,4 +29,9 @@ compile_rules()
 genpkg_rules()
 {
 	cp -a $_pkg/* $fs
+}
+
+post_install()
+{
+	sed -i 's/^Fig*Font:.*/Fig*Font: fixed/' $1/etc/X11/app-defaults
 }
