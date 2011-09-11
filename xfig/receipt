@@ -29,9 +29,5 @@ compile_rules()
 genpkg_rules()
 {
 	cp -a $_pkg/* $fs
-}
-
-post_install()
-{
-	sed -i 's/^Fig*Font:.*/Fig*Font: fixed/' $1/etc/X11/app-defaults
+	sed -i 's/^Fig\*Font:.*/Fig*Font:\t\t\tfixed/' $fs/etc/X11/app-defaults/Fig
 }
