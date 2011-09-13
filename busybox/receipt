@@ -27,7 +27,6 @@ ris.u
 zmodules.u
 printable.u
 cmdline.u
-tac.u
 conspy.u
 EOT
     cp $stuff/$PACKAGE-${VERSION%.*}.config .config
