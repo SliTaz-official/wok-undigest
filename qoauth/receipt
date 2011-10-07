@@ -96,7 +96,7 @@ genpkg_rules()
 	for DIRECTORY in lib include ; do
 		cp -a $src/$DIRECTORY $fs/usr
 	done
-	cp  $src/src/interface.h $fs/usr/include
+	cp  $src/src/*.h $fs/usr/include
 
 	mv $fs/usr/include/QtOAuth $fs/usr/include/QtOAuth.bak
 	mkdir $fs/usr/include/QtOAuth/
