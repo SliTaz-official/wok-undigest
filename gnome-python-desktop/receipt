@@ -6,7 +6,7 @@ CATEGORY="system-tools"
 SHORT_DESC="Python bindings for GNOME desktop (gnomekeyring, rsvg, wnck)."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="python GConf gnome-python gnome-keyring librsvg libwnck"
-BUILD_DEPENDS="python-dev GConf-dev gnome-python libgnome-keyring gnome-keyring-dev \
+BUILD_DEPENDS="python-dev GConf-dev gnome-python libgnome-keyring-dev gnome-keyring-dev \
 librsvg-dev libwnck-dev pygtk-dev"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.gnome.org/"
