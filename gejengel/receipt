@@ -12,7 +12,9 @@ WGET_URL="http://gejengel.googlecode.com/files/$TARBALL"
 DEPENDS="glibmm cairomm gtkmm libsigc++ taglib imagemagick libxdg-basedir \
 alsa-lib flac ffmpeg"
 BUILD_DEPENDS="glibmm-dev cairomm-dev gtkmm-dev libsigc++-dev taglib-dev \
-imagemagick-dev imagemagick libxdg-basedir-dev alsa-lib-dev flac-dev ffmpeg-dev"
+imagemagick-dev imagemagick libxdg-basedir-dev alsa-lib-dev flac-dev \
+ffmpeg-dev lcms-dev fftw-dev openexr-dev ilmbase-dev graphviz-dev \
+util-linux-ng-uuid-dev libogg-dev"
 
 # Rules to configure and make the package.
 compile_rules()
