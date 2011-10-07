@@ -32,21 +32,9 @@ genpkg_rules()
 	mkdir -p $fs/usr/lib $fs/usr/bin
 
 	# Binaries
-	for FILE in qtwitter ; do
-		cp -a $src/$FILE $fs/usr/bin
-	done
+	cp -a $src/build/qtwitter $fs/usr/bin
 	# Libraries
-	for FILE in \
-	liburlshortener.so.1.0.0 \
-	liburlshortener.so.1.0 \
-	liburlshortener.so.1 \
-	liburlshortener.so \
-	libtwitterapi.so.0.9.1 \
-	libtwitterapi.so.0.9 \
-	libtwitterapi.so.0 \
-	libtwitterapi.so ; do
-		cp -a $src/$FILE $fs/usr/lib
-	done
+	cp -a $src/build/lib* $fs/usr/bin
 
 	# Copy .desktop file:
 #	cp -a $WOK/$PACKAGE/stuff/* $fs/usr
