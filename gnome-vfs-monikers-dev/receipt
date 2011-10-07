@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE="gnome-vfs-monikers"
+PACKAGE="gnome-vfs-monikers-dev"
 VERSION="2.15.3"
 CATEGORY="development"
 SHORT_DESC="GNOME Bonobo monikers dev files "
