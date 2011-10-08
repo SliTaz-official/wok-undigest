@@ -7,7 +7,8 @@ SHORT_DESC="Compiz Config Python module."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="python pygtk compiz-core compiz-libcompizconfig"
 BUILD_DEPENDS="$DEPENDS python-dev pygtk-dev compiz-core-dev \
-compiz-libcompizconfig-dev python-cython"
+compiz-libcompizconfig-dev python-cython \
+libxslt-dev glibmm-dev startup-notification-dev"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.compiz.org/"
 WGET_URL="http://releases.compiz.org/0.9.4/$TARBALL"
