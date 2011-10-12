@@ -1,20 +1,21 @@
 # SliTaz package receipt.
 
 PACKAGE="lxappearance-obconf"
-VERSION="git"
+VERSION="0.0.1"
 CATEGORY="x-window"
 SHORT_DESC="Openbox configuration plugin for LXappearance."
 MAINTAINER="gokhlayeh@mailoo.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/lxde/LXAppearance%20Obconf/$TARBALL"
 DEPENDS="lxappearance openbox"
 BUILD_DEPENDS="openbox-dev xorg-dev libxcb-dev glib-dev libxml2-dev \
-libtool git automake autoconf intltool fontconfig-dev gtk+-dev lxappearance \
+libtool automake autoconf intltool fontconfig-dev gtk+-dev lxappearance-dev \
 util-linux-ng-uuid-dev expat-dev"
 WEB_SITE="http://lxde.org"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	git clone git://lxde.git.sourceforge.net/gitroot/lxde/lxappearance-obconf $src
 	cd $src
 	sed '/no/d' -i po/LINGUAS
 	./autogen.sh --prefix=/usr --sysconfdir=/etc
