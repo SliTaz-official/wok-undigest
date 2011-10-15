@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="latex"
+SOURCE="texlive"
+VERSION="20110705"
+CATEGORY="office"
+SHORT_DESC="LaTeX is a high-quality typesetting system."
+MAINTAINER="pascal.bellard@slitaz.org"
+TARBALL="$SOURCE-$VERSION-source.tar.xz"
+WEB_SITE="http://www.latex-project.org/"
+WGET_URL="ftp://tug.org/historic/systems/texlive/${VERSION:0:4}/$TARBALL"
+
+DEPENDS="fontconfig xorg gcc-lib-base ncurses"
+BUILD_DEPENDS="clisp libffcall fontconfig-dev xorg-dev ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mv $SOURCE-$VERSION-source $src 2> /dev/null
+	cd $src
+	./configure --prefix=/usr --mandir=/usr/share/man \
+		--localstatedir=/var \
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	cp -a $_pkg/usr $fs
+}
