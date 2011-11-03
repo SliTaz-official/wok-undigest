@@ -10,7 +10,6 @@ BUILD_DEPENDS="gtk+-dev"
 TARBALL="$PACKAGE-$VERSION.tbz2"
 WEB_SITE="http://fbpanel.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
-#http://sunet.dl.sourceforge.net/project/fbpanel/fbpanel/6.1/fbpanel-6.1.tbz2
 
 # Rules to configure and make the package.
 compile_rules()
