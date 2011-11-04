@@ -4,11 +4,11 @@ PACKAGE="vsftpd"
 VERSION="2.2.0"
 CATEGORY="network"
 SHORT_DESC="Secure FTP server"
-MAINTAINER="erjo@slitaz.org	"
+MAINTAINER="erjo@slitaz.org"
 DEPENDS=""
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://vsftpd.beasts.org/"
-WGET_URL="ftp://vsftpd.beasts.org/users/cevans/vsftpd-2.2.0.tar.gz"
+WGET_URL="ftp://vsftpd.beasts.org/users/cevans/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()

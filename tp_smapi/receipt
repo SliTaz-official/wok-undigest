@@ -21,12 +21,12 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	MOD_DIR=lib/modules/`uname -r`/extra
+	MOD_DIR=lib/modules/$kvers-slitaz/extra
 	mkdir -p $fs/$MOD_DIR
 	cp -a $src/*.ko $fs/$MOD_DIR
 }
 
 post_install()
 {
-	/sbin/depmod -a
+	chroot "$1/" depmod -a
 }
