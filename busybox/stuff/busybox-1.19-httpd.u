@@ -1,4 +1,4 @@
-Check system passwords
+Check system passwords for *
 --- busybox-1.19.0/networking/httpd.c
 +++ busybox-1.19.0/networking/httpd.c
 @@ -54,6 +54,7 @@
@@ -9,7 +9,22 @@ Check system passwords
   * .au:audio/basic   # additional mime type for audio.au files
   * *.php:/path/php   # run xxx.php through an interpreter
   *
-@@ -1730,6 +1731,57 @@
+@@ -123,6 +124,14 @@
+ //usage:     "\n	-d STRING	URL decode STRING"
+ 
+ #include "libbb.h"
++#if ENABLE_PAM
++/* PAM may include <locale.h>. We may need to undefine bbox's stub define: */
++# undef setlocale
++/* For some obscure reason, PAM is not in pam/xxx, but in security/xxx.
++ * Apparently they like to confuse people. */
++# include <security/pam_appl.h>
++# include <security/pam_misc.h>
++#endif
+ #if ENABLE_FEATURE_HTTPD_USE_SENDFILE
+ # include <sys/sendfile.h>
+ #endif
+@@ -1730,6 +1739,57 @@
  }
  
  #if ENABLE_FEATURE_HTTPD_BASIC_AUTH
@@ -67,7 +82,7 @@ Check system passwords
  /*
   * Config file entries are of the form "/<path>:<user>:<passwd>".
   * If config file has no prefix match for path, access is allowed.
-@@ -1745,7 +1797,7 @@
+@@ -1745,7 +1805,7 @@
  	const char *prev = NULL;
  
  	for (cur = g_auth; cur; cur = cur->next) {
@@ -76,7 +91,7 @@ Check system passwords
  		size_t len;
  
  		dir_prefix = cur->before_colon;
-@@ -1770,18 +1822,71 @@
+@@ -1770,18 +1830,71 @@
  		/* Path match found */
  		prev = dir_prefix;
  
@@ -155,7 +170,7 @@ Check system passwords
  				/* comparing "user:" */
  				if (strncmp(cur->after_colon, user_and_passwd, user_len_p1) != 0) {
  					continue;
-@@ -1789,22 +1894,20 @@
+@@ -1789,22 +1902,20 @@
  
  				encrypted = pw_encrypt(
  					user_and_passwd + user_len_p1 /* cleartext pwd from user */,
