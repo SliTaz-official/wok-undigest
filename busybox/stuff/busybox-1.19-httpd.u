@@ -18,7 +18,7 @@ Check system passwords
  		size_t len;
  
  		dir_prefix = cur->before_colon;
-@@ -1770,18 +1771,28 @@
+@@ -1770,18 +1771,53 @@
  		/* Path match found */
  		prev = dir_prefix;
  
@@ -28,10 +28,35 @@ Check system passwords
 +
 +		if (passwd && passwd[1] == '*' && passwd[2] == 0) {
 +			struct passwd *pw = getpwnam(remoteuser);
-+			/* Don't check the password if password entry is empty (!) */
-+			if (pw && pw->pw_passwd[0] != '!' && pw->pw_passwd[0] != '*' &&
-+			    (!pw->pw_passwd[0] || correct_password(pw)))
-+				return 1; /* Ok */
++			if (pw) {
++#if ENABLE_FEATURE_SHADOWPASSWDS
++				/* Using _r function to avoid pulling in static buffers */
++				struct spwd spw;
++				char buffer[256];
++#endif
++				const char *correct =  pw->pw_passwd;
++				char *unencrypted = strchr(user_and_passwd, ':');
++				int r;
++
++				/* Don't check the password if password entry is empty (!) */
++				if (!correct[0])
++					return 1; /* Ok */
++#if ENABLE_FEATURE_SHADOWPASSWDS
++				if ((correct[0] == 'x' || correct[0] == '*') && !correct[1]) {
++					/* getspnam_r may return 0 yet set result to NULL.
++					 * At least glibc 2.4 does this. Be extra paranoid here. */
++					struct spwd *result = NULL;
++					r = getspnam_r(pw->pw_name, &spw, buffer, sizeof(buffer), &result);
++					correct = (r || !result) ? "aa" : result->sp_pwdp;
++				}
++#endif
++				if (correct[0] != '!' && correct[0] != '*') {
++					char *encrypted = pw_encrypt(unencrypted, correct, 1);
++					r = (strcmp(encrypted, correct) == 0);
++					free(encrypted);
++					if (r)
++						return 1; /* Ok */
++			}
 +			free(remoteuser);
 +			continue;
 +		}
@@ -54,7 +79,7 @@ Check system passwords
  				/* comparing "user:" */
  				if (strncmp(cur->after_colon, user_and_passwd, user_len_p1) != 0) {
  					continue;
-@@ -1789,22 +1800,20 @@
+@@ -1789,22 +1825,20 @@
  
  				encrypted = pw_encrypt(
  					user_and_passwd + user_len_p1 /* cleartext pwd from user */,
