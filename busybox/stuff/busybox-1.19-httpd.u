@@ -111,7 +111,7 @@ Check system passwords for *
 +
 +			r = pam_start("httpd", remoteuser, &conv_info, &pamh) == PAM_SUCCESS
 +			    && pam_authenticate(pamh, PAM_DISALLOW_NULL_AUTHTOK) == PAM_SUCCESS
-+			    && pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)) == PAM_SUCCESS;
++			    && pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK) == PAM_SUCCESS;
 +			pam_end(pamh, PAM_SUCCESS);
 +			if (r)
 +				return 1; /* Ok */
