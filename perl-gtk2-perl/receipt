@@ -12,8 +12,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://cpan.org/"
 WGET_URL="http://search.cpan.org/CPAN/authors/id/T/TS/TSCH/$TARBALL"
 
-DEPENDS="glib pango"
-BUILD_DEPENDS="glib-dev pango-dev"
+DEPENDS="perl-glib perl-pango perl-extutils-pkgconfig perl-extutils-depends"
+BUILD_DEPENDS="perl-glib perl-pango perl-extutils-pkgconfig perl-extutils-depends"
 
 # Rules to configure and make the package.
 compile_rules()
