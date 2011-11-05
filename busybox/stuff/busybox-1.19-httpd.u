@@ -9,7 +9,65 @@ Check system passwords
   * .au:audio/basic   # additional mime type for audio.au files
   * *.php:/path/php   # run xxx.php through an interpreter
   *
-@@ -1745,7 +1746,7 @@
+@@ -1730,6 +1731,57 @@
+ }
+ 
+ #if ENABLE_FEATURE_HTTPD_BASIC_AUTH
++
++#if ENABLE_PAM
++struct pam_userinfo {
++	char *name;
++	char *pw;
++};
++
++static int pam_talker(int num_msg,
++		        const struct pam_message ** msg,
++		        struct pam_response ** resp,
++		        void *appdata_ptr)
++{
++	int i;
++	struct pam_userinfo *userinfo = (struct pam_userinfo *) appdata_ptr;
++	struct pam_response *response;
++
++	if (!resp || !msg || !userinfo)
++		return PAM_CONV_ERR;
++
++	/* allocate memory to store response */
++	response = malloc(num_msg * sizeof(struct pam_response));
++	if (!response)
++		return PAM_CONV_ERR;
++
++	/* copy values */
++	for (i = 0; i < num_msg; i++) {
++		char *s;
++
++		switch (msg[i]->msg_style) {
++		case PAM_PROMPT_ECHO_ON:
++			s = userinfo->name;
++			break;
++		case PAM_PROMPT_ECHO_OFF:
++			s = userinfo->pw;
++			break;
++	        case PAM_ERROR_MSG:
++        	case PAM_TEXT_INFO:
++        		s = "";
++			break;
++		default:
++			free(response);
++			return PAM_CONV_ERR;
++		}
++		response[i].resp = strdup(s);
++		response[i].resp_retcode = PAM_SUCCESS;
++	}
++	*resp = response;
++	return PAM_SUCCESS;
++}
++#endif
++
+ /*
+  * Config file entries are of the form "/<path>:<user>:<passwd>".
+  * If config file has no prefix match for path, access is allowed.
+@@ -1745,7 +1797,7 @@
  	const char *prev = NULL;
  
  	for (cur = g_auth; cur; cur = cur->next) {
@@ -18,7 +76,7 @@ Check system passwords
  		size_t len;
  
  		dir_prefix = cur->before_colon;
-@@ -1770,18 +1771,53 @@
+@@ -1770,18 +1822,71 @@
  		/* Path match found */
  		prev = dir_prefix;
  
@@ -27,6 +85,22 @@ Check system passwords
 +		passwd = strchr(cur->after_colon, ':');
 +
 +		if (passwd && passwd[1] == '*' && passwd[2] == 0) {
++#if ENABLE_PAM
++			int r;
++			struct pam_userinfo userinfo = {NULL, NULL};
++			struct pam_conv conv_info = {&pam_talker, (void *) &userinfo};
++			pam_handle_t *pamh;
++
++			userinfo.name = remoteuser;
++			userinfo.pw = strchr(user_and_passwd, ':');
++
++			r = pam_start("httpd", remoteuser, &conv_info, &pamh) == PAM_SUCCESS
++			    && pam_authenticate(pamh, PAM_DISALLOW_NULL_AUTHTOK) == PAM_SUCCESS
++			    && pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)) == PAM_SUCCESS;
++			pam_end(pamh, PAM_SUCCESS);
++			if (r)
++				return 1; /* Ok */
++#else
 +			struct passwd *pw = getpwnam(remoteuser);
 +			if (pw) {
 +#if ENABLE_FEATURE_SHADOWPASSWDS
@@ -56,7 +130,9 @@ Check system passwords
 +					free(encrypted);
 +					if (r)
 +						return 1; /* Ok */
++				}
 +			}
++#endif // ENABLE_PAM
 +			free(remoteuser);
 +			continue;
 +		}
@@ -79,7 +155,7 @@ Check system passwords
  				/* comparing "user:" */
  				if (strncmp(cur->after_colon, user_and_passwd, user_len_p1) != 0) {
  					continue;
-@@ -1789,22 +1825,20 @@
+@@ -1789,22 +1894,20 @@
  
  				encrypted = pw_encrypt(
  					user_and_passwd + user_len_p1 /* cleartext pwd from user */,
