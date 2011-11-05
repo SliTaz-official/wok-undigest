@@ -27,7 +27,7 @@ Check system passwords
 +		passwd = strchr(cur->after_colon, ':');
 +
 +		if (passwd && passwd[1] == '*' && passwd[2] == 0) {
-+			pw = getpwnam(remoteuser);
++			struct passwd *pw = getpwnam(remoteuser);
 +			/* Don't check the password if password entry is empty (!) */
 +			if (pw && pw->pw_passwd[0] != '!' && pw->pw_passwd[0] != '*' &&
 +			    (!pw->pw_passwd[0] || correct_password(pw)))
