@@ -1,0 +1,85 @@
+Check system passwords
+--- busybox-1.19.0/networking/httpd.c
++++ busybox-1.19.0/networking/httpd.c
+@@ -54,6 +54,7 @@
+  * /cgi-bin:foo:bar  # Require user foo, pwd bar on urls starting with /cgi-bin/
+  * /adm:admin:setup  # Require user admin, pwd setup on urls starting with /adm/
+  * /adm:toor:PaSsWd  # or user toor, pwd PaSsWd on urls starting with /adm/
++ * /adm:root:*       # or user root, pwd from /etc/passwd on urls starting with /adm/
+  * .au:audio/basic   # additional mime type for audio.au files
+  * *.php:/path/php   # run xxx.php through an interpreter
+  *
+@@ -1745,7 +1746,7 @@
+ 	const char *prev = NULL;
+ 
+ 	for (cur = g_auth; cur; cur = cur->next) {
+-		const char *dir_prefix;
++		const char *dir_prefix, *passwd;
+ 		size_t len;
+ 
+ 		dir_prefix = cur->before_colon;
+@@ -1770,18 +1771,28 @@
+ 		/* Path match found */
+ 		prev = dir_prefix;
+ 
++		remoteuser = xstrndup(user_and_passwd,
++				strchrnul(user_and_passwd, ':') - user_and_passwd);
++		passwd = strchr(cur->after_colon, ':');
++
++		if (passwd && passwd[1] == '*' && passwd[2] == 0) {
++			pw = getpwnam(remoteuser);
++			/* Don't check the password if password entry is empty (!) */
++			if (pw && pw->pw_passwd[0] != '!' && pw->pw_passwd[0] != '*' &&
++			    (!pw->pw_passwd[0] || correct_password(pw)))
++				return 1; /* Ok */
++			free(remoteuser);
++			continue;
++		}
+ 		if (ENABLE_FEATURE_HTTPD_AUTH_MD5) {
+-			char *md5_passwd;
+-
+-			md5_passwd = strchr(cur->after_colon, ':');
+-			if (md5_passwd && md5_passwd[1] == '$' && md5_passwd[2] == '1'
+-			 && md5_passwd[3] == '$' && md5_passwd[4]
++			if (passwd && passwd[1] == '$' && passwd[2] == '1'
++			 && passwd[3] == '$' && passwd[4]
+ 			) {
+ 				char *encrypted;
+ 				int r, user_len_p1;
+ 
+-				md5_passwd++;
+-				user_len_p1 = md5_passwd - cur->after_colon;
++				passwd++;
++				user_len_p1 = passwd - cur->after_colon;
+ 				/* comparing "user:" */
+ 				if (strncmp(cur->after_colon, user_and_passwd, user_len_p1) != 0) {
+ 					continue;
+@@ -1789,22 +1800,20 @@
+ 
+ 				encrypted = pw_encrypt(
+ 					user_and_passwd + user_len_p1 /* cleartext pwd from user */,
+-					md5_passwd /*salt */, 1 /* cleanup */);
+-				r = strcmp(encrypted, md5_passwd);
++					passwd /*salt */, 1 /* cleanup */);
++				r = strcmp(encrypted, passwd);
+ 				free(encrypted);
+ 				if (r == 0)
+-					goto set_remoteuser_var; /* Ok */
++					return 1; /* Ok */
+ 				continue;
+ 			}
+ 		}
+ 
+ 		/* Comparing plaintext "user:pass" in one go */
+-		if (strcmp(cur->after_colon, user_and_passwd) == 0) {
+- set_remoteuser_var:
+-			remoteuser = xstrndup(user_and_passwd,
+-					strchrnul(user_and_passwd, ':') - user_and_passwd);
++		if (strcmp(cur->after_colon, user_and_passwd) == 0)
+ 			return 1; /* Ok */
+-		}
++		free(remoteuser);
++		remoteuser = NULL;
+ 	} /* for */
+ 
+ 	/* 0(bad) if prev is set: matches were found but passwd was wrong */
