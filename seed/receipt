@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="seed"
-VERSION="2.31.91"
+VERSION="3.2.0"
 CATEGORY="system-tools"
 SHORT_DESC="Gnome JavaScript REPL/Interpreter."
 MAINTAINER="pankso@slitaz.org"
