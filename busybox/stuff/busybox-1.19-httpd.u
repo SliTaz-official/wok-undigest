@@ -91,7 +91,7 @@ Check system passwords for *
  
  		dir_prefix = cur->before_colon;
  
-@@ -1771,36 +1833,78 @@
+@@ -1771,36 +1833,80 @@
  		prev = dir_prefix;
  
  		if (ENABLE_FEATURE_HTTPD_AUTH_MD5) {
@@ -113,20 +113,22 @@ Check system passwords for *
 +				struct pam_userinfo userinfo;
 +				struct pam_conv conv_info = {&pam_talker, (void *) &userinfo};
 +				pam_handle_t *pamh;
++
++				userinfo.name = username;
++				userinfo.pw = unencrypted;
  
 -			md5_passwd = strchr(cur->after_colon, ':');
 -			if (md5_passwd && md5_passwd[1] == '$' && md5_passwd[2] == '1'
 -			 && md5_passwd[3] == '$' && md5_passwd[4]
-+				userinfo.name = username;
-+				userinfo.pw = unencrypted;
-+
 +				if (cur->after_colon[0] != '*' && 
 +				    strncmp(username,cur->after_colon,user_len_p1 - 1) != 0)
 +					continue;
 +				r = pam_start("httpd", username, &conv_info, &pamh) != PAM_SUCCESS
-+				 || pam_authenticate(pamh, PAM_DISALLOW_NULL_AUTHTOK) != PAM_SUCCESS
-+				 || pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)    != PAM_SUCCESS;
-+				pam_end(pamh, PAM_SUCCESS);
++				if (r == 0) {
++					r = pam_authenticate(pamh, PAM_DISALLOW_NULL_AUTHTOK) != PAM_SUCCESS
++					 || pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)    != PAM_SUCCESS;
++					pam_end(pamh, PAM_SUCCESS);
++				}
 +				goto end_check_passwd;
 +#else
 +				struct passwd *pw = getpwnam(username);
