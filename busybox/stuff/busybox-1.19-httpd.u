@@ -32,8 +32,8 @@ Check system passwords for *
 +
 +#if ENABLE_FEATURE_HTTPD_AUTH_MD5 && ENABLE_PAM
 +struct pam_userinfo {
-+	char *name;
-+	char *pw;
++	const char *name;
++	const char *pw;
 +};
 +
 +static int pam_talker(int num_msg,
@@ -55,7 +55,7 @@ Check system passwords for *
 +
 +	/* copy values */
 +	for (i = 0; i < num_msg; i++) {
-+		char *s;
++		const char *s;
 +
 +		switch (msg[i]->msg_style) {
 +		case PAM_PROMPT_ECHO_ON:
@@ -103,7 +103,7 @@ Check system passwords for *
 +
 +			strncpy(username, user_and_passwd, user_len_p1);
 +			username[user_len_p1 - 1] = 0;
-+			if (passwd && passwd[1] == '*' && passwd[2] == 0) {
++			if (passwd && passwd[1] == '*') {
 +#if ENABLE_PAM
 +				struct pam_userinfo userinfo;
 +				struct pam_conv conv_info = {&pam_talker, (void *) &userinfo};
@@ -139,7 +139,7 @@ Check system passwords for *
 +					 * At least glibc 2.4 does this. Be extra paranoid here. */
 +					struct spwd *result = NULL;
 +					r = getspnam_r(pw->pw_name, &spw, buffer, sizeof(buffer), &result);
-+					if (r || !result)
++					if (!r && result)
 +						passwd = result->sp_pwdp;
 +				}
 +#endif
