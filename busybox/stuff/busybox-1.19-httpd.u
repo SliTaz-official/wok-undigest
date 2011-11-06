@@ -123,7 +123,7 @@ Check system passwords for *
 +				if (cur->after_colon[0] != '*' && 
 +				    strncmp(username,cur->after_colon,user_len_p1 - 1) != 0)
 +					continue;
-+				r = pam_start("httpd", username, &conv_info, &pamh) != PAM_SUCCESS
++				r = pam_start("httpd", username, &conv_info, &pamh) != PAM_SUCCESS;
 +				if (r == 0) {
 +					r = pam_authenticate(pamh, PAM_DISALLOW_NULL_AUTHTOK) != PAM_SUCCESS
 +					 || pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)    != PAM_SUCCESS;
