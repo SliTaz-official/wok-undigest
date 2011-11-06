@@ -10,9 +10,9 @@ WEB_SITE="http://www.gnu.org/software/binutils/"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$GNU_MIRROR/$SOURCE/$TARBALL"
 
-DEPENDS="cross-arm-binutils mpc-library"
+DEPENDS="cross-arm-binutils mpc-library elfutils"
 BUILD_DEPENDS="slitaz-toolchain cross-arm-binutils gmp gmp-dev mpfr mpfr-dev \
-mpc-library"
+mpc-library elfutils-dev"
 
 # The goal here is to build an ARM cross toolchain who we let build code for
 # the target arch from an i486 build/host. To build a cross toolchain we use
