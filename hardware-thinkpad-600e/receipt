@@ -2,7 +2,7 @@
 
 PACKAGE="hardware-thinkpad-600e"
 VERSION="1.0"
-CATEGORY="base-system"
+CATEGORY="meta"
 MAINTAINER="devel@slitaz.org"
 SHORT_DESC="ThinkPad 600e (PII pcmcia laptop) hardware support"
 WEB_SITE="http://www.slitaz.org/"
