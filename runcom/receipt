@@ -29,16 +29,21 @@ genpkg_rules()
 # Post install command for Tazpkg.
 post_install()
 {
-	[ -z "$1" ] && [ -d /proc/sys/fs/binfmt_misc ] &&
-	echo ':DOSCOM:E::com::/usr/bin/runcom:' > /proc/sys/fs/binfmt_misc/register
-	grep -q /usr/bin/runcom $1/etc/init.d/local.sh || 
-	cat >> $1/etc/init.d/local.sh <<EOT
-[ -d /proc/sys/fs/binfmt_misc ] && echo ':DOSCOM:E::com::/usr/bin/runcom:' > /proc/sys/fs/binfmt_misc/register
+	fmt="binfmt_misc"
+	proc="/proc/sys/fs/binfmt_misc"
+	data=":DOSCOM:E::com::/usr/bin/runcom:"
+	rc="$1/etc/init.d/local.sh"
+	grep -q "$data" $rc || cat >> $rc <<EOT
+[ ! -e $proc/register ] && modprobe $fmt && mount -t $fmt $fmt $proc
+echo "$data" >$proc/register
 EOT
+	[ -n "$1" ] && return
+	[ ! -e $proc/register ] && modprobe $fmt && mount -t $fmt $fmt $proc
+	echo "$data" >$proc/register
 }
 
 # Pre remove command for Tazpkg.
 pre_remove()
 {
-	sed -i '/DOSCOM:E::com/d' $1/etc/init.d/local.sh
+	sed -i  '/binfmt_misc/{N;/DOSCOM:E::com/d}' $1/etc/init.d/local.sh
 }
