@@ -10,7 +10,7 @@ WEB_SITE="http://bellard.org/jslinux"
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir $src
+	mkdir -p $src
 	cd $src
 	tarball=$(wget -O - $WEB_SITE/tech.html | \
 		  sed '/linuxstart/!d;s/.*href="\([^"]*\)".*/\1/')
