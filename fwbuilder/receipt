@@ -28,4 +28,5 @@ compile_rules()
 genpkg_rules()
 {
 	cp -a $_pkg/* $fs
+	sed -i 's/Categories=.*/Categories=GNOME;Application;System;/' $fs/usr/share/applications/fwbuilder.desktop
 }
