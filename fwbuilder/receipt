@@ -9,7 +9,7 @@ WEB_SITE="http://www.fwbuilder.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="qmake libxslt-dev"
+BUILD_DEPENDS="qmake libxslt-dev Qt4-dev"
 
 # Rules to configure and make the package.
 compile_rules()
