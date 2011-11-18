@@ -31,9 +31,9 @@ genpkg_rules()
 [Desktop Entry]
 Name=Storage Device Manager
 Comment=$SHORT_DESC
-Categories=GNOME;Application;System;
+Categories=Application;System;
 Icon=harddrive.png
-Exec=pysdm
+Exec=subox pysdm
 Type=Application
 StartupNotify=true
 Terminal=false
