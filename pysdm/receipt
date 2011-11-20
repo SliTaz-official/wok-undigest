@@ -15,6 +15,7 @@ compile_rules()
 {
 
 	cd $src
+	sed -i 's/gksudo/subox/;s/Settings;//' data/pysdm.desktop
 	./configure --prefix=/usr --infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&
@@ -25,17 +26,5 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/applications
 	cp -a $_pkg/usr $fs
-	cat > $fs/usr/share/applications/pysdm.desktop <<EOT
-[Desktop Entry]
-Name=Storage Device Manager
-Comment=$SHORT_DESC
-Categories=Application;System;
-Icon=harddrive.png
-Exec=subox pysdm
-Type=Application
-StartupNotify=true
-Terminal=false
-EOT
 }
