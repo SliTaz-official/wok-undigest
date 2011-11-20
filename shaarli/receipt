@@ -23,6 +23,7 @@ compile_rules()
 genpkg_rules()                                      
 {
 	mkdir -p $fs/var/www/$PACKAGE
+	cd $fs/var/www/$PACKAGE
 	unzip "$SOURCES_REPOSITORY/$_TARBALL"
 }
 
