@@ -14,10 +14,8 @@ DEPENDS="php"
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir $src 2> /dev/null
-	mv $PACKAGE $src 2> /dev/null
-	mkdir -p $DESTDIR/var/www/
-	cp -a $src/$PACKAGE $DESTDIR/var/www/
+	mkdir -p $DESTDIR/var/www/$PACKAGE
+	cp -a $src/* $DESTDIR/var/www/$PACKAGE
 	chown -R 80.80 $DESTDIR/var/www/$PACKAGE
 }
 
