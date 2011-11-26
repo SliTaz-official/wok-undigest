@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="wwwsqldesigner"
+VERSION="2.6"
+CATEGORY="development"
+SHORT_DESC="Js SQL designer"
+MAINTAINER="pascal.bellard@slitaz.org"
+WEB_SITE="http://ondras.zarovi.cz/sql/demo/"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/var/www/$PACKAGE $DESTDIR/usr/share/applications
+	cd $DESTDIR/var/www/$PACKAGE
+	for i in license.txt index.html ; do
+		wget $WEB_SITE$i
+		for j in $(sed '/href="/!d;s/.*href="\([^"]*\)".*/\1/' $i) \
+			 $(sed '/src="/!d;s/.*src="\([^"]*\)".*/\1/' $i) ; do
+			case "$j" in
+			*tp:/*);;
+			*)	[ -d $(dirname $j) ] || mkdir -p $(dirname $j)
+				wget -O $j $WEB_SITE$j ;;
+			esac
+		done
+	done
+	cat > $DESTDIR/usr/share/applications/$PACKAGE.desktop <<EOT
+[Desktop Entry]
+Type=Application
+Name=$PACKAGE
+Exec=browser file:///var/www/$PACKAGE/index.html
+Terminal=false
+Categories=Development;
+Comment=$SHORT_DESC
+EOT
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	cp -a $_pkg/* $fs/
+}
