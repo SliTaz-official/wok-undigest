@@ -67,14 +67,23 @@ static inline void pushw(struct vm86_regs *r, int val)
 
 void dump_regs(struct vm86_regs *r)
 {
+    int i;
+    uint8_t *p8;
+    uint16_t *p16;
     fprintf(stderr,
             "EAX=%08lx EBX=%08lx ECX=%08lx EDX=%08lx\n"
             "ESI=%08lx EDI=%08lx EBP=%08lx ESP=%08lx\n"
-            "EIP=%08lx EFL=%08lx\n"
+            "EIP=%08lx EFL=%08lx\n[SP]"
             "CS=%04x DS=%04x ES=%04x SS=%04x FS=%04x GS=%04x\n",
             r->eax, r->ebx, r->ecx, r->edx, r->esi, r->edi, r->ebp, r->esp,
             r->eip, r->eflags,
             r->cs, r->ds, r->es, r->ss, r->fs, r->gs);
+    for (p16 = (uint16_t *) seg_to_linear(r->ss, r->esp), i = 0; i < 15; i++)
+    	fprintf(stderr," %04x", *p16++);
+    fprintf(stderr,"\n[IP]");
+    for (p8 = seg_to_linear(r->cs, r->eip), i = 0; i < 25; i++)
+    	fprintf(stderr," %02x", *p8++);
+    fprintf(stderr,"\n");
 }
 
 #define DOS_FD_MAX 256
