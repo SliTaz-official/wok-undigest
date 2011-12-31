@@ -7,6 +7,7 @@
 #include <inttypes.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
@@ -73,8 +74,8 @@ void dump_regs(struct vm86_regs *r)
     fprintf(stderr,
             "EAX=%08lx EBX=%08lx ECX=%08lx EDX=%08lx\n"
             "ESI=%08lx EDI=%08lx EBP=%08lx ESP=%08lx\n"
-            "EIP=%08lx EFL=%08lx\n[SP]"
-            "CS=%04x DS=%04x ES=%04x SS=%04x FS=%04x GS=%04x\n",
+            "EIP=%08lx EFL=%08lx "
+            "CS=%04x DS=%04x ES=%04x SS=%04x FS=%04x GS=%04x\n[SP]",
             r->eax, r->ebx, r->ecx, r->edx, r->esi, r->edi, r->ebp, r->esp,
             r->eip, r->eflags,
             r->cs, r->ds, r->es, r->ss, r->fs, r->gs);
@@ -297,8 +298,81 @@ int load_boot(const char *filename, struct vm86_regs *r)
 }
 
 /* return the PSP or -1 if error */
+int load_exe(ExecParamBlock *blk, const char *filename,
+             int psp, uint32_t *pfile_size)
+{
+    int fd, size, base;
+    struct {
+    	uint16_t signature;		// 0x5A4D 'MZ'
+    	uint16_t bytes_in_last_block;
+    	uint16_t blocks_in_file;	
+    	uint16_t num_relocs;	
+    	uint16_t header_paragraphs;	// Size of header
+    	uint16_t min_extra_paragraphs;	// BSS size
+    	uint16_t max_extra_paragraphs;
+    	uint16_t ss;			// Initial (relative) SS value
+    	uint16_t sp;			// Initial SP value
+    	uint16_t checksum;
+    	uint16_t ip;			// Initial IP value
+    	uint16_t cs;			// Initial (relative) CS value
+    	uint16_t reloc_table_offset;
+    	uint16_t overlay_number;
+    } header;
+    struct {
+    	uint16_t offset;
+    	uint16_t segment;
+    } rel;
+
+    /* load the MSDOS .exe executable */
+    fd = open(filename, O_RDONLY);
+    if (fd < 0) {
+        return -1;
+    }
+    if (read(fd, &header, sizeof(header)) != sizeof(header)) {
+        close(fd);
+        return -1;
+    }
+    
+    memset(seg_to_linear(psp, 0x100), 0, 65536 - 0x100);
+  
+    size = (header.blocks_in_file * 512) - (header.header_paragraphs * 16) + 
+    	(header.bytes_in_last_block ? header.bytes_in_last_block - 512 : 0);
+    header.min_extra_paragraphs += (size-1)/16;
+    
+    /* address of last segment allocated */
+    *(uint16_t *)seg_to_linear(psp, 2) = psp + header.min_extra_paragraphs;
+    
+    if (pfile_size)
+        *pfile_size = size;
+
+    if (mem_resize(psp, header.min_extra_paragraphs) < 0 ||
+    	lseek(fd, header.header_paragraphs * 16, SEEK_SET) < 0 ||
+        read(fd, seg_to_linear(psp, 0x100), size) != size ||
+        lseek(fd, header.reloc_table_offset, SEEK_SET) < 0) {
+        close(fd);
+        return -1;
+    }
+
+    base = psp + 16;
+    while (header.num_relocs-- && read(fd, &rel, sizeof(rel)) == sizeof(rel))
+    	if (rel.segment != 0 || rel.offset != 0)
+    	    * (uint16_t *) seg_to_linear(base + rel.segment, rel.offset) += base;
+    close(fd);
+
+    blk->cs = base + header.cs;
+    blk->ip = header.ip;
+    blk->ss = base + header.ss;
+    blk->sp = header.sp - 6;
+
+    /* push return far address */
+    *(uint16_t *)seg_to_linear(blk->ss, blk->sp + 4) = psp;
+
+    return psp;
+}
+
+/* return the PSP or -1 if error */
 int load_com(ExecParamBlock *blk, const char *filename, uint32_t *pfile_size,
-             int initial_exec)
+             int argc, char **argv)
 {
     int psp, fd, ret;
 
@@ -314,6 +388,8 @@ int load_com(ExecParamBlock *blk, const char *filename, uint32_t *pfile_size,
         mem_free(psp);
         return -1;
     }
+    if (pfile_size)
+        *pfile_size = ret;
     
     /* reset the PSP */
     memset(seg_to_linear(psp, 0), 0, 0x100);
@@ -323,12 +399,26 @@ int load_com(ExecParamBlock *blk, const char *filename, uint32_t *pfile_size,
     /* address of last segment allocated */
     *(uint16_t *)seg_to_linear(psp, 2) = psp + 0xfff;
 
-    /* push ax value */
-    *(uint16_t *)seg_to_linear(psp, 0xfffc) = 0;
-    /* push return address to 0 */
-    *(uint16_t *)seg_to_linear(psp, 0xfffe) = 0;
-
-    if (!initial_exec) {
+    if (argc) {
+        int i, p;
+        char *s;
+        /* set the command line */
+        p = 0x81;
+        for(i = 2; i < argc; i++) {
+            if (p >= 0xff)
+                break;
+            *seg_to_linear(psp, p++) = ' ';
+            s = argv[i];
+            while (*s) {
+                if (p >= 0xff)
+                    break;
+                *seg_to_linear(psp, p++) = *s++;
+            }
+        }
+        *seg_to_linear(psp, p) = '\r';
+        *seg_to_linear(psp, 0x80) = p - 0x81;
+    }
+    else {
         int len;
         /* copy the command line */
         len = *seg_to_linear(blk->cmdtail_seg, blk->cmdtail_off);
@@ -339,8 +429,15 @@ int load_com(ExecParamBlock *blk, const char *filename, uint32_t *pfile_size,
     blk->sp = 0xfffc;
     blk->ip = 0x100;
     blk->cs = blk->ss = psp;
-    if (pfile_size)
-        *pfile_size = ret;
+
+    if (*(uint16_t *)seg_to_linear(psp, 0x100) == 0x5A4D)
+        psp = load_exe(blk, filename, psp, pfile_size);
+    
+    /* push ax value */
+    *(uint16_t *)seg_to_linear(blk->ss, blk->sp) = 0;
+    /* push return address to 0 */
+    *(uint16_t *)seg_to_linear(blk->ss, blk->sp + 2) = 0;
+ 
     return psp;
 }
 
@@ -401,7 +498,6 @@ void read_sectors(int fd, struct vm86_regs *r, int first_sector,
         close(fd);
     }
 }
-
 
 void do_int10(struct vm86_regs *r)
 {
@@ -734,6 +830,27 @@ void do_int21(struct vm86_regs *r)
         }
 #endif
         break;
+    case 0x2A: /* get system date */
+        {
+            time_t t = time(NULL);
+            struct tm *now=localtime(&t);
+            
+            r->ecx = now->tm_year;
+            r->edx = (now->tm_mon * 256) + now->tm_mday;
+            r->eax = now->tm_wday;;
+        }
+        break;
+    case 0x2C: /* get system time */
+        {
+            time_t t = time(NULL);
+            struct tm *now=localtime(&t);
+            struct timeval tim;
+            
+            gettimeofday(&tim, NULL);
+            r->edx = (now->tm_hour * 256) + now->tm_min;
+            r->edx = (tim.tv_sec * 256) + tim.tv_usec/10000;
+        }
+        break;
     case 0x30: /* get dos version */
         {
             int major, minor, serial, oem;
@@ -1026,7 +1143,7 @@ void do_int21(struct vm86_regs *r)
                 goto unsupported;
             get_filename(r, filename, sizeof(filename));
             blk = (ExecParamBlock *)seg_to_linear(r->es, r->ebx);
-            ret = load_com(blk, filename, NULL, 0);
+            ret = load_com(blk, filename, NULL, 0, NULL);
             if (ret < 0) {
                 set_error(r, 0x02); /* file not found */
             } else {
@@ -1120,8 +1237,9 @@ int main(int argc, char **argv)
 
     dos_init();
 
-    if (strstr(filename,".com")) {
-        ret = load_com(blk, filename, &file_size, 1);
+    if (strstr(filename,".com") || strstr(filename,".exe") ||
+        strstr(filename,".COM") || strstr(filename,".EXE")) {
+        ret = load_com(blk, filename, &file_size, argc, argv);
         if (ret < 0) {
             perror(filename);
             exit(1);
@@ -1131,33 +1249,12 @@ int main(int argc, char **argv)
         /* init basic registers */
         r->eip = blk->ip;
         r->esp = blk->sp + 2; /* pop ax value */
-        r->cs = cur_psp;
+        r->cs = blk->cs;
         r->ss = blk->ss;
         r->ds = cur_psp;
         r->es = cur_psp;
         r->eflags = VIF_MASK;
     
-        /* set the command line */
-        {
-            int i, p;
-            char *s;
-
-            p = 0x81;
-            for(i = 2; i < argc; i++) {
-                if (p >= 0xff)
-                    break;
-                *seg_to_linear(cur_psp, p++) = ' ';
-                s = argv[i];
-                while (*s) {
-                    if (p >= 0xff)
-                        break;
-                    *seg_to_linear(cur_psp, p++) = *s++;
-                }
-            }
-            *seg_to_linear(cur_psp, p) = '\r';
-            *seg_to_linear(cur_psp, 0x80) = p - 0x81;
-        }
-
         /* the value of these registers seem to be assumed by pi_10.com */
         r->esi = 0x100;
 #if 0
