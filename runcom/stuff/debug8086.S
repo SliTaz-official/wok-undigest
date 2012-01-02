@@ -14,10 +14,10 @@
 // f 80 1		   read hard disk master boot sector to 0000:7C00
 // g 7C0E		   ...
 
-#define ADJESDI		 8 bytes	add segment overflow support for e and d
-#define ASCIIDUMP	19 bytes	display hexa and ascii datas
-#define INPUTBUFFER	 6(4) bytes	overload init code with a 32+ bytes input buffer
-//#define CPU186       -27 bytes	80186+ CPU
+#define ADJESDI		16 bytes	add segment overflow support for e and d
+#define ASCIIDUMP	20 bytes	display hexa and ascii datas
+#define INPUTBUFFER	 2 bytes	overload init code with a 32+ bytes input buffer
+//#define CPU186       -26 bytes	80186+ CPU
 
 .macro pusham
 	pushw	%ax
@@ -45,7 +45,7 @@
 
 #ifdef INPUTBUFFER
 //#define ABS(x)		(x-(setvectors-_start))
-#define ABS(x)		(x-32)
+#define ABS(x)		(x-30)
 #else
 #define ABS(x)		(x)
 #endif
@@ -60,6 +60,7 @@
 #define USER_CSIP	REGSZ+SEGREGSZ(%bp)
 
 .macro initcode
+	movw	$0x0FC0, %di	# move (and jump) to 0FC0:0000
 	subw	$_startz-_start, USER_IP
 	movw	USER_IP, %ax
 #ifdef CPU186
@@ -71,7 +72,6 @@
 #endif
 	addw	USER_CS, %ax	# normalize %cs to have _start=0
 	movw	%ax, %ds
-	movw	$0x0FC0, %di	# move (and jump) to 0FC0:0000
 .endm
 	.text
 	.code16
@@ -95,11 +95,6 @@ isinit:
 	initcode
 	movw	$setvectors, %si
 	jmp	moveself
-#ifndef CPU186
-gisinit:
-	jmp	isinit
-#define isinit	gisinit
-#endif
 #endif
 
 setvectors:
@@ -115,7 +110,11 @@ skiphook:
 	shrb	$1,%ch
 	jnc	skiphook
 	jnz	hooklp		# note %cx will be cleared: SP will be untouched
-	subw	$4, (3-7)*4(%si)	# update int3 vector
+#ifdef CPU186
+	decw	(3-7)*4(%si)	# update int3 vector
+#else
+	movb	$ABS(int3), (3-7)*4(%si)	# update int3 vector
+#endif
 	jmp	dbgstartz	# registers are already pushed by startup code
 
 regs:
@@ -132,30 +131,18 @@ regs:
 	.ascii	"ax"  
 	.ascii	"ip"  
 	.ascii	"cs"  
+# Bit   Label    Desciption
+# ---------------------------
+# 0      CF      Carry flag
+# 2      PF      Parity flag
+# 4      AF      Auxiliary carry flag
+# 6      ZF      Zero flag
+# 7      SF      Sign flag
+# 8      TF      Trap flag
+# 9      IF      Interrupt enable flag
+# 10     DF      Direction flag
+# 11     OF      Overflow flag
 	.ascii	"oditsz?a?p c="	# flags bits
-
-#ifdef INPUTBUFFER
-ismove:
-	xorw	%si, %si
-moveself:
-#else
-isinit:
-	initcode
-ismove:
-#endif
-	movw	%di, %es	# move code to %di:0
-	pushw	%di
-#ifdef INPUTBUFFER
-	xorw	%di, %di	# and jmp into (%di:setvectors) with retf
-	movw	$_end-setvectors, %cx
-#else
-	movw	$setvectors, %di	# and jmp into (%di:setvectors) with retf
-	movw	%di, %si
-	movw	$_end-_startz, %cx
-#endif
-	pushw	%di
-	rep	movsb
-	retf
 
 int3:
 #ifdef CPU186
@@ -167,14 +154,14 @@ dbgstart:
 init:
 	pushaw		#    [FLAGS CS IP] AX CX DX BX SP BP SI DI [DS ES SS]
 #else
-	pushw	%ax
-	movb	$0x40, %ah		# PL ZR - NA - PO - NC
-	.byte	0x85			# TEST [BX+SI-4C],DX ; NOP
+	stc
+	.byte	0x73		# jnc
 # interrupt entry point: the registers [FLAGS CS IP] are already pushed
 dbgstart:
+	clc
 	pushw	%ax
-	movb	$0x90, %ah		# NG NZ - AC - PO - NC
-	sahf
+	sbbw	%ax,%ax		# copy CF to SF
+	clc
 	popw	%ax
 init:
 	cld			# ensure movsb will work
@@ -190,7 +177,7 @@ init:
 	popf
 #endif
 	jc	isinit
-	jnz	notint3
+	jns	notint3
 	decw	USER_IP
 	lesw	USER_CSIP, %di
 #define OPCODE_BRK     0xCC
@@ -201,49 +188,46 @@ break:
 notint3:
 dbgstartz:
 dbgregslp:
-	pushw	%cs
-	popw	%ds
-	call	dbgputcr
-	movw	$ABS(regs), %si
-	movw	$13, %cx
-regslp:
-	call	putreg		# display register name and value
-	loop	regslp
-	movw	USER_FLAGS, %dx
-	pushw	%si
-	movb	$13, %cl
-	stc			# add trailing =
-	rcrw	%cl, %dx
-nextbit:
-	lodsb
-	shlw	$1, %dx
-	call	dbgputcbit	# display active flags bits
-	loop	nextbit
-	popw	%si
-	movb	$8, %cl
-stacklp:
-	lodsw			# si += 2
-	call	putr16		# display flags and the beginning of the stack
-	loop	stacklp
-	call	getline
-	lodsb
-	xchgw	%ax, %di
-	call	getval
+	call	getcmd
 	.byte	0x81, 0xC3	# addw	$0, %bx
 offset_value:
 	.word	0
 	movw	%bx, %es
 	xchgw	%ax, %di
-	cmpb	$'m', %al
-	je	ismove
-	cmpb	$'+', %al
+	subb	$'m', %al
+	jne	isinotmove
+#ifdef INPUTBUFFER
+ismove:
+	xchgw	%ax, %si
+moveself:
+#else
+isinit:
+	jmp	ismove
+	initcode
+ismove:
+#endif
+	movw	%di, %es	# move code to %di:0
+	pushw	%di
+#ifdef INPUTBUFFER
+	xorw	%di, %di	# and jmp into (%di:setvectors) with retf
+#else
+	movw	$setvectors, %di	# and jmp into (%di:setvectors) with retf
+	movw	%di, %si
+#endif
+	movw	$_end-setvectors, %cx
+	pushw	%di
+	rep	movsb
+	retf
+
+isinotmove:
+	subb	$'+'-'m', %al
 	jne	not_offset
 	movw	%di, ABS(offset_value)
 not_offset:
 	orb	$1, USER_FLAGS_HIGH	# set TF
-	cmpb	$'t', %al
+	subb	$'t'-'+', %al
 	je	done
-	sub	$'d', %al
+	subb	$'d'-'t', %al
 	xchgw	%ax, %cx
 	jcxz	dump		# 'd' ?
 	loop	noenter		# 'e' ?
@@ -255,6 +239,9 @@ mextmsb:
 	stosb
 	xchgw	%ax, %dx
 	xchgb	%al, %dh
+#ifdef ADJESDI
+	call	adjustESDI
+#endif
 	decw	%cx
 	loopne	mextmsb
 	jmp	nextval
@@ -271,7 +258,6 @@ noenter:
 godbgregslpifc:	
 	jc	dbgregslp
 dump:
-	call	dbgputcr
 	movw	%es, %ax
 	call	putax
 	movw	%di, %ax
@@ -280,22 +266,20 @@ dump:
 dhex:
 	movb	%es:(%di), %ah
 #ifdef ASCIIDUMP
-	movb	%ah, 16(%si)
+	movb	%ah, (%si)
 	incw	%si
 #endif
-	incw	%di
 #ifdef ADJESDI
-	jnz	esok
-	pushw	%es
-	addb	$0x10,-1(%bp)
-	popw	%es
-esok:
+	call	incESDI
+#else
+	incw	%di
 #endif
 	movb	$0x01, %dh	# the data has 2 digits
 	call	putx
 	loop	dhex
 #ifdef ASCIIDUMP
 	movb	$16, %cl
+	subw	%cx, %si
 dascii:
 	lodsb
 	cmpb	$0x7F, %al
@@ -306,6 +290,7 @@ skipascii:
 	call	dbgputcbit
 	loop	dascii
 #endif
+	call	dbgputcr
 	int	$0x16
 	cmpb	$13, %al
 	je	dump
@@ -331,6 +316,19 @@ done:
 	popam
 #endif
 	iret
+
+#ifdef ADJESDI
+adjustESDI:
+	decw	%di
+incESDI:
+	incw	%di
+	jnz	esok
+	pushw	%es
+	addb	$0x10,-3(%bp)
+	popw	%es
+esok:
+	ret
+#endif
 
 putreg:
 	call	dbgput2c
@@ -371,6 +369,58 @@ dbgputc:
 	xchgw	%ax, %bx
 	ret
 
+getline:
+	movw	$ABS(regs), %si
+	movw	$13, %cx
+regslp:
+	call	putreg		# display register name and value
+	loop	regslp
+	movw	USER_FLAGS, %dx
+	pushw	%si
+	movb	$13, %cl
+	stc			# add trailing =
+	rcrw	%cl, %dx
+nextbit:
+	lodsb
+	shlw	$1, %dx
+	call	dbgputcbit	# display active flags bits
+	loop	nextbit
+	popw	%si
+	movb	$8, %cl
+stacklp:
+	lodsw			# si += 2
+	call	putr16		# display flags and the beginning of the stack
+	loop	stacklp
+	call	dbgputcr
+getlinebs:
+	cmpw	$ABS(buffer), %si
+	je	getc
+	decw	%si
+getlinelp:
+	call	dbgputc
+getc:
+	int	$0x16
+	cmpb	$8, %al
+	je	getlinebs
+	orb	$0x20, %al
+	movb	%al, (%si)
+	inc	%si
+	cmpb	$0x2D, %al
+	jne	getlinelp
+dbgputcr:
+	movw	$ABS(crlf), %si
+dbgput2c:
+	call	dbgput1c
+dbgput1c:
+	lodsb
+	jmp	dbgputc
+
+getcmd:
+	pushw	%cs
+	popw	%ds
+	call	getline
+	lodsb
+	xchgw	%ax, %di
 # get value in DX:AX, BX is segment CX is digits count.
 getval:
 	xorw	%bx, %bx
@@ -416,31 +466,6 @@ notspc:
 	addw	%dx, %bx
 	popw	%dx
 	ret
-
-getline:
-	call	dbgputcr
-getlinebs:
-	cmpw	$ABS(buffer), %si
-	je	getc
-	decw	%si
-getlinelp:
-	call	dbgputc
-getc:
-	int	$0x16
-	cmpb	$8, %al
-	je	getlinebs
-	orb	$0x20, %al
-	movb	%al, (%si)
-	inc	%si
-	cmpb	$0x2D, %al
-	jne	getlinelp
-dbgputcr:
-	movw	$ABS(crlf), %si
-dbgput2c:
-	call	dbgput1c
-dbgput1c:
-	lodsb
-	jmp	dbgputc
 
 crlf:
 	.byte	13,10

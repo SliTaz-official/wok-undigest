@@ -14,22 +14,25 @@
 // f 80 1		   read hard disk master boot sector to 0000:7C00
 // g 7C0E		   ...
 
-#define REGS32		20 bytes	display 32 bits datas for AX..DI
+#define REGS32		28 bytes	display FS, GS and 32 bits datas for AX..DI 
 #define ADJESDI		16 bytes	add segment overflow support for e and d
-#define ASCIIDUMP	19 bytes	display hexa and ascii datas
+#define ASCIIDUMP	20 bytes	display hexa and ascii datas
 #define INPUTBUFFER	 3 bytes	overload init code with a 32+ bytes input buffer
 
 .macro pushib val
 	.byte	0x6A, \val-_start
 .endm
 
-#define SEGREGSZ	6
 #ifdef REGS32
+#define SEGREGSZ	10
 #define REGSZ	32
-#define USER_SP		REGSZ+SEGREGSZ-24(%bp)
+#define USER_SP		REGSZ+SEGREGSZ-28(%bp)
+#define FIXSP		14
 #else
+#define SEGREGSZ	6
 #define REGSZ	16
 #define USER_SP		REGSZ+SEGREGSZ-14(%bp)
+#define FIXSP		10
 #endif
 #define USER_FLAGS	REGSZ+SEGREGSZ+4(%bp)
 #define USER_FLAGS_HIGH	REGSZ+SEGREGSZ+5(%bp)
@@ -44,13 +47,12 @@
 #define ABS(x)		(x)
 #endif
 .macro initcode
-
+	movw	$0x0FC0, %di	# move (and jump) to 0FC0:0000
 	subw	$_startz-_start, USER_IP
 	movw	USER_IP, %ax
 	shrw	$4, %ax		# _start MUST be aligned on paragraph
 	addw	USER_CS, %ax	# normalize %cs to have _start=0
 	movw	%ax, %ds
-	movw	$0x0FC0, %di	# move (and jump) to 0FC0:0000
 .endm
 
 	.text
@@ -67,8 +69,8 @@ _startz:
 
 #ifdef INPUTBUFFER
 isinit:
-	addw	$10, USER_SP	# adjust SP with [FLAGS CS IP DS ES] size
 	initcode
+	addw	$FIXSP, USER_SP	# adjust SP with [FLAGS CS IP DS ES [FS GS]] size
 	pushib	setvectors
 	jmp	moveself
 #endif
@@ -99,15 +101,42 @@ regs:
 	.ascii	"dx"  
 	.ascii	"cx"  
 	.ascii	"ax"  
+#ifdef REGS32
+	.ascii	"gs"
+	.ascii	"fs"
+#endif
 	.ascii	"es"
 	.ascii	"ds"  
 	.ascii	"ip"  
 	.ascii	"cs"  
+# Bit   Label    Desciption
+# ---------------------------
+# 0      CF      Carry flag
+# 2      PF      Parity flag
+# 4      AF      Auxiliary carry flag
+# 6      ZF      Zero flag
+# 7      SF      Sign flag
+# 8      TF      Trap flag
+# 9      IF      Interrupt enable flag
+# 10     DF      Direction flag
+# 11     OF      Overflow flag
+#ifdef REGS32
+	.ascii	"odi|sz|a|p|c"	# flags bits
+#else
 	.ascii	"oditsz?a?p c="	# flags bits
+#endif
+# 12-13  IOPL    I/O Priviledge level
+# 14     NT      Nested task flag
+# 16     RF      Resume flag
+# 17     VM      Virtual 8086 mode flag
+# 18     AC      Alignment check flag (486+)
+# 19     VIF     Virutal interrupt flag
+# 20     VIP     Virtual interrupt pending flag
+# 21     ID      ID flag
 
 #ifdef INPUTBUFFER
 ismove:
-	pushw	%es
+	pushw	%ax
 moveself:
 	popw	%si
 #else
@@ -120,12 +149,11 @@ ismove:
 	pushw	%di
 #ifdef INPUTBUFFER
 	xorw	%di, %di	# and jmp into (%di:setvectors) with retf
-	movw	$_end-setvectors, %cx
 #else
 	movw	$setvectors, %di	# and jmp into (%di:setvectors) with retf
 	movw	%di, %si
-	movw	$_end-_startz, %cx
 #endif
+	movw	$_end-setvectors, %cx
 	pushw	%di
 	rep	movsb
 	retf
@@ -140,7 +168,9 @@ init:
 	pushw	%ds
 	pushw	%es
 #ifdef REGS32
-	pushal		#    [FLAGS CS IP DS ES] EAX ECX EDX EBX ESP EBP ESI EDI [SS]
+	pushw	%fs
+	pushw	%gs
+	pushal		#    [FLAGS CS IP DS ES FS GS] EAX ECX EDX EBX ESP EBP ESI EDI [SS]
 #else
 	pushaw		#    [FLAGS CS IP DS ES] AX CX DX BX SP BP SI DI [SS]
 #endif
@@ -148,7 +178,7 @@ init:
 	movw	%sp, %bp
 #ifndef INPUTBUFFER
 	pushf
-	addw	$10, USER_SP	# adjust SP with [FLAGS CS IP DS ES] size
+	addw	$FIXSP, USER_SP	# adjust SP with [FLAGS CS IP DS ES [FS GS]] size
 	popf
 #endif
 	jc	isinit
@@ -162,18 +192,19 @@ break:
 	stosb
 notint3:
 #ifdef INPUTBUFFER
-	addw	$10, USER_SP	# adjust SP with [FLAGS CS IP DS ES] size
+	addw	$FIXSP, USER_SP	# adjust SP with [FLAGS CS IP DS ES [FS GS]] size
 #endif
 dbgstartz:
 dbgregslp:
 	pushw	%cs
 	popw	%ds
-	call	dbgputcr
 	movw	$ABS(regs), %si
 #ifdef REGS32
 	subw	%si, %bp
-#endif
+	movw	$15, %cx
+#else
 	movw	$13, %cx
+#endif
 regslp:
 	call	putreg		# display register name and value
 	loop	regslp
@@ -181,28 +212,33 @@ regslp:
 	movw	(%bp,%si), %dx	# get flags
 #else
 	movw	USER_FLAGS, %dx
-#endif
 	pushw	%si
-	movb	$13, %cl
 	stc			# add trailing =
+#endif
+	movb	$13, %cl
 	rcrw	%cl, %dx
 nextbit:
 	lodsb
 	shlw	$1, %dx
-	call	dbgputcbit	# display active flags bits
-	loop	nextbit
-	popw	%si
 #ifdef REGS32
-	movb	$2, %cl
+	jnc	skipflag
+	cmpb	$'|', %al	# remove system flags
+	je	skipflag
+	call	dbgputc
+skipflag:
 #else
-	movb	$8, %cl
+	call	dbgputcbit	# display active flags bits
 #endif
+	loop	nextbit
+#ifdef REGS32
+	movw	%sp, %bp
+#else
+	popw	%si
+	movb	$8, %cl
 stacklp:
 	lodsw			# si += 2
 	call	putr16		# display flags and the beginning of the stack
 	loop	stacklp
-#ifdef REGS32
-	movw	%sp, %bp
 #endif
 	call	getline
 	lodsb
@@ -213,16 +249,16 @@ offset_value:
 	.word	0
 	movw	%bx, %es
 	xchgw	%ax, %di
-	cmpb	$'m', %al
+	subb	$'m', %al
 	je	ismove
-	cmpb	$'+', %al
+	subb	$'+'-'m', %al
 	jne	not_offset
 	movw	%di, ABS(offset_value)
 not_offset:
 	orb	$1, USER_FLAGS_HIGH	# set TF
-	cmpb	$'t', %al
+	subb	$'t'-'+', %al
 	je	done
-	sub	$'d', %al
+	subb	$'d'-'t', %al
 	xchgw	%ax, %cx
 	jcxz	dump		# 'd' ?
 	loop	noenter		# 'e' ?
@@ -253,7 +289,6 @@ noenter:
 godbgregslpifc:	
 	jc	dbgregslp
 dump:
-	call	dbgputcr
 	movw	%es, %ax
 	call	putax
 	movw	%di, %ax
@@ -262,7 +297,7 @@ dump:
 dhex:
 	movb	%es:(%di), %ah
 #ifdef ASCIIDUMP
-	movb	%ah, 16(%si)
+	movb	%ah, (%si)
 	incw	%si
 #endif
 #ifdef ADJESDI
@@ -270,11 +305,16 @@ dhex:
 #else
 	incw	%di
 #endif
+#ifdef REGS32
+	movb	$0x30, %dh	# the data has 2 digits
+#else
 	movb	$0x01, %dh	# the data has 2 digits
+#endif
 	call	putx
 	loop	dhex
 #ifdef ASCIIDUMP
 	movb	$16, %cl
+	subw	%cx, %si
 dascii:
 	lodsb
 	cmpb	$0x7F, %al
@@ -285,6 +325,7 @@ skipascii:
 	call	dbgputcbit
 	loop	dascii
 #endif
+	call	dbgputcr
 	int	$0x16
 	cmpb	$13, %al
 	je	dump
@@ -304,6 +345,8 @@ done:
 	popw	%ax  	# %ss
 #ifdef REGS32
 	popal
+	popw	%gs
+	popw	%fs
 #else
 	popaw
 #endif
@@ -331,27 +374,23 @@ putreg:
 putr16:
 #ifdef REGS32
 	movl	-2(%bp,%si), %eax
-	movw	$0x0FF0, %dx	# check bits 5..12
+	movw	$0x3FC0, %dx	# check bits 7..14
 	shrw	%cl, %dx
-	jnc	putax		# 16 bits register ?
+putax:
+	movb	$0xF0, %dh	# the data has 4 digits
+	jnc	putx		# 16 bits register ?
 	incw	%bp		# a 32 bits register, not 16 bits
 	incw	%bp
-	movb	$0x7F, %dh	# the data has 8 digits
-	jmp	putxlp
+	movb	$0xFF, %dh	# the data has 8 digits
+	jmp	putx
+putxlp:  
 #else
 #	movw	_start-ABS(regs)-2(%bp,%si), %ax
 	.byte	0x8b, 0x42, _start-ABS(regs)-2
-#endif
 putax:
 	movb	$0x07, %dh	# the data has 4 digits
 putx:
-#ifdef REGS32
-	roll	$16, %eax	# display low 16 bits
-#endif
 putxlp:  
-#ifdef REGS32
-	roll	$4, %eax
-#else
 	rolw	$4, %ax
 #endif
 	pushw	%ax
@@ -362,8 +401,15 @@ putxlp:
 	daa
 	call	dbgputc
 	popw	%ax
+#ifdef REGS32
+putx:
+	roll	$4, %eax
+#endif
 	shrb	$1, %dh
 	jc	putxlp
+#ifdef REGS32
+	jnz	putx
+#endif
 dbgputcbit:
 	jc	dbgputc  
 	mov	$0x20, %al
@@ -372,6 +418,7 @@ dbgputc:
 	mov	$0xE, %ah
 	int	$0x10
 	xchgw	%ax, %bx
+#	clc				# for putax
 	ret
 
 # get value in DX:AX, BX is segment CX is digits count.
@@ -394,10 +441,10 @@ getvallp:
 	jne	notspc
 	jcxz	gotspc
 notspc:
-	sub	$'0', %al
+	subb	$'0', %al
 	cmpb	$10, %al		# in 0..9 ?
 	jb	isx
-	sub	$'a'-'0'-10, %al
+	subb	$'a'-'0'-10, %al
 	cmpb	$16, %al		# in a..f ?
 	jb	isx
 	cmpb	$':'-'a'+10, %al
