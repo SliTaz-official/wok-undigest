@@ -1194,10 +1194,19 @@ void do_int29(struct vm86_regs *r)
     write(1, &c, 1);
 }
 
+void raise_interrupt(int number)
+{
+    if (* (uint32_t *) seg_to_linear(0, number * 4) == 0)
+        return;
+    // FIXME VM86_SIGNAL
+}
+
 void biosclock()
 {
     uint32_t *timer = (uint32_t *) seg_to_linear(0, 0x46C);
     ++*timer;
+    raise_interrupt(8);
+    raise_interrupt(0x1C);
 }
 
 int main(int argc, char **argv)
