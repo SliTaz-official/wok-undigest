@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="pyradio"
+VERSION="0.4"
+CATEGORY="multimedia"
+SHORT_DESC="Ncurses internet radio player."
+MAINTAINER="paul@slitaz.org"
+DEPENDS="ncurses mplayer python"
+BUILD_DEPENDS="git"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.coderholic.com/pyradio/"
+WGET_URL="git|git://github.com/coderholic/pyradio.git"
+BRANCH="$VERSION"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $src $fs/usr/lib/pyradio
+}
+
+# Create a link to /usr/bin/pyradio
+post_install()
+{
+	ln -s $1/usr/lib/pyradio/pyradio $1/usr/bin/pyradio
+}
+
+# Remove link 
+post_remove()
+{
+	rm -f $1/usr/bin/pyradio
+}
+
