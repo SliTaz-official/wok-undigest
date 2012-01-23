@@ -19,15 +19,19 @@ genpkg_rules()
 	cp -a $src $fs/usr/lib/pyradio
 }
 
-# Create a link to /usr/bin/pyradio
+# Create an alias to /usr/lib/pyradio
 post_install()
 {
-	ln -s $1/usr/lib/pyradio/pyradio $1/usr/bin/pyradio
+	#ln -s $1/usr/lib/pyradio/pyradio $1/usr/bin/pyradio
+	echo "" >> $1/etc/profile
+	echo "# pyradio alias" >> $1/etc/profile
+	echo "alias pyradio='/usr/lib/pyradio/pyradio'" >> $1/etc/profile
 }
 
-# Remove link 
+# Remove alias 
 post_remove()
 {
-	rm -f $1/usr/bin/pyradio
+	#rm -f $1/usr/bin/pyradio
+	sed -i '/pyradio/d' $1/etc/profile
 }
 
