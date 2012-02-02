@@ -10,7 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.osgeo.org/gdal/$TARBALL"
 
 DEPENDS="libgdal gdal-bin gdal-datas"
-BUILD_DEPENDS="postgresql-dev geos-dev proj-dev curl-dev"
+BUILD_DEPENDS="python-dev postgresql-dev geos-dev proj-dev curl-dev \
+swig "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,9 +21,10 @@ compile_rules()
 		--datadir=/usr/share/gdal \
 		--with-threads \
 		--with-perl \
+		--with-python \
 		--with-geos \
 		--with-sqlite3=no \
-		--with-ogr && make && make install
+		--with-ogr && make && make install BINDINGS="perl python"
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
