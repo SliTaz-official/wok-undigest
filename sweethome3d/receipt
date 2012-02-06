@@ -24,14 +24,16 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/share/applications $fs/usr/bin
 	cp -a $src $fs/usr/share/$PACKAGE
-	cat > $fs/usr/share/applications <<EOT
+	cat > $fs/usr/share/applications/$PACKAGE.desktop <<EOT
 [Desktop Entry]
+Encoding=UTF-8
 Name=Interior design
-Name[fr]=Aménagement d'intérieur
+Name[fr]=AmÃ©nagement d'intÃ©rieur
 Type=Application
 Exec=$PACKAGE
+Icon=gohome.png
 Terminal=false
-Categories=Application;Office;
+Categories=Office;
 EOT
 	cat > $fs/usr/bin/$PACKAGE <<EOT
 #!/bin/sh
