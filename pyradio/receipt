@@ -15,23 +15,16 @@ BRANCH="$VERSION"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $src $fs/usr/lib/pyradio
+	mkdir -p $fs/usr/bin $fs/usr/share/pyradio
+	cp -a $src/pyradio $fs/usr/bin
+	cp -a $src/stations.csv $fs/usr/share/pyradio
+	cp -a $src/README $fs/usr/share/pyradio
+	#cp -a $src/LICENCE $fs/usr/share/pyradio
 }
 
-# Create an alias to /usr/lib/pyradio
 post_install()
 {
-	#ln -s $1/usr/lib/pyradio/pyradio $1/usr/bin/pyradio
-	echo "" >> $1/etc/profile
-	echo "# pyradio alias" >> $1/etc/profile
-	echo "alias pyradio='/usr/lib/pyradio/pyradio'" >> $1/etc/profile
-}
-
-# Remove alias 
-post_remove()
-{
-	#rm -f $1/usr/bin/pyradio
-	sed -i '/pyradio/d' $1/etc/profile
+	# hack for path to stations file
+	sed -i 's|__file__|"/usr/share/pyradio/"|g' $1/usr/bin/pyradio 
 }
 
