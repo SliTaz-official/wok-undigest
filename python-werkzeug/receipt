@@ -15,7 +15,8 @@ BUILD_DEPENDS="wget python python-dev setuptools"
 compile_rules()
 {
 	if [ ! -s $src ]; then
-		wget -O - $GIT_URL | tar xzf - &&
+		mkdir -p $(dirname $src)
+		wget --no-check-certificate -O - $GIT_URL | tar xzf - &&
 		mv mitsuhiko-werkzeug-${VERSION:0:7} $src
 	fi
 	cd $src
