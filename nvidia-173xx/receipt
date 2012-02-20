@@ -1,17 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="nvidia-173xx"
-VERSION="173.14.25"
-CATEGORY="network"
+VERSION="173.14.31"
+CATEGORY="x-window"
 MAINTAINER="jozee@slitaz.org"
 SHORT_DESC="NVIDIA drivers (non-free)"
 WEB_SITE="http://www.nvidia.com/"
-SOURCE="NVIDIA-Linux-x86-${VERSION}-pkg0"
+SOURCE="NVIDIA-Linux-x86-${VERSION}-pkg1"
 TARBALL="${SOURCE}.run"
+WGET_URL="http://download.nvidia.com/XFree86/Linux-x86/$VERSION/$TARBALL"
 RUN_OPTS="--extract-only"
 TAGS="drivers graphic video"
 
-DEPENDS="linux xorg-server gtk+ cairo linux-agp linux-drm"
+DEPENDS="linux xorg-server gtk+ cairo linux-agp linux-drm xorg-libXv"
 BUILD_DEPENDS="linux-module-headers coreutils-file-summarize"
 
 # Rules to configure and make the package.
@@ -30,24 +31,43 @@ genpkg_rules()
 	EXTRAVERSION=_${kvers}
 	
 	mkdir -p $fs/usr/share $fs/usr/lib/X11 $fs/usr/share/licenses/$PACKAGE \
-				 $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video \
+				 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video \
 				 $fs/usr/share/doc/$PACKAGE 
 	
 	# Compress and install module
 	lzma e $src/usr/src/nv/nvidia.ko \
-			$fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz
-	chown root $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz
-	chmod 0644 $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz	
+			$fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz
+	chown root $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz
+	chmod 0644 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz	
 	
 	cp -a $src/LICENSE $fs/usr/share/licenses/$PACKAGE
 	cp -a $src/usr/bin $fs/usr
 	cp -a $src/nvidia-installer $fs/usr/bin
 	cp -a $src/usr/lib/*.so* $fs/usr/lib/
 	cp -a $src/usr/lib/tls $fs/usr/lib/
+        cp -a $src/usr/X11R6/lib/libXvMCNVIDIA.so.$VERSION $fs/usr/lib
+        cp -a $src/usr/X11R6/lib/modules $fs/usr/lib/X11/
+        cp -a $src/usr/share/applications $fs/usr/share
 	cp -a $src/usr/share/pixmaps $fs/usr/share
 	cp -a $src/usr/share/doc/* $fs/usr/share/doc/$PACKAGE/
-	cp -a $src/usr/X11R6/lib/* $fs/usr/lib/X11	
-		
+	cp -a $src/usr/X11R6/lib/* $fs/usr/lib/X11
+
+        ln -s libcuda.so.$VERSION $fs/usr/lib/libcuda.so
+	ln -s libcuda.so.$VERSION $fs/usr/lib/libcuda.so.1
+	ln -s libGL.so.$VERSION $fs/usr/lib/libGL.so
+	ln -s libGL.so.$VERSION $fs/usr/lib/libGL.so.1
+	ln -s libGLcore.so.$VERSION $fs/usr/lib/libGLcore.so.1
+	ln -s libnvidia-cfg.so.$VERSION $fs/usr/lib/libnvidia-cfg.so
+	ln -s libnvidia-cfg.so.$VERSION $fs/usr/lib/libnvidia-cfg.so.1
+	ln -s libnvidia-tls.so.$VERSION $fs/usr/lib/libnvidia-tls.so.1
+	ln -s libnvidia-tls.so.$VERSION $fs/usr/lib/tls/libnvidia-tls.so.1
+	ln -s libXvMCNVIDIA.so.$VERSION $fs/usr/lib/libXvMCNVIDIA.so.1
+	ln -s libXvMCNVIDIA.so.$VERSION $fs/usr/lib/libXvMCNVIDIA.so
+	ln -s libXvMCNVIDIA.so.$VERSION $fs/usr/lib/libXvMCNVIDIA_dynamic.so.1
+	ln -s libXvMCNVIDIA.so.$VERSION $fs/usr/lib/libXvMCNVIDIA_dynamic.so
+	ln -s libnvidia-wfb.so.$VERSION $fs/usr/lib/X11/modules/libnvidia-wfb.so
+	ln -s libnvidia-wfb.so.$VERSION $fs/usr/lib/X11/modules/libnvidia-wfb.so.1
+	ln -s libglx.so.$VERSION $fs/usr/lib/X11/modules/extensions/libglx.so	
 }
 
 pre_install()
