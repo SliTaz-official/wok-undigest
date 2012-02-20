@@ -11,7 +11,7 @@ WEB_SITE="http://www.antlr.org/"
 WGET_URL="${WEB_SITE}download/$TARBALL"
 
 DEPENDS="python"
-BUILD_DEPENDS="python python-dev"
+BUILD_DEPENDS="python python-dev setuptools"
 
 # Rules to configure and make the package.
 compile_rules()
