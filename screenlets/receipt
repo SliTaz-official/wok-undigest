@@ -7,7 +7,7 @@ SHORT_DESC="Desktop widgets framework."
 MAINTAINER="pankso@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://screenlets.org"
-WGET_URL="http://launchpad.net/screenlets/trunk/$VERSION/+download/$TARBALL"
+WGET_URL="https://launchpad.net/screenlets/trunk/$VERSION/+download/$TARBALL"
 
 DEPENDS="python pygtk python-xdg beautifulsoup gnome-python-desktop"
 BUILD_DEPENDS="python-dev"
