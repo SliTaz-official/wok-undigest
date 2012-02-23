@@ -17,7 +17,7 @@ python-ldap ghostscript feedparser matplotlib \
 python-pydot python-pygraphviz python-pyparsing python-pytz \
 python-gdata python-openid python-vatnumber python-webdav \
 python-vobject python-zsi python-xlwt libxslt-python pyopenssl \
-python27-mysql python27-caldav"
+python-mysql python-caldav"
 BUILD_DEPENDS="slitaz-toolchain python python-dev rsync setuptools \
 python-babel"
 
