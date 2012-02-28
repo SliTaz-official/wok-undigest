@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="udisks"
+VERSION="1.91.0"
+CATEGORY="system-tools"
+SHORT_DESC="D-Bus interfaces to query and manipulate storage devices."
+MAINTAINER="pankso@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.freedesktop.org/wiki/Software/udisks"
+WGET_URL="http://udisks.freedesktop.org/releases/$TARBALL"
+
+DEPENDS="libxslt libgudev polkit"
+BUILD_DEPENDS="libxslt-dev libgudev-dev polkit-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+}
