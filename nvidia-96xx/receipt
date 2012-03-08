@@ -1,13 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="nvidia-96xx"
-VERSION="96.43.16"
+VERSION="96.43.20"
 CATEGORY="network"
 MAINTAINER="jozee@slitaz.org"
 SHORT_DESC="NVIDIA drivers (non-free)"
 WEB_SITE="http://www.nvidia.com/"
 SOURCE="NVIDIA-Linux-x86-${VERSION}-pkg0"
 TARBALL="${SOURCE}.run"
+WGET_URL="http://download.nvidia.com/XFree86/Linux-x86/$VERSION/$TARBALL"
 RUN_OPTS="--extract-only"
 TAGS="drivers graphic video"
 
@@ -29,16 +30,16 @@ genpkg_rules()
 {	
 	EXTRAVERSION=_${kvers}
 	
-	mkdir -p $fs/usr/share $fs/usr/lib/X11 $fs/usr/share/licenses/$PACKAGE \
-				 $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video \
-				 $fs/usr/share/doc/$PACKAGE 
+	mkdir -p $fs/usr/share $fs/usr/lib/X11 $fs/usr/share/licenses/$PACKAGE   
+        mkdir -p $fs/lib/modules/$kvers-slitaz/kernel/drivers/video 
+	mkdir -p $fs/usr/share/doc/$PACKAGE 
 	
 	# Compress and install module
-	lzma e $src/usr/src/nv/nvidia.ko \
-			$fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz
-	chown root $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz
-	chmod 0644 $fs/lib/modules/$KERNEL_VERSION-slitaz/kernel/drivers/video/nvidia.ko.gz	
-	
+        lzma e $src/usr/src/nv/nvidia.ko \
+                         $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz
+        chown root $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz     
+	chmod 0644 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.gz      
+		
 	cp -a $src/LICENSE $fs/usr/share/licenses/$PACKAGE
 	cp -a $src/usr/bin $fs/usr
 	cp -a $src/nvidia-installer $fs/usr/bin
