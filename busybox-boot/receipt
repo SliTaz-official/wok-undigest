@@ -39,17 +39,21 @@ mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devpts none /dev/pts
 
-TTY=\$(tty)
+TTY=\$(tty) 2>/dev/null
+TTY=\${TTY:-/dev/tty1}
 EOT
 	$jslinux && cat >> $fs/init <<EOT
-stty -F \$TTY rows 30
+stty -F \$TTY rows 30 2>/dev/null
 EOT
 	cat >> $fs/init <<EOT
 
 busybox | sed '/Current/,\$!d'
 while true; do
-	#setsid sh -c "exec sh <\$TTY >\$TTY 2>&1"
-	sh <\$TTY >\$TTY 2>&1
+	if [ -x /bin/setsid ]; then
+		setsid sh -c "exec sh <\$TTY >\$TTY 2>&1"
+	else
+		sh <\$TTY >\$TTY 2>&1
+	fi
 done
 EOT
 	chmod +x $fs/init
