@@ -22,7 +22,7 @@ genpkg_rules()
 	if $jslinux; then
 		mknod -m 644 $fs/dev/clipboard c 10 231
 		mknod -m 660 $fs/dev/ttyS0 c 4 64
-	if
+	fi
 	mknod -m 660 $fs/dev/tty1 c 4 1
 	cat > $fs/bin/init <<EOT
 #!/bin/busybox sh
