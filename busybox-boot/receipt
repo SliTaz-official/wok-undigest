@@ -42,14 +42,14 @@ mount -t devpts none /dev/pts
 TTY=\$(tty)
 EOT
 	$jslinux && cat >> $fs/bin/init <<EOT
-stty -F $TTY rows 30
+stty -F \$TTY rows 30
 EOT
 	cat >> $fs/bin/init <<EOT
 
 busybox | sed '/Current/,\$!d'
 while true; do
-	#setsid sh -c "exec sh <$TTY >$TTY 2>&1"
-	sh <$TTY >$TTY 2>&1
+	#setsid sh -c "exec sh <\$TTY >\$TTY 2>&1"
+	sh <\$TTY >\$TTY 2>&1
 done
 EOT
 	chmod +x $fs/bin/init
