@@ -41,10 +41,10 @@ mount -t devpts none /dev/pts
 
 TTY=$(tty)
 EOT
-	$jslinux && cat > $fs/bin/init <<EOT
+	$jslinux && cat >> $fs/bin/init <<EOT
 stty -F $TTY rows 30 ;;
 EOT
-	cat > $fs/bin/init <<EOT
+	cat >> $fs/bin/init <<EOT
 
 busybox | sed '/Current/,\$!d'
 while true; do
