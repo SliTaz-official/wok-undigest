@@ -13,7 +13,7 @@ CONFIG_FILES=""
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	jslinux=true
+	jslinux=false
 	mkdir -p $fs/bin $fs/dev/pts $fs/proc $fs/sys $fs/tmp
 	cp -a $src/busybox-static $fs/bin/busybox
 	mknod -m 660 $fs/dev/console c 5 1
@@ -24,7 +24,7 @@ genpkg_rules()
 		mknod -m 660 $fs/dev/ttyS0 c 4 64
 	fi
 	mknod -m 660 $fs/dev/tty1 c 4 1
-	cat > $fs/bin/init <<EOT
+	cat > $fs/init <<EOT
 #!/bin/busybox sh
 
 for i in \$(busybox --list) ; do busybox ln /bin/busybox /bin/\$i; done
@@ -41,10 +41,10 @@ mount -t devpts none /dev/pts
 
 TTY=\$(tty)
 EOT
-	$jslinux && cat >> $fs/bin/init <<EOT
+	$jslinux && cat >> $fs/init <<EOT
 stty -F \$TTY rows 30
 EOT
-	cat >> $fs/bin/init <<EOT
+	cat >> $fs/init <<EOT
 
 busybox | sed '/Current/,\$!d'
 while true; do
@@ -52,7 +52,7 @@ while true; do
 	sh <\$TTY >\$TTY 2>&1
 done
 EOT
-	chmod +x $fs/bin/init
+	chmod +x $fs/init
 }
 
 pre_install()
