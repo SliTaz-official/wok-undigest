@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+PACKAGE="thunderbird"
+VERSION="11.0"
+CATEGORY="network"
+SHORT_DESC="Mozilla's Thunderbird email application."
+MAINTAINER="domcox@slitaz.org"
+DEPENDS="alsa-lib gtk+ dbus dbus-glib glib jpeg libevent libnotify nss \
+         sqlite xorg-libX11 xorg-libXdamage xorg-libXt"
+BUILD_DEPENDS="alsa-lib-dev bzip2 dbus-dev dbus-glib-dev freetype fontconfig \
+         gtk+-dev libIDL libevent-dev libnotify-dev make mesa-dev nspr-dev \
+         nss-dev perl pkg-config python sqlite-dev tar wireless_tools-dev \
+         xorg-dev xorg-libXt-dev zip"
+TARBALL="$PACKAGE-$VERSION.source.tar.bz2"
+WEB_SITE="http://www.mozilla.org/"
+WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$VERSION/source/$TARBALL"
+TAGS="email pop imap smtp"
+LANG="de es_ES fr en_GB pt_PT pt_BR ru"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cat <<EOF
+WARNING:  long compile time.
+Requirements: 
+- 512MB RAM with lots of available swap space. Additional RAM will 
+  significantly decrease build time. 
+- At least 2.5 GB of disk space.
+EOF
+	# add config
+    cp -a $stuff/thunderbird.mozconfig.conf $src/.mozconfig
+	# languages
+	echo "# languages" >> $src/.mozconfig
+	echo "mk_add_options MOZ_CO_LOCALES=\"$LANG\"" >> $src/.mozconfig
+	# for a quick build
+	echo "# build quicker" >> $src/.mozconfig
+	echo 'mk_add_options MOZ_MAKE_FLAGS="$MAKEFLAGS"' >> $src/.mozconfig
+	# build
+	cd $src
+	patch -Np1 -i $stuff/thunderbird-3.0-lang.patch
+	patch -Np1 -i $stuff/thunderbird-install-dir.patch
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	# program
+	cp -a $_pkg/usr/lib/$PACKAGE $fs/usr/lib
+	cp -a $_pkg/usr/bin $fs/usr
+	# adding mime-type (x-html)
+	cp $stuff/mimeTypes.rdf $fs/usr/lib/$PACKAGE/defaults/profile
+}
+
+
+
