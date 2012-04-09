@@ -75,6 +75,7 @@ compile_rules()
 	done <<EOT
 $PACKAGE-diff.u
 $PACKAGE-header.u
+$PACKAGE-freeinitrd.u
 aufs3-base.patch
 aufs3-standalone.patch
 aufs3-loopback.patch
