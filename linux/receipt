@@ -12,7 +12,7 @@ WGET_URL="http://www.kernel.org/pub/linux/kernel/v3.0/$TARBALL"
 CONFIG_FILES="/lib/modules/$KBASEVER-slitaz/modules.dep"
 
 DEPENDS="depmod"
-BUILD_DEPENDS="slitaz-toolchain perl git lzma patch"
+BUILD_DEPENDS="slitaz-toolchain perl git lzma patch uclibc-cross-compiler-x86_64"
 [ "$KBASEVER" != "$VERSION" ] && PATCH="http://www.kernel.org/pub/linux/kernel/v3.0/patch-$VERSION.xz"
 
 # Rules to configure and make the package.
@@ -146,10 +146,51 @@ EOT
 	mkdir -p $DESTDIR/boot 2> /dev/null
 	mv arch/x86/boot/bzImage $DESTDIR/boot/vmlinuz-$VERSION-slitaz
 	
+	[ ! -x /usr/bin/cook ] && report step "Make bzImage64 without modules first"
+
+	# Build bzImage64 without modules first
+	cp -f $stuff/$PACKAGE-$VERSION-slitaz.config64 .config
+	sed -i 's/CONFIG_MODULES=y/# CONFIG_MODULES is not set/' .config
+	
+	# We can't keep every driver in staging 
+	sed -i -e 's/^CONFIG_RTL8192/#&/' \
+	       -e 's/^CONFIG_R8187SE/#&/' \
+	       -e 's/^CONFIG_RT2870/#&/' .config
+	yes '' | make ARCH=x86_64 oldconfig
+	if [ -x /usr/bin/cook ]; then
+		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage || exit 1
+	elif [ -x /usr/bin/tazwok ]; then
+		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage || { report close-bloc; return 1; }
+	fi
+	[ -d $PWD/_pkg ] || mkdir -p $DESTDIR/linux64
+	mv arch/x86/boot/bzImage $DESTDIR/linux64
+	mv System.map System.map-without-modules64
+
+	[ ! -x /usr/bin/cook ] && report step "Now build bzImage64 with modules"
+	
+	# Build bzImage64 with modules
+	cp -f $stuff/$PACKAGE-$VERSION-slitaz.config64 .config
+	#make ARCH=x86_64 oldconfig
+	ln .config $WOK/$PACKAGE/slitaz/config64
+	make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage &&
+	make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- modules &&
+	make ARCH=x86_64 INSTALL_MOD_PATH=$DESTDIR/linux64 modules_install &&
+	make ARCH=x86_64 INSTALL_HDR_PATH=$DESTDIR/linux64/usr headers_install &&
+	if [ -x /usr/bin/cook ]; then
+		[ -s arch/x86/boot/bzImage ] || return 1
+	elif [ -x /usr/bin/tazwok ]; then
+		[ -s arch/x86/boot/bzImage ] || { report close-bloc; return 1; }
+	fi
+	mkdir -p $DESTDIR/linux64/boot 2> /dev/null
+	mv arch/x86/boot/bzImage $DESTDIR/linux64/boot/vmlinuz-$VERSION-slitaz
+	ln System.map System.map-modules64
+	ln Module.symvers Module.symvers-modules64
+	
 	[ ! -x /usr/bin/cook ] && report step "Compressing all modules"
 	
 	# Compress all modules.
 	$stuff/gztazmod.sh $DESTDIR/lib/modules/$KBASEVER-slitaz
+	$stuff/gztazmod.sh $DESTDIR/linux64/lib/modules/$KBASEVER-slitaz
 	ln System.map System.map-modules
 	ln Module.symvers Module.symvers-modules
 	
