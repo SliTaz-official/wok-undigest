@@ -3,7 +3,7 @@
 PACKAGE="aufs"
 VERSION="20120109"
 CATEGORY="base-system"
-SHORT_DESC="aufs2 kernel module"
+SHORT_DESC="aufs3 kernel module"
 MAINTAINER="slaxemulator@gmail.com"
 WEB_SITE="http://aufs.sf.net/"
 PROVIDE="linux-aufs"
