@@ -15,6 +15,7 @@ DEPENDS="php"
 compile_rules()
 {
 	cd $src
+	patch -p0 < $stuff/zerobin.u
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.   
