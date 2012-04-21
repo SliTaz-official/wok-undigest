@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="zerobin"
-VERSION="0.14_alpha"
+VERSION="0.15_alpha"
 CATEGORY="network"
 SHORT_DESC="Online pastebin where the server has zero knowledge of pasted data."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -9,7 +9,8 @@ TARBALL="${PACKAGE}_$VERSION.zip"
 WEB_SITE="http://sebsauvage.net/wiki/doku.php?id=php:zerobin"
 WGET_URL="http://sebsauvage.net/files/$TARBALL"
 
-DEPENDS="php-gd"
+DEPENDS="php"
+SUGGESTED="php-gd"
 
 # Rules to configure and make the package.
 compile_rules()
