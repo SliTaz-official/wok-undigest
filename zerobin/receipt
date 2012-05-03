@@ -16,7 +16,7 @@ SUGGESTED="php-gd"
 compile_rules()
 {
 	cd $src
-	#patch -p0 < $stuff/zerobin.u
+	patch -p0 < $stuff/zerobin.u
 	dos2unix *.txt *.php tpl/*.html lib/*.js lib/*.php lib/*.css
 }
 

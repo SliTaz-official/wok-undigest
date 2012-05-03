@@ -1,6 +1,6 @@
 --- lib/zerobin.js
 +++ lib/zerobin.js
-@@ -175,7 +175,11 @@
+@@ -180,7 +180,11 @@
  {
      if ($('textarea#message').val().length==0) return; // Do not send if no data.
      showStatus('Sending paste...',spin=true); 

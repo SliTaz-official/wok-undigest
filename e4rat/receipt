@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="e4rat"
+VERSION="0.2.3"
+CATEGORY="system-tools"
+SHORT_DESC="Ext4 - Reducing Access Times: Improve Startup Times."
+MAINTAINER="pascal.bellard@slitaz.org"
+TARBALL="${PACKAGE}_${VERSION}_src.tar.gz"
+WEB_SITE="http://e4rat.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="cmake e2fsprogs libboost-system libboost-filesystem \
+libboost-regex libboost-signals"	# pod2man libaudit
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	cmake . -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=$DESTDIR
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	cp -a $_pkg/* $fs
+}
