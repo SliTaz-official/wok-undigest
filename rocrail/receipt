@@ -15,7 +15,7 @@ xcb-util xorg-libICE xorg-libSM xorg-libX11 xorg-libXau xorg-libXcomposite \
 xorg-libXcursor xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes \
 xorg-libXinerama xorg-libXrender xorg-libXxf86vm"
 BUILD_DEPENDS="slitaz-toolchain wxWidgets-dev xorg-libXxf86vm-dev gtk+-dev \
-util-linux-ng-uuid-dev"
+util-linux-uuid-dev"
 
 # Rules to configure and make the package.
 compile_rules()
