@@ -43,7 +43,6 @@ compile_rules()
 	rm -f -r $src/binutils
 	mkdir -p $SOURCE-$VERSION-build
 	cd $SOURCE-$VERSION-build
-	{
 	$src/configure \
 		--prefix=/usr \
 		--libexecdir=/usr/lib \
