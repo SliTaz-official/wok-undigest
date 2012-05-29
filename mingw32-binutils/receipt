@@ -30,8 +30,8 @@ compile_rules()
 		--disable-debug \
 		--target=$MINGW32_TARGET \
 		$CONFIGURE_ARGS &&
-	make CFLAGS="-O2 -fno-exceptions" LDFLAGS="-s" &&
-	make DESTDIR=$PWD/_pkg install
+	make CFLAGS="-O2 -fno-exceptions -Wno-error=unused-but-set-variable" LDFLAGS="-s" &&
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
