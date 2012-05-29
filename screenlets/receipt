@@ -10,7 +10,7 @@ WEB_SITE="http://screenlets.org"
 WGET_URL="https://launchpad.net/screenlets/trunk/$VERSION/+download/$TARBALL"
 
 DEPENDS="python pygtk python-xdg beautifulsoup gnome-python-desktop dbus-python gnome-icon-theme"
-BUILD_DEPENDS="python-dev"
+BUILD_DEPENDS="python-dev wget"
 
 # Rules to configure and make the package.
 compile_rules()
