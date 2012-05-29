@@ -27,7 +27,7 @@ compile_rules()
 	fi
 
 	rm -f -r $src/binutils
-	mkdir -p $SOURCE-$VERSION-build
+	mkdir -p $SOURCE-$VERSION-build $DESTDIR/usr/lib
 	cd $SOURCE-$VERSION-build
 	
 	# NOTE: DESTDIR not handled correctly; have to fudge --prefix
