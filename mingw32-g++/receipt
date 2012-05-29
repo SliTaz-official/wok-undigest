@@ -3,7 +3,7 @@
 PACKAGE="mingw32-g++"
 SOURCE="gcc-g++"
 VERSION="3.4.5-20060117-2"
-CATEGORY="development"
+CATEGORY="meta"
 SHORT_DESC="MinGW32 c++ sources (empty package)."
 MAINTAINER="gokhlayeh@mailoo.org"
 TARBALL="$SOURCE-$VERSION-src.tar.gz"
