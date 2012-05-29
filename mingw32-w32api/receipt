@@ -26,19 +26,18 @@ compile_rules()
 		return 1
 	fi
 
+	find $src -name 'Makefile*' | xargs sed -i "s|^inst_.*:= *|&$DESTDIR/|"
 	rm -f -r $src/binutils
 	mkdir -p $SOURCE-$VERSION-build $DESTDIR/usr/lib
 	cd $SOURCE-$VERSION-build
 	
 	# NOTE: DESTDIR not handled correctly; have to fudge --prefix
 	$src/configure \
-		--prefix=/usr \
+		--prefix=/usr/$MINGW32_TARGET \
 		--host=$MINGW32_TARGET \
 		--build=$BUILD_HOST &&
 	make CFLAGS="-O2 -mms-bitfields -march=${TARGET_CPU-i386}" LDFLAGS="-s" &&
-	find $src -name '*a' | while read lib; do
-		cp -a $lib $DESTDIR/usr/lib
-	done
+	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -46,6 +45,7 @@ genpkg_rules()
 {
 	mkdir -p $fs$MINGW32_ROOT
 	cp -a $_pkg/usr/lib $fs$MINGW32_ROOT
+	chown -R root.root $fs
 }
 
 # Rules to setup after installation
