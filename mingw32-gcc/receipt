@@ -10,7 +10,7 @@ DEPENDS="glibc-base mingw32-binutils mingw32-w32api-headers \
 mingw32-runtime-headers mingw32-w32api mingw32-runtime"
 BUILD_DEPENDS="slitaz-toolchain bison flex mingw32-binutils \
 mingw32-runtime-headers mingw32-w32api-headers mingw32-gcc-c \
-mingw32-w32api mingw32-runtime mingw32-g++ mingw32-ada"
+mingw32-w32api mingw32-runtime"
 PROVIDE="mingw32-gcc-c"
 TARBALL="$SOURCE-$VERSION-src.tar.gz"
 WEB_SITE="http://www.mingw.org/"
@@ -31,15 +31,14 @@ compile_rules()
 		return 1
 	fi
 
-	report open-bloc
-
-	for s in mingw32-g++ mingw32-ada; do
-		tazwok get-src $s --target=$PACKAGE-$VERSION && continue
-		report close-bloc
+	for tgz in gcc-g++-$VERSION-src.tar.gz gcc-ada-$VERSION-src.tar.gz; do
+		[ -s $SOURCES_REPOSITORY/$tgz ] ||
+			wget -P $SOURCES_REPOSITORY $MINGW32_URL/$tgz
+		[ -s $SOURCES_REPOSITORY/$tgz ] &&
+			tar xzf $SOURCES_REPOSITORY/$tgz && continue
+		echo "Can't download $MINGW32_URL/$tgz abort."
 		return 1
 	done
-
-	report step "Running compilation"
 
 	rm -f -r $src/binutils
 	mkdir -p $SOURCE-$VERSION-build
@@ -60,9 +59,7 @@ compile_rules()
 		--enable-sjlj-exceptions \
 		$CONFIGURE_ARGS &&
 	make -j 4 CFLAGS="-O2 -fomit-frame-pointer" LDFLAGS="-s"  &&
-	make DESTDIR=$src/_pkg install &&
-	report close-bloc
-	} || { report close-bloc; return 1; }
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
