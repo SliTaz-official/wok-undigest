@@ -32,11 +32,13 @@ compile_rules()
 	
 	# NOTE: DESTDIR not handled correctly; have to fudge --prefix
 	$src/configure \
-		--prefix=$src/_pkg/usr \
+		--prefix=/usr \
 		--host=$MINGW32_TARGET \
 		--build=$BUILD_HOST &&
 	make CFLAGS="-O2 -mms-bitfields -march=${TARGET_CPU-i386}" LDFLAGS="-s" &&
-	make DESTDIR=$src/_pkg install
+	find $src -name '*a' | while read lib; do
+		cp -a $lib $DESTDIR/usr/lib
+	done
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
