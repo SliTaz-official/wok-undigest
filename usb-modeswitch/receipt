@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="usb-modeswitch"
-VERSION="1.1.2"
-PACKAGE_DATA="${PACKAGE}-data-20100418"
+VERSION="1.2.3"
+PACKAGE_DATA="${PACKAGE}-data-20120529"
 CATEGORY="network"
 MAINTAINER="jozee@slitaz.org"
 SHORT_DESC="Activating switchable USB devices on Linux."
