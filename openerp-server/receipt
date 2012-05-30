@@ -8,7 +8,7 @@ MAINTAINER="pascal.bellard@slitaz.org"
 SOURCE="openerp"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://openerp.com/"
-WGET_URL="http://nightly.openerp.com/${VERSION%[-r]*}/release/$TARBALL"
+WGET_URL="http://nightly.openerp.com/${VERSION%[-r]*}/releases/$TARBALL"
 
 DEPENDS="python python-simplejson psycopg2 python-lxml python-pyyaml \
 python-reportlab python-mako python-markupsafe python-pychart \

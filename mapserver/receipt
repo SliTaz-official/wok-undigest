@@ -10,7 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.osgeo.org/mapserver/$TARBALL"
 
 DEPENDS="giflib libgd"
-BUILD_DEPENDS="giflib-dev libgd-dev proj-dev postgresql-dev curl-dev geos-dev"
+BUILD_DEPENDS="giflib-dev libgd-dev proj-dev postgresql-dev curl-dev geos-dev \
+libpng-dev jpeg-dev"
 
 # Rules to configure and make the package.
 compile_rules()
