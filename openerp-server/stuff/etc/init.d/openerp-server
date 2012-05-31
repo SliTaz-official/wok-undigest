@@ -30,6 +30,7 @@ case "$1" in
 			echo "$NAME already running (PID: `cat $PIDFILE`)."
 			exit 1
 		fi
+		/etc/init.d/postgresql start
 		echo -n "Starting $DESC: $NAME... "
 		su -c "$DAEMON $OPTIONS" openerp &
 		status
