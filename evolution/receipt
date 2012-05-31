@@ -9,7 +9,7 @@ DEPENDS="glib libgnomecanvas libbonobo libglade"
 BUILD_DEPENDS="gnome-desktop gnome-doc-utils-dev GConf-dev glib-dev \
 libgnomecanvas-dev libbonobo-dev libglade-dev shared-mime-info-dev \
 libbonoboui-dev libgnomeui-dev gnome-desktop-dev evolution-data-server-dev \
-gnome-icon-theme libgtkhtml-dev"
+gnome-icon-theme libgtkhtml-dev bison flex"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://projects.gnome.org/evolution/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
