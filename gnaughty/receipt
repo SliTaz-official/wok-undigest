@@ -18,7 +18,7 @@ compile_rules()
 	export LDFLAGS="-Wl,--copy-dt-needed-entries -lgthread-2.0"
 	sed -i 's|curl/types|curl/curl|' src/http.c
 	./configure --prefix=/usr &&
-	make &&	make install
+	make &&	make -j 1 install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
