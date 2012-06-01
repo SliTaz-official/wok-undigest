@@ -1,11 +1,11 @@
 # SliTaz package receipt.
 
 PACKAGE="kdelibs"
-VERSION="4.6.0"
+VERSION="4.8.3"
 CATEGORY="x-window"
 SHORT_DESC="The KDE library."
 MAINTAINER="pankso@slitaz.org"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.kde.org/"
 WGET_URL="http://mirrors.isc.org/pub/kde/stable/$VERSION/src/$TARBALL"
 
