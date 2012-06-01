@@ -15,12 +15,14 @@ DEPENDS="eina eet ecore evas efreet edje edbus emotion elementary ethumb \
 libvalhalla libcurl xine-lib libexif alsa-lib libplayer"
 BUILD_DEPENDS="mercurial automake eina-dev eet-dev ecore-dev evas-dev efreet-dev \
 edje-dev edbus-dev emotion-dev elementary-dev ethumb-dev libvalhalla-dev curl-dev \
-xine-lib-dev libexif-dev alsa-lib-dev libplayer-dev libxml2-dev"
+xine-lib-dev libexif-dev alsa-lib-dev libplayer-dev libxml2-dev libtool expat-dev \
+jpeg-dev glib-dev ffmpeg-svn"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	sed -i 's|curl/types|curl/curl|' src/bin/url_utils.c
 	export CFLAGS="-I/usr/include/edje-1 -I/usr/include/eina-1 \
 -I/usr/include/eina-1/eina -I/usr/include/evas-1 -I/usr/include/ecore-1 \
 -I/usr/include/elementary-0 -I/usr/include/eet-1 -I/usr/include/efreet-1 \
