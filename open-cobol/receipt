@@ -9,8 +9,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.opencobol.org/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="gmp ncurses gcc"
-BUILD_DEPENDS="$DEPENDS ncurses-dev  bison flex"
+DEPENDS="gmp ncurses db gcc"
+BUILD_DEPENDS="$DEPENDS ncurses-dev gmp-dev db-dev bison flex"
 
 # Rules to configure and make the package.
 compile_rules()
