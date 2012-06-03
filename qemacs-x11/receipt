@@ -17,7 +17,7 @@ TAGS="editor"
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr --enable-tiny $CONFIGURE_ARGS && make CC=gcc-3
+	./configure --prefix=/usr $CONFIGURE_ARGS && make CC=gcc-3
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
