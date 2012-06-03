@@ -1,14 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="qemacs"
+PACKAGE="qemacs-x11"
+SOURCE="qemacs"
 VERSION="0.3.2"
 CATEGORY="development"
-SHORT_DESC="Light emacs clone."
+SHORT_DESC="Light emacs clone with X11 support."
 MAINTAINER="pascal.bellard@slitaz.org"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://bellard.org/$PACKAGE/"
-DEPENDS=""
-BUILD_DEPENDS="gcc3"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://bellard.org/$SOURCE/"
+DEPENDS="xorg-libX11 xorg-libXext xorg-libXv libxcb xorg-libXau xorg-libXdmcp"
+BUILD_DEPENDS="gcc3 xorg-libX11-dev xorg-libXext-dev xorg-libXv-dev"
 WGET_URL="${WEB_SITE}$TARBALL"
 TAGS="editor"
 
