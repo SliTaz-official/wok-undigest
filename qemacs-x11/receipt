@@ -11,6 +11,7 @@ WEB_SITE="http://bellard.org/$SOURCE/"
 DEPENDS="xorg-libX11 xorg-libXext xorg-libXv libxcb xorg-libXau xorg-libXdmcp"
 BUILD_DEPENDS="gcc3 xorg-libX11-dev xorg-libXext-dev xorg-libXv-dev"
 WGET_URL="${WEB_SITE}$TARBALL"
+PROVIDE="qemacs"
 TAGS="editor"
 
 # Rules to configure and make the package.

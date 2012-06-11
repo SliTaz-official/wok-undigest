@@ -2,7 +2,7 @@
 
 PACKAGE="ovzkernel"
 VERSION="2.6.32"
-CATEGORY="system"
+CATEGORY="base-system"
 SHORT_DESC="Vanilla Linux Kernel for OpenVZ"
 MAINTAINER="erjo@slitaz.org"
 DEPENDS="depmod"
