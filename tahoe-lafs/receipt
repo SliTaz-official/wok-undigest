@@ -8,6 +8,7 @@ MAINTAINER="pascal.bellard@slitaz.org"
 TARBALL="allmydata-tahoe-$VERSION.zip"
 WEB_SITE="https://tahoe-lafs.org/"
 WGET_URL="${WEB_SITE}source/$PACKAGE/releases/$TARBALL"
+TAGS="filesystem backup"
 
 DEPENDS="python setuptools python-simplejson zopeinterface twisted pyopenssl \
 pycrypto     zfec foolscap pyasn1 mock pycryptopp"
