@@ -21,6 +21,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir $fs/var/www/$PACKAGE
+	mkdir -p $fs/var/www/$PACKAGE
 	cp $src/*.php $fs/var/www/$PACKAGE/index.php
 }
