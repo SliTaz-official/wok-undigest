@@ -9,9 +9,9 @@ WEB_SITE="mapserver.org"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.osgeo.org/mapserver/$TARBALL"
 
-DEPENDS="giflib libgd"
+DEPENDS="giflib libgd jpeg libpng"
 BUILD_DEPENDS="giflib-dev libgd-dev proj-dev postgresql-dev curl-dev geos-dev \
-libpng-dev jpeg-dev"
+libpng-dev jpeg-dev tiff"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,7 +21,7 @@ compile_rules()
 		--with-proj \
 		--with-postgis \
 		--with-geos \
-	$CONFIGURE_ARGS && make && make install
+	$CONFIGURE_ARGS && make
 	
 	#~ 
 	#~ \
@@ -36,5 +36,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $install/* $fs
+	mkdir -p $fs/usr/share/mapserver
+	cp -a $src/mapserv $fs/usr/share/mapserver
 }
