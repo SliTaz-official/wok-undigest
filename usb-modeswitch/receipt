@@ -7,8 +7,8 @@ CATEGORY="network"
 MAINTAINER="jozee@slitaz.org"
 SHORT_DESC="Activating switchable USB devices on Linux."
 WEB_SITE="http://www.draisberghof.de/usb_modeswitch/"
-DEPENDS="libusb"
-BUILD_DEPENDS="gcc make libusb-dev "
+DEPENDS="libusb-compat"
+BUILD_DEPENDS="gcc make libusb-compat-dev "
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$WEB_SITE/$TARBALL"
 TAGS="3g-modem"
@@ -31,9 +31,9 @@ compile_rules()
 		tar -xjf $SOURCES_REPOSITORY/$PACKAGE_DATA.tar.bz2
 	  
 	# download setup config
-	#[ -s  $SOURCES_REPOSITORY/usb_modeswitch.setup ] ||
-	#	wget -P $SOURCES_REPOSITORY $WEB_SITE/usb_modeswitch.setup	
-	
+	[ -s  $SOURCES_REPOSITORY/usb_modeswitch.setup ] ||
+		wget -O $SOURCES_REPOSITORY/usb_modeswitch.setup \
+			$WEB_SITE/device_reference.txt
 }
 	
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -48,5 +48,5 @@ genpkg_rules()
 	cp -a $_pkg/lib/udev/* $fs/lib/udev
 	cp -a $src/$PACKAGE_DATA/usb_modeswitch.d/* $fs/etc/usb_modeswitch.d
 	cp -a $src/$PACKAGE_DATA/40-usb_modeswitch.rules $fs/lib/udev/rules.d
-	#cp -a $SOURCES_REPOSITORY/usb_modeswitch.setup $fs/etc/
+	cp -a $SOURCES_REPOSITORY/usb_modeswitch.setup $fs/etc/
 }
