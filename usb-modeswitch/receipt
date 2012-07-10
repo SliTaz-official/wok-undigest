@@ -2,7 +2,7 @@
 
 PACKAGE="usb-modeswitch"
 VERSION="1.2.3"
-PACKAGE_DATA="${PACKAGE}-data-20120529"
+PACKAGE_DATA="${PACKAGE}-data-20120531"
 CATEGORY="network"
 MAINTAINER="jozee@slitaz.org"
 SHORT_DESC="Activating switchable USB devices on Linux."
@@ -20,16 +20,19 @@ compile_rules()
 {
 	cd $src/
 	make clean 
-	mkdir -p $PWD/_pkg/etc $PWD/_pkg/lib/udev/usb_modeswitch $PWD/_pkg/usr/share/man/man1
+	mkdir -p $DESTDIR/etc $DESTDIR/lib/udev/usb_modeswitch $DESTDIR/usr/share/man/man1
 	make &&
-	make DESTDIR=$PWD/_pkg install
+	make DESTDIR=$DESTDIR install
 	
 	 # download data
-	[ -d $PACKAGE_DATA ] || wget $WEB_SITE/${PACKAGE_DATA}.tar.bz2 
-	[ -d $PACKAGE_DATA ] || tar -xjf ${PACKAGE_DATA}.tar.bz2
+	[ -s $SOURCES_REPOSITORY/$PACKAGE_DATA.tar.bz2 ] ||
+		wget -P $SOURCES_REPOSITORY $WEB_SITE/$PACKAGE_DATA.tar.bz2 
+	[ -d $PACKAGE_DATA ] ||
+		tar -xjf $SOURCES_REPOSITORY/$PACKAGE_DATA.tar.bz2
 	  
 	# download setup config
-	[ -f  usb_modeswitch.setup ] || wget $WEB_SITE/usb_modeswitch.setup	
+	#[ -s  $SOURCES_REPOSITORY/usb_modeswitch.setup ] ||
+	#	wget -P $SOURCES_REPOSITORY $WEB_SITE/usb_modeswitch.setup	
 	
 }
 	
@@ -45,5 +48,5 @@ genpkg_rules()
 	cp -a $_pkg/lib/udev/* $fs/lib/udev
 	cp -a $src/$PACKAGE_DATA/usb_modeswitch.d/* $fs/etc/usb_modeswitch.d
 	cp -a $src/$PACKAGE_DATA/40-usb_modeswitch.rules $fs/lib/udev/rules.d
-	cp -a $src/usb_modeswitch.setup $fs/etc/
+	#cp -a $SOURCES_REPOSITORY/usb_modeswitch.setup $fs/etc/
 }
