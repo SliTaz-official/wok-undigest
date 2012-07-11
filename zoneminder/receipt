@@ -11,7 +11,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://www2.zoneminder.com/downloads/$TARBALL"
 
 DEPENDS="mysql jpeg bzlib zlib ffmpeg-svn x264 perl perl-dbi-dbd \
-perl-dbd-mysql perl-time-hires perl-getopt-long perl-date-manip perl-libwww"
+perl-dbd-mysql perl-time-hires perl-getopt-long perl-date-manip perl-libwww \
+perl-archive-zip"
 BUILD_DEPENDS="mysql-dev jpeg-dev ffmpeg-svn-dev gnutls-dev \
 linux-api-headers $DEPENDS"
 
@@ -21,6 +22,7 @@ compile_rules()
 	cd $src
 	sed -i 's/.*fcntl.h.*/#include <limits.h>\n&/' src/zm_event.cpp \
 		src/zm_local_camera.cpp
+	CXXFLAGS=-D__STDC_CONSTANT_MACROS \
 	./configure --prefix=/usr --infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		--sysconfdir=/etc \
