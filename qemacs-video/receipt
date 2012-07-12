@@ -21,7 +21,9 @@ compile_rules()
 {
 	cd $src
 	ffmpegdir=$(ls -d $WOK/ffmpeg-svn/source/ffmpeg*)
-	./configure --prefix=/usr --with-ffmpegdir=$ffmpegdir \
+	[ -n "$ffmpegdir" ] &&
+	CFLAGS="-I$ffmpegdir" ./configure --prefix=/usr \
+		--with-ffmpegdir=$ffmpegdir \
 		$CONFIGURE_ARGS && make CC=gcc-3
 }
 
