@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="airstrike"
+VERSION="pre6a"
+CATEGORY="games"
+SHORT_DESC="Juego batalla aerea."
+MAINTAINER="arca2@hotmail.com"
+TARBALL="$PACKAGE-$VERSION-src.tar.gz"
+WEB_SITE="http://icculus.org/airstrike/"
+WGET_URL="${WEB_SITE}$TARBALL"
+
+# Packaging for SliTaz by Rene Rivero.
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/airstrike $fs/usr/bin
+	mkdir -p $fs/home/tux
+	cp -ar $src/data $fs/home/tux
+	cp $src/airstrikerc $fs/home/tux
+	mkdir -p $fs/usr/share/applications
+	cp $src/airstrike.desktop $fs/usr/share/applications
+}
+}
