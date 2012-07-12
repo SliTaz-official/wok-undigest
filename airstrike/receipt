@@ -33,4 +33,5 @@ genpkg_rules()
 	sed -i 's|"data\"|"/usr/share/airstrike/data"|' $fs/usr/share/airstrike/airstrikerc
 	mkdir -p $fs/usr/share/applications
 	cp $stuff/airstrike.desktop $fs/usr/share/applications
+	chown -R root.root $fs
 }

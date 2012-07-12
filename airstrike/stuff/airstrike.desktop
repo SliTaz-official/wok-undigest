@@ -3,6 +3,6 @@ Encoding=UTF-8
 Name=Airstrike
 Comment=Battle Air
 Exec=/usr/bin/airstrike
-Icon=/usr/share/icons/hicolor/32x32/apps/airstrike.png
+Icon=/usr/share/airstrike/data/zeppelin-right.png
 Type=Application
 Categories=Application;Game;
