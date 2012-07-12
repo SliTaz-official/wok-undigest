@@ -19,20 +19,18 @@ compile_rules()
 {
 	cd $src
 	sed -i 's/-lSDL_image/& -lm/' src/Makefile
+	sed -i 's|"airstrikerc"|"/usr/share/airstrike/airstrikerc"|' src/config.h
+	sed -i 's|"data/|"/usr/share/airstrike/data/|g' src/airstrike.c
 	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/bin $fs/usr/share/airstrike $fs/usr/share/applications
 	cp $src/airstrike $fs/usr/bin
-	mkdir -p $fs/home/tux
-	cp -ar $src/data $fs/home/tux/airstrike-data
-	cp $src/airstrikerc $fs/home/tux/.airstrikerc
-	sed -i 's|"data\"|"/home/tux/airstrike-data"|' $fs/home/tux/.airstrikerc
-	ln -s airstrike-data $fs/home/tux/data # To fix...
-	chown -R 1000.100 $fs/home/tux
+	cp -ar $src/data $src/airstrikerc $fs/usr/share/airstrike
+	sed -i 's|"data\"|"/usr/share/airstrike/data"|' $fs/usr/share/airstrike/airstrikerc
 	mkdir -p $fs/usr/share/applications
 	cp $stuff/airstrike.desktop $fs/usr/share/applications
 }
