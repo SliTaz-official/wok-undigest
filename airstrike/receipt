@@ -30,7 +30,7 @@ genpkg_rules()
 	mkdir -p $fs/home/tux
 	cp -ar $src/data $fs/home/tux/airstrike-data
 	cp $src/airstrikerc $fs/home/tux/.airstrikerc
-	sed -i "s|'\"data\"'|'\"/home/tux/airstrike-data\"'|" $fs/home/tux/.airstrikerc
+	sed -i 's|"data\"|"/home/tux/airstrike-data"|' $fs/home/tux/.airstrikerc
 	chown -R 1000.100 $fs/home/tux
 	mkdir -p $fs/usr/share/applications
 	cp $stuff/airstrike.desktop $fs/usr/share/applications
