@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}$TARBALL"
 
 DEPENDS="python"
-BUILD_DEPENDS="python"
+BUILD_DEPENDS="python-dev"
 
 # Rules to configure and make the package.
 compile_rules()
