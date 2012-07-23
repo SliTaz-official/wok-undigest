@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="powermanga"
+VERSION="0.80"
+CATEGORY="games"
+SHORT_DESC="Space War"
+MAINTAINER="arca2@hotmail.com"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="http://linux.tlk.fr/games/Powermanga/"
+WGET_URL="http://linux.tlk.fr/games/Powermanga/download/$TARBALL"
+
+DEPENDS="libsdl-mixer zlib"
+BUILD_DEPENDS="libsdl-dev zlib-dev libsdl-mixer-dev"
+
+# Packaging for SliTaz by Rene Rivero.
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's|SDL_mixer.h|SDL/SDL_mixer.h|' src/sdl_mixer.cpp
+	sed -i '239,243 s|^|// |' src/sdl_mixer.cpp
+	./configure && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/games/powermanga
+	cp $src/powermanga $fs/usr/bin
+	cp -ar $src/src $src/texts $src/sounds $src/graphics $src/powermanga $fs/usr/share/games/powermanga
+	mkdir -p $fs/usr/share/applications
+	cp $stuff/power-manga.png $fs/usr/share/applications
+	cp $stuff/powermanga.desktop $fs/usr/share/applications
+	chown -R root.root $fs
+}
+
