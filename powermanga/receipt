@@ -27,9 +27,10 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share/applications
-	cp -a $_pkg/var $fs
-	cp -a $_pkg/usr/games $fs/usr
-	cp -a $_pkg/usr/share/games $fs/usr/share
+	cp -a $install/var $fs
+	cp -a $install/usr/games $fs/usr
+	cp -a $install/usr/share/games $fs/usr/share
+	cp -a $src/texts $fs/usr/share/games/powermanga
 	cp $stuff/power-manga.png $fs/usr/share/games/powermanga
 	cp $stuff/powermanga.desktop $fs/usr/share/applications
 	chown -R root.root $fs

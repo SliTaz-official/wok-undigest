@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=PowerManga
 Comment=Space War
-Exec=/usr/bin/powermanga
+Exec=/usr/games/powermanga
 Icon=/usr/share/games/powermanga/power-manga.png
 Type=Application
 Categories=Application;Game;
