@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=PowerManga
+Comment=Space War
+Exec=/usr/bin/powermanga
+Icon=/usr/share/applications/power-manga.png
+Type=Application
+Categories=Application;Game;
