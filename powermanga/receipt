@@ -26,11 +26,11 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin $fs/usr/share/games/powermanga
-	cp $src/powermanga $fs/usr/bin
-	cp -ar $src/src $src/texts $src/sounds $src/graphics $src/powermanga $fs/usr/share/games/powermanga
 	mkdir -p $fs/usr/share/applications
-	cp $stuff/power-manga.png $fs/usr/share/applications
+	cp -a $_pkg/var $fs
+	cp -a $_pkg/usr/games $fs/usr
+	cp -a $_pkg/usr/share/games $fs/usr/share
+	cp $stuff/power-manga.png $fs/usr/share/games/powermanga
 	cp $stuff/powermanga.desktop $fs/usr/share/applications
 	chown -R root.root $fs
 }
