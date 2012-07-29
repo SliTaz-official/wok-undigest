@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="safecopy"
+VERSION="1.7"
+CATEGORY="misc"
+SHORT_DESC="data recovery tool - extract as much data as possible."
+MAINTAINER="pascal.bellard@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://safecopy.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr --mandir=/usr/share/man \
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
