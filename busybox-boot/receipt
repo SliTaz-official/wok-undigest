@@ -14,7 +14,7 @@ CONFIG_FILES=""
 genpkg_rules()
 {
 	jslinux=false
-	mkdir -p $fs/bin $fs/dev/pts $fs/proc $fs/sys $fs/tmp
+	mkdir -p $fs/bin $fs/sbin $fs/dev/pts $fs/proc $fs/sys $fs/tmp
 	cp -a $src/busybox-static $fs/bin/busybox
 	mknod -m 660 $fs/dev/console c 5 1
 	mknod -m 771 $fs/dev/null c 1 3
@@ -28,7 +28,6 @@ genpkg_rules()
 #!/bin/busybox sh
 
 for i in \$(busybox --list) ; do busybox ln /bin/busybox /bin/\$i; done
-ln -s bin /sbin
 
 export PATH=/bin
 export HOME=/
@@ -39,7 +38,7 @@ mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devpts none /dev/pts
 
-TTY=\$(tty) 2>/dev/null
+TTY=\$(tty 2>/dev/null)
 TTY=\${TTY:-/dev/tty1}
 EOT
 	$jslinux && cat >> $fs/init <<EOT
@@ -57,11 +56,12 @@ while true; do
 done
 EOT
 	chmod +x $fs/init
+	ln $fs/init $fs/sbin/init
 }
 
 pre_install()
 {
-	rm -rf $1/usr $1/bin $1/sbin
+	rm -rf $1/bin $1/sbin
 }
 
 post_install()
