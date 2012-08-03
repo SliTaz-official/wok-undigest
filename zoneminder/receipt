@@ -42,4 +42,6 @@ genpkg_rules()
 {
 	cp -a $_pkg/* $stuff/* $fs
 	cp $src/db/zm_create.sql $fs/usr/share/zoneminder
+	chown -R root.root $fs/usr/share/zoneminder/zm_create.sql \
+		$fs/usr/lib/perl $fs/etc/*.d/zoneminder
 }

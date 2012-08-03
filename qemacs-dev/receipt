@@ -15,5 +15,6 @@ genpkg_rules()
 	for i in cutils.h display.h qe.h qeconfig.h qestyles.h ; do
 		cp -a $src/$i $fs/usr/include/qemacs
 	done
+	chown -R root.root $fs
 }
 

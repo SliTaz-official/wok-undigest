@@ -58,4 +58,5 @@ genpkg_rules()
 	cd ${fs}${CROSS_PREFIX}/$CROSS_TARGET
 	mv lib/ldscripts ../lib
 	rmdir lib && ln -s ../lib .
+	chown -R root.root $fs
 }
