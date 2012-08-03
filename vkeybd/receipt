@@ -31,5 +31,6 @@ genpkg_rules()
 	# copy .desktop file and pixmap
 	cp -a $src/vkeybd.desktop $fs/usr/share/applications
 	cp -a $src/pixmaps/vkeybd_48x48.png $fs/usr/share/pixmaps	
+	chown -R root.root $fs
 }
 
