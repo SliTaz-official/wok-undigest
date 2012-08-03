@@ -17,6 +17,7 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/share/timidity
 	cp -a $src $fs/usr/share/timidity/freepats
+	chown -R root.root $fs/usr/share/timidity/freepats
 }
 
 post_install()
@@ -29,3 +30,7 @@ source /usr/share/timidity/freepats/freepats.cfg
 EOF
 }
 
+post_remove()
+{
+	sed -i '/freepats/d' $1/usr/share/timidity/timidity.cfg
+}
