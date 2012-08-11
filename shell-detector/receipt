@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="git|git://github.com/emposha/PHP-Shell-Detector.git"
 
 DEPENDS="php"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="git"
 
 # Rules to configure and make the package.
 compile_rules()
