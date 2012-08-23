@@ -22,7 +22,8 @@ compile_rules()
 	cd $src/usr/src/nv/
 	# Only use .unblocked_ioctl since 2.6.36
 	sed -i 's|\.ioctl|// &|' nv.c
-	make SYSSRC="/usr/src/linux" module 2>&1 | sed s'/ERROR:/error:/'
+	make SYSSRC="/usr/src/linux" module 2>&1 | sed s'/ERROR:/error:/' &&
+	xz nvidia.ko
 }
 	
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -35,9 +36,8 @@ genpkg_rules()
 	mkdir -p $fs/usr/share/doc/$PACKAGE 
 	
 	# Compress and install module
-        cp $src/usr/src/nv/nvidia.ko \
+        cp $src/usr/src/nv/nvidia.ko.xz \
                          $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/
-	xz $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko
         chown root $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.xz     
 	chmod 0644 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/nvidia.ko.xz      
 		
