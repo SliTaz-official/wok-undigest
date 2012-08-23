@@ -13,7 +13,7 @@ RUN_OPTS="--extract $PACKAGE-$VERSION"
 
 DEPENDS="xorg-server mesa mesa-dri libdrm linux-drm fontconfig linux-agp \
 xorg-libSM xorg-libXi xorg-libXcursor"
-BUILD_DEPENDS="linux xorg-server-dev mesa-dev libdrm-dev linux-module-headers"
+BUILD_DEPENDS="linux xz xorg-server-dev mesa-dev libdrm-dev linux-module-headers"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -47,10 +47,11 @@ genpkg_rules()
 		$fs/etc
 	
 	# Compress and install module
-	lzma e $src/common/lib/modules/fglrx/build_mod/fglrx.ko \
-			$fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko.gz
-	chown root $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko.gz
-	chmod 0644 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko.gz	
+	cp $src/common/lib/modules/fglrx/build_mod/fglrx.ko \
+			$fs/lib/modules/$kvers-slitaz/kernel/drivers/video/
+	xz $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko
+	chown root $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko.xz
+	chmod 0644 $fs/lib/modules/$kvers-slitaz/kernel/drivers/video/fglrx.ko.xz	
 	
 	cp -a $src/ATI_LICENSE.TXT $fs/usr/share/licenses/$PACKAGE
 	
