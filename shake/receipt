@@ -16,7 +16,7 @@ BUILD_DEPENDS="cmake attr attr-dev help2man"
 compile_rules()
 {
 	cd $src/build
-	cmake .. &&
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make &&
 	make DESTDIR=$DESTDIR install
 }
