@@ -10,7 +10,7 @@ WEB_SITE="http://vleu.net/shake/"
 WGET_URL="http://download.savannah.nongnu.org/releases/$PACKAGE/$TARBALL"
 SUGGESTED="defrag"
 
-BUILD_DEPENDS="cmake attr attr-dev"
+BUILD_DEPENDS="cmake attr attr-dev help2man"
 
 # Rules to configure and make the package.
 compile_rules()
