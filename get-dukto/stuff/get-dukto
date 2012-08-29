@@ -1,10 +1,8 @@
 #!/bin/sh -e
 
-MISSING_DEPENDS="libQtDeclarative.so.4 (debian=libqt4-declarative)"
-
 PACKAGE="dukto"
 WEB_SITE="http://www.msec.it/blog/?page_id=11"
-DEPENDS="gcc-lib-base libQtGui libQtNetwork libQtCore"
+DEPENDS="gcc-lib-base libQtDeclarative"
 ROOT="$1"
 [ -d "$ROOT" ] || ROOT=""
 
