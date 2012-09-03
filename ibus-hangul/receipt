@@ -21,8 +21,8 @@ compile_rules()
 		--infodir=/usr/share/info \
 		--disable-gtk3 \
 		--with-gtk2-im-module-dir=$(ls -d /usr/lib/gtk-2*/2*/immodules/) \
-		$CONFIGURE_ARGS &amp;&amp;
-	make &amp;&amp; make -k DESTDIR=$DESTDIR install
+		$CONFIGURE_ARGS &&
+	make && make -k DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
