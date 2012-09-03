@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="librsync acl-dev"
+BUILD_DEPENDS="librsync acl-dev openssl-dev"
 
 # Rules to configure and make the package.
 compile_rules()
