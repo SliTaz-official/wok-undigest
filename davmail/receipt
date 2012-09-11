@@ -9,6 +9,7 @@ TARBALL="$PACKAGE-src-$VERSION.tgz"
 WEB_SITE="http://davmail.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
+DEPENDS="java-jre"
 BUILD_DEPENDS="apache-ant java-jdk"
 
 # Rules to configure and make the package.
