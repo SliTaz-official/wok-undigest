@@ -11,7 +11,7 @@ WEB_SITE="http://0install.net/"
 WGET_URL="http://ignum.dl.sourceforge.net/project/zero-install/injector/$VERSION/$TARBALL"
 
 DEPENDS="pygtk xdg-utils"
-BUILD_DEPENDS="python pygobject pcre pcre-dev"
+BUILD_DEPENDS="python pygobject"
 
 # Rules to configure and make the package.
 compile_rules()
