@@ -11,12 +11,14 @@ WEB_SITE="http://code.google.com/p/$PACKAGE/"
 WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
 BUILD_DEPENDS="gtk+-dev openssl-dev libxml2-dev curl-dev libboost-dev \
-icu-dev icu intltool"
+libboost-signals-dev icu-dev icu intltool"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	export LDFLAGS="-Wl,--copy-dt-needed-entries -lX11"
+	sed -i 's|.*curl/types|// &|' lib/bora/basicHttp/http.c
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS && \
 	make && make DESTDIR=$DESTDIR install
