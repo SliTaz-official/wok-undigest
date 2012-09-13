@@ -9,7 +9,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://flashrom.org/"
 WGET_URL="http://download.flashrom.org/releases/$TARBALL"
 
-DEPENDS=""
+DEPENDS="pciutils"
 BUILD_DEPENDS="pciutils-dev zlib-dev libftdi-dev"
 
 # Rules to configure and make the package.
