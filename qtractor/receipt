@@ -13,15 +13,12 @@ DEPENDS="qt4 jack-audio-connection-kit alsa-lib libsndfile ladspa \
 libvorbis libmad libsamplerate liblo"
 BUILD_DEPENDS="qmake Qt4-dev jack-audio-connection-kit-dev alsa-lib-dev \
 libsndfile-dev ladspa-dev libvorbis-dev libmad-dev libsamplerate-dev \
-liblo-dev "
+liblo-dev lilv lv2 "
 
 #extras:
 # librubberband : http://breakfastquay.com/rubberband/
-# libslv2 : http://drobilla.net/software/slv2/ => liblilv
 # dssi : http://dssi.sourceforge.net/
 # vst : http://www.steinberg.net/
-# lv2 : http://lv2plug.in/
-# liblilv : http://drobilla.net/software/lilv/
 
 # Rules to configure and make the package.
 compile_rules()

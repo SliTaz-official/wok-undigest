@@ -13,7 +13,7 @@ DEPENDS="libwebkit libsoup libxml2 sqlite xorg-libXdamage xorg-libXss \
 gcc-lib-base libgnutls"
 BUILD_DEPENDS="python libwebkit-dev libsoup-dev libxml2-dev sqlite-dev \
 intltool libgio-dev dbus-dev dbus-glib-dev pkg-config xorg-libXss-dev \
-xorg-libXdamage-dev xorg-libX11-dev gtk+-dev libgnutls vala"
+xorg-libXdamage-dev xorg-libX11-dev gtk+-dev libgnutls vala librsvg-apps"
 
 # Rules to configure and make the package.
 compile_rules()
