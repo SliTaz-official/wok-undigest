@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="midori"
+VERSION="0.4.7"
+CATEGORY="x-window"
+SHORT_DESC="Light Web Browse using GTK+/WebKit."
+MAINTAINER="pankso@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://software.twotoasts.de/?page=midori"
+WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION:0:3}/$TARBALL"
+
+DEPENDS="libwebkit libsoup libxml2 sqlite xorg-libXdamage xorg-libXss \
+gcc-lib-base libgnutls"
+BUILD_DEPENDS="python libwebkit-dev libsoup-dev libxml2-dev sqlite-dev \
+intltool libgio-dev dbus-dev dbus-glib-dev pkg-config xorg-libXss-dev \
+xorg-libXdamage-dev xorg-libX11-dev gtk+-dev libgnutls vala"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--jobs=4 \
+		--enable-addons \
+		--disable-libnotify \
+		--disable-unique \
+		--disable-hildon &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/share/pixmaps \
+		$fs/usr/share/icons
+	cp -a $install/etc $fs
+	cp $stuff/config $fs/etc/xdg/midori
+	cp $stuff/search $fs/etc/xdg/midori
+	# Midori use sqlite to store bookmarks
+	#cp $stuff/bookmarks.xbel $fs/etc/xdg/midori
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	# Icons
+	cp -a $install/usr/share/icons/hicolor $fs/usr/share/icons
+	rm -rf $fs/usr/share/icons/hicolor/scalable
+	cd $fs/usr/share/pixmaps
+	ln -sf ../icons/hicolor/22x22/apps/midori.png  .
+}
