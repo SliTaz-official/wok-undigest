@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="systemd"
-VERSION="186"
+VERSION="195"
 CATEGORY="base-system"
 SHORT_DESC="System and service manager for Linux."
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,7 @@ PROVIDE="udev"
 
 DEPENDS="dbus kmod libcap util-linux-blkid usbutils pciutils glib acl"
 BUILD_DEPENDS="dbus-dev kmod-dev libcap-dev util-linux-blkid-dev usbutils-dev \
-pciutils-dev gperf glib-dev acl-dev"
+pciutils-dev gperf glib-dev acl-dev intltool pkg-config m4 util-linux-uuid-dev"
 
 #
 # Systemd include udev source and must be splitted. Systemd can replace the full
