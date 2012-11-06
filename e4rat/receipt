@@ -9,20 +9,24 @@ TARBALL="${PACKAGE}_${VERSION}_src.tar.gz"
 WEB_SITE="http://e4rat.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS=""
+DEPENDS="e2fsprogs"
 BUILD_DEPENDS="cmake e2fsprogs-dev libboost-system-dev libboost-filesystem-dev \
-libboost-regex-dev libboost-signals-dev libboost-serialization-dev audit-dev"	# pod2man
+libboost-regex-dev libboost-signals-dev libboost-serialization-dev audit-dev perl"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	cmake . -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=$DESTDIR
-	make
+	cmake -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr . &&
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.   
 genpkg_rules()                                      
 {
-	cp -a $_pkg/* $fs
+	mkdir -p $fs
+	cp -a $install/etc $fs
+	cp -a $install/var $fs
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib $fs/usr
 }
