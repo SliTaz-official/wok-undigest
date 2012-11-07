@@ -11,17 +11,15 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="filesystem"
 
 DEPENDS="fuse db"
-BUILD_DEPENDS="fuse-dev db-dev mhash-dev"
+BUILD_DEPENDS="fuse-dev db-dev mhash-dev tokyocabinet-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-#--with-snappy
 	cd $src
 	./configure --prefix=/usr --infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		--with-berkeleydb \
-		--without-tokyocabinet \
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
@@ -30,5 +28,5 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $_pkg/* $fs
+	cp -a $install/* $fs
 }
