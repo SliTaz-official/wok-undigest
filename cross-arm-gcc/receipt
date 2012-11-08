@@ -12,7 +12,7 @@ WGET_URL="$GNU_MIRROR/gcc/gcc-$VERSION/$TARBALL"
 
 DEPENDS="mpc-library elfutils linux-arm-api-headers cross-arm-binutils"
 BUILD_DEPENDS="linux-arm-api-headers cross-arm-binutils gmp gmp-dev \
-mpfr mpfr-dev mpc-library elfutils-dev"
+mpfr mpfr-dev mpc-library elfutils-dev glibc-dev"
 
 # Cross toolchain variables.
 CROSS_TARGET="arm-slitaz-linux-gnueabi"
