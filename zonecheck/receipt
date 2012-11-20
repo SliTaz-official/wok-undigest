@@ -17,7 +17,7 @@ BUILD_DEPENDS="ruby"
 compile_rules()
 {
 	ruby ./installer.rb all -DPREFIX=$DESTDIR/usr -DETCDIR=$DESTDIR/etc 
-	grep -rl $DESTDIR $DESTDIR | xargs sed -i "s|$DESTDIR||"
+	grep -rl $DESTDIR $DESTDIR/usr/libexec | xargs sed -i "s|$DESTDIR||"
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
