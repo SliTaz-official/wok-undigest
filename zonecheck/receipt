@@ -24,4 +24,7 @@ compile_rules()
 genpkg_rules()
 {
 	cp -a $install/* $fs
+	tmp=$(readlink $fs/usr/bin/zonecheck)
+	rm -f $fs/usr/bin/zonecheck
+	ln -s ${tmp#$install} $fs/usr/bin/zonecheck
 }
