@@ -1,7 +1,7 @@
 [Desktop Entry]
-Encoding=UTF-8
+Type=Application
 Name=GTK+ 3.0 Code demo
+Name[ru]=Демонстрация GTK+ 3.0
 Exec=gtk-demo
 Icon=exec
-Type=Application
 Categories=GTK;Development;
