@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=GTK+ 3.0 Code demo
-Name[ru]=Демонстрация GTK+ 3.0
-Exec=gtk-demo
-Icon=exec
-Categories=GTK;Development;
