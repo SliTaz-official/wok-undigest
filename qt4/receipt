@@ -34,17 +34,17 @@ compile_rules()
 	
 	mkdir -p $src/src/3rdparty/webkit/Source/WebKit2/generated
 
-	for i in "$(grep MessageReceiver.cpp $stuff/missinglist)"; do
+	for i in $(grep MessageReceiver.cpp $stuff/missinglist); do
 	fileprefix=${i%MessageReceiver.cpp}
-	cppfilename="$(find $src/src/3rdparty/webkit/Source/WebKit2  -name $fileprefix.cpp)"
-	dname="$(dirname $cppfilename)"
+	cppfilename=$(find $src/src/3rdparty/webkit/Source/WebKit2  -name $fileprefix.cpp)
+	dname=$(dirname $cppfilename)
 	/usr/bin/python $src/src/3rdparty/webkit/Source/WebKit2/Scripts/generate-message-receiver.py $dname/$fileprefix.messages.in > $src/src/3rdparty/webkit/Source/WebKit2/generated/$i
 	done
 	
-	for i in "$(grep Messages.h $stuff/missinglist)"; do
+	for i in $(grep Messages.h $stuff/missinglist); do
 	fileprefix=${i%Messages.h}
-	hfilename="$(find $src/src/3rdparty/webkit/Source/WebKit2  -name $fileprefix.h)"
-	dname="$(dirname $hfilename)"
+	hfilename=$(find $src/src/3rdparty/webkit/Source/WebKit2  -name $fileprefix.h)
+	dname=$(dirname $hfilename)
 	/usr/bin/python $src/src/3rdparty/webkit/Source/WebKit2/Scripts/generate-messages-header.py $dname/$fileprefix.messages.in > $src/src/3rdparty/webkit/Source/WebKit2/generated/$i
 	done
 	
