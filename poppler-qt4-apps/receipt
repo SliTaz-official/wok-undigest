@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="poppler-qt4-apps"
+VERSION="0.22.0"
+CATEGORY="office"
+SHORT_DESC="Poppler utilities to manipulate PDF file."
+MAINTAINER="pankso@slitaz.org"
+WANTED="poppler-qt4"
+DEPENDS="fontconfig poppler-qt4 cairo zlib libpng gcc-lib-base libQtCore \
+libQtXml libQtGui"
+WEB_SITE="http://poppler.freedesktop.org/"
+
+PROVIDE="poppler-apps"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $_pkg/usr/bin $fs/usr
+	if [ -f $fs/usr/bin/poppler-glib-demo ]; then
+		rm -rf $fs/usr/bin/poppler-glib-demo
+	fi
+}
