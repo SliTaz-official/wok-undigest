@@ -31,7 +31,8 @@ genpkg_rules()
 	cp -a $src/$PACKAGE $fs/usr/bin
 	cp -a $src/.trafshow $fs/etc/trafshow
 
-	# tidy config file
+	# tidy config file and change perms
+	chown root:root $fs/etc/trafshow
 	sed -i 's|*/icmp|#*/icmp|' $fs/etc/trafshow
 	sed -i 's|nfs|#nfs|' $fs/etc/trafshow
 	sed -i 's|513|#513|' $fs/etc/trafshow
