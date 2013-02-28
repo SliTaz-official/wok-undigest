@@ -9,7 +9,7 @@ WEB_SITE="https://launchpad.net/usbmanager"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://launchpad.net/$PACKAGE/1.x-hal/$VERSION/+download/$TARBALL"
 
-DEPENDS=""
+DEPENDS="python dbus-glib dbus-python notify-python"
 BUILD_DEPENDS="python wget"
 
 # Rules to configure and make the package.
@@ -23,5 +23,5 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $install/* $fs
+	cp -a $install/usr $fs
 }
