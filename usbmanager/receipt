@@ -17,7 +17,7 @@ compile_rules()
 {
 	msgfmt $src/locale/ru.po -o $src/locale/ru.mo
 	./setup.py build
-	export DESTDIR=$install && ./setup.py install
+	./setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
