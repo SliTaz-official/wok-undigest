@@ -1,5 +1,5 @@
---- a/Comical Icons/comical.xpm
-+++ b/Comical Icons/comical.xpm
+--- "a/Comical Icons/comical.xpm"
++++ "b/Comical Icons/comical.xpm"
 @@ -1,5 +1,5 @@
  /* XPM */
 -static char *comical_xpm[]={
