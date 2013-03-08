@@ -11,7 +11,7 @@ WEB_SITE="http://www.linuxant.com/drivers"
 WGET_URL="http://www.linuxant.com/drivers/hsf/full/archive/$SOURCE-$VERSION/$TARBALL"
 
 DEPENDS="module-init-tools perl usbutils"
-BUILD_DEPENDS="cpio linux lzma linux-module-headers util-linux-ng-getopt \
+BUILD_DEPENDS="cpio linux lzma linux-module-headers util-linux-getopt \
 usbutils-dev"
 
 # Rules to configure and make the package.
