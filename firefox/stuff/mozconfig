@@ -22,12 +22,14 @@ ac_add_options --enable-application=browser
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-firefox
 
 # Specify arch option and level of optimization:
-ac_add_options --enable-optimize="$CFLAGS"
+ac_add_options --enable-optimize="$CFLAGS -Wno-unused-function \
+-Wno-unused-but-set-variable -Wno-unused-variable -Wno-variadic-macros"
 
 # If you have a multicore machine you can speed up the build by running
 # several jobs at once by uncommenting the following line and setting the
 # value to number of CPU cores:
-mk_add_options MOZ_MAKE_FLAGS="-j$(grep processor /proc/cpuinfo | wc -l)"
+mk_add_options MOZ_MAKE_FLAGS="$MAKEFLAGS"
+
 
 # Reduce the log size:
 ac_add_options --silent

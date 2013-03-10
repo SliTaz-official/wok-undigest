@@ -6,9 +6,8 @@ CATEGORY="network"
 SHORT_DESC="User friendly, secure and fast web browser."
 MAINTAINER="pankso@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.source.tar.bz2"
-WEB_SITE="http://www.mozilla.org/"
+WEB_SITE="http://www.mozilla.org/firefox"
 WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$VERSION/source/$TARBALL"
-CONFIG_FILES="/etc/firefox"
 TAGS="browser"
 
 DEPENDS="gtk+ sqlite dbus dbus-glib glib jpeg xorg-libX11 xorg-libXdamage \
@@ -36,7 +35,7 @@ compile_rules()
 	cp -a $stuff/mozconfig $src
 
 	# build firefox and create a firefox tarball
-	make -f client.mk &&
+	make -f client.mk | egrep -v "c++|nsinstall|python" &&
 	make -C obj-firefox/browser/installer
 
 	# install
