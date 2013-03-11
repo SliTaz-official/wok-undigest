@@ -25,8 +25,7 @@ gstreamer-dev gst-plugins-base-dev"
 #
 # WARNING: 1GB RAM minimum. Additional RAM will significantly decrease
 # build time.
-# At least 600 MB free disk space (1 GB recommended)
-
+# At least 2.5 GB free disk space
 
 compile_rules()
 {
@@ -35,7 +34,8 @@ compile_rules()
 	cp -a $stuff/mozconfig $src
 
 	# build firefox and create a firefox tarball
-	make -f client.mk | egrep -v "c++|nsinstall|python" &&
+	# reducing log size: hide c++, nsinstall, python, Exception (Bug#696763) msgs
+	make -f client.mk | egrep -v "c++|nsinstall|python|Exception" &&
 	make -C obj-firefox/browser/installer
 
 	# install
@@ -55,10 +55,10 @@ compile_rules()
 	chmod -v 755 $install/usr/lib/firefox-$VERSION/libxpcom.so &&
 	# install symlink in /usr/bin
 	mkdir -p $install/usr/bin &&
-	ln -sfv ../lib/firefox-$VERSION/firefox $install/usr/bin &&
+	ln -sf ../lib/firefox-$VERSION/firefox $install/usr/bin &&
 	# install symlink for plugins
 	mkdir -p $install/usr/lib/mozilla/plugins &&
-	ln -sfv ../mozilla/plugins $install/usr/lib/firefox-$VERSION
+	ln -sf ../mozilla/plugins $install/usr/lib/firefox-$VERSION
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
