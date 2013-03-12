@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
 PACKAGE="mozilla-common"
-VERSION="17.0.3esr"
+VERSION="17.0.4esr"
 CATEGORY="network"
-SHORT_DESC="Firefox/Thunderbird common files."
+SHORT_DESC="Mozilla common files."
 MAINTAINER="domcox@slitaz.org"
 WANTED="firefox"
 WEB_SITE="http://www.mozilla.org/"
@@ -11,6 +11,8 @@ WEB_SITE="http://www.mozilla.org/"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
+	# common files to firefox/thunderbird..
+
 	# dictionaries/en-US.aff
 	# dictionaries/en-US.dic
 	printf "Installing dictionaries"
