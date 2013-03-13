@@ -10,7 +10,7 @@ BUILD_DEPENDS="slitaz-toolchain perl wget"
 SOURCE="linux"
 TARBALL="$SOURCE-$VERSION.tar.xz"
 WEB_SITE="http://www.kernel.org/"
-WGET_URL="http://www.kernel.org/pub/linux/kernel/v${VERSION:0:3}/$TARBALL"
+WGET_URL="https://www.kernel.org/pub/linux/kernel/v${VERSION:0:3}/$TARBALL"
 PROVIDE="linux"
 EXTRAVERSION="-i686"
 
@@ -54,7 +54,7 @@ EOT
 	[ -f scripts/setlocalversion ] && mv scripts/setlocalversion scripts/setlocalversion.disabled
 	
 	# Apply kernel config and build
-	make  oldconfig && \
+	yes '' | make  oldconfig && \
 		make LOCALVERSION=${LOCALVERSION} prepare 
 	make bzImage && \
 	make modules
