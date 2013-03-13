@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="gobject-introspection"
+VERSION="1.32.1"
+CATEGORY="development"
+SHORT_DESC="Introspection system for GObject-based libraries"
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://live.gnome.org/GObjectInstrospection"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+HI_VERSION=$(echo $VERSION | cut -d. -f1,2)
+WGET_URL="$GNOME_MIRROR/$PACKAGE/$HI_VERSION/$TARBALL"
+
+DEPENDS="libgio"
+BUILD_DEPENDS="flex bison glib-dev python-dev libgio-dev libffi-dev cairo-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p 
+		$fs/usr/lib \
+		$fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	cp -a $install/usr/lib/gobject-introspection $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

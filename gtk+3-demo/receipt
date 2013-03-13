@@ -20,3 +20,4 @@ genpkg_rules()
 	cp -a $install/usr/share/gtk-3.0 $fs/usr/share
 	cp -a $stuff/gtk-demo.png $fs/usr/share/pixmaps
 }
+
