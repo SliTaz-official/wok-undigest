@@ -11,7 +11,7 @@ WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$VERSION/source
 TAGS="browser"
 
 DEPENDS="gtk+ sqlite dbus dbus-glib glib jpeg xorg-libX11 xorg-libXdamage \
-alsa-lib xorg-libXt libevent libvpx pango nss sqlite mozilla-common \
+alsa-lib xorg-libXt libevent libvpx pango nss sqlite libfirefox \
 gstreamer gst-plugins-base"
 BUILD_DEPENDS="zip libIDL coreutils findutils wireless_tools-dev \
 perl python yasm alsa-lib-dev mesa-dev libevent-dev libvpx-dev dbus-dev \
@@ -34,7 +34,8 @@ compile_rules()
 	cp -a $stuff/mozconfig $src
 
 	# build firefox and create a firefox tarball
-	# reducing log size: hide c++, nsinstall, python, Exception (Bug#696763) msgs
+	# reducing log size: hide c++, nsinstall, python msgs
+	# Msg: Exception... Component returned failure code is a bug (#696763)
 	make -f client.mk | egrep -v "c++|nsinstall|python|Exception" &&
 	make -C obj-firefox/browser/installer
 
