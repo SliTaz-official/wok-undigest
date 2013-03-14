@@ -10,7 +10,7 @@ WEB_SITE="http://www.mozilla.org/"
 WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$VERSION/source/$TARBALL"
 
 DEPENDS="alsa-lib gtk+ zip unzip libevent libvpx nspr nss sqlite \
-dbus dbus-glib glib libnotify mozilla-common"
+dbus dbus-glib glib libnotify libfirefox"
 BUILD_DEPENDS="alsa-lib-dev gtk+-dev bzip2 zip unzip coreutils \
 libevent-dev libvpx-dev nspr-dev nss-dev yasm sqlite-dev \
 dbus-dev dbus-glib-dev libnotify-dev freetype fontconfig tar gzip mesa-dev"
@@ -19,7 +19,7 @@ TAGS="email pop imap smtp"
 # Rules to configure and make the package.
 # WARNING: 1GB RAM minimum. Additional RAM will significantly decrease
 # build time.
-# WARNING: At least 600 MB free disk space (1 GB recommended)
+# At least 2.5 GB free disk space
 
 
 compile_rules()
@@ -33,7 +33,8 @@ compile_rules()
 		$src/build/autoconf/check_debug_ranges.py
 
 	# build and create a thunderbird tarball
-	# reducing log size: hide c++, nsinstall, python, Exception (Bug#696763) msgs
+	# reducing log size: hide c++, nsinstall, python msgs
+	# Msg: Exception... Component returned failure code is a bug (#696763)
 	make -f client.mk | egrep -v "c++|nsinstall|python|Exception" &&
 	make -C obj-thunderbird/mail/installer
 
