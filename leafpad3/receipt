@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="leafpad3"
+VERSION="0.8.18.1"
+CATEGORY="utilities"
+SHORT_DESC="GTK simple text editor"
+MAINTAINER="pankso@slitaz.org"
+SOURCE="leafpad"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://tarot.freeshell.org/leafpad/"
+WGET_URL="http://savannah.nongnu.org/download/leafpad/$TARBALL"
+
+DEPENDS="gtk+3"
+BUILD_DEPENDS="gtk+3-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	chmod +x install-sh
+	./configure \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/pixmaps/*.png $fs/usr/share/pixmaps
+}

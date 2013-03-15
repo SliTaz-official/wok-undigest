@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="vala"
+VERSION="0.19.0"
+CATEGORY="development"
+SHORT_DESC="Compiler for the GObject type system"
+MAINTAINER="mimas@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://live.gnome.org/Vala"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+TAGS="compiler"
+
+DEPENDS="glib"
+BUILD_DEPENDS="flex bison glib-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/share/vala* $fs/usr/share
+	cp -a $install/usr/share/aclocal $fs/usr/share
+}
