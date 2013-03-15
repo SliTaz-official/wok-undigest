@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$BRANCH.tar.bz2"
 WGET_URL="bzr|lp:extended-actions"
 
 DEPENDS="libgee libgio"
-BUILD_DEPENDS="bazaar vala glib-dev libgio-dev libgee-dev"
+BUILD_DEPENDS="bazaar cmake vala glib-dev libgio-dev libgee-dev"
 
 TODO="Setup extended-actions specific to SliTaz"
 

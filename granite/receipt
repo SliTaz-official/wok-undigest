@@ -18,6 +18,9 @@ gobject-introspection-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	# gee-1.0 is old while gee-0.8 is latest ;)
+	sed -i 's|gee-1.0|gee-0.8|g' $(grep -l gee-1.0 $(find . -type f))
+
 	mkdir build &&
 	cd build &&
 	cmake .. -DCMAKE_INSTALL_PREFIX=/usr &&
