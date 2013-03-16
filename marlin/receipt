@@ -61,4 +61,3 @@ genpkg_rules()
 	cp -a $stuff/apps $fs/usr/share/icons/hicolor/16x16
 	cp -a $stuff/marlin.png $fs/usr/share/pixmaps
 }
-
