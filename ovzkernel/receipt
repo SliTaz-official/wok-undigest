@@ -23,14 +23,14 @@ compile_rules()
 	
 	[ -d OpenVZ ] && rm -rf openvz || mkdir OpenVZ	
 	
-	zcat ../stuff/patch-dzhanibekov.1-combined.gz > OpenVZ/patch-dzhanibekov.1-combined.u
-	cp ../stuff/*.ovz OpenVZ
-	cp ../stuff/*.sh OpenVZ
+	zcat $stuff/patch-dzhanibekov.1-combined.gz > OpenVZ/patch-dzhanibekov.1-combined.u
+	cp $stuff/*.ovz OpenVZ
+	cp $stuff/*.sh OpenVZ
 	
 	# Apply patches
 	while read patch_file; do
 		echo "$patch_file" >> OpenVZ/patches
-		#~ cp ../stuff/$patch_file OpenVZ
+		#~ cp $stuff/$patch_file OpenVZ
 		if [ -f done.$patch_file ]; then
 			echo "Skipping $patch_file"
 			continue
@@ -102,7 +102,7 @@ genpkg_rules()
 		$fs/lib/modules/${KERNELRELEASE}
 
 	$src/OpenVZ/list_modules.sh ${KERNELRELEASE} \
-		$(cat stuff/modules-$VERSION.list)  > $src/modules.list
+		$(cat $stuff/modules-$VERSION.list)  > $src/modules.list
     while read module; do
     	dir=$(dirname $module) 
     	[ -d $path/$dir ] || mkdir -p $path/$dir

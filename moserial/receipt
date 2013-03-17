@@ -5,15 +5,15 @@ VERSION="2.32.1"
 CATEGORY="utilities"
 SHORT_DESC="A gtk-based serial console."
 MAINTAINER="domcox@slitaz.org"
-DEPENDS="GConf gnome-doc-utils"
-BUILD_DEPENDS="GConf-dev gnome-doc-utils-dev intltool pkgconfig vala"
-SUGGESTED=""
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://live.gnome.org/moserial"
 WGET_URL="$SF_MIRROR/download/$PACKAGE/$TARBALL"
-WGET_URL="http://ftp.gnome.org/pub/GNOME/sources/moserial/2.32/$TARBALL"
+WGET_URL="http://ftp.gnome.org/pub/GNOME/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 LOCALES="da de es fr pt_BR zh_CN"
-TAGS="console"
+TAGS="serial console"
+
+DEPENDS="GConf gnome-doc-utils gtk+"
+BUILD_DEPENDS="GConf-dev gnome-doc-utils-dev intltool pkgconfig vala gtk+-dev"
 
 # Rules to configure and make the package.
 compile_rules()
