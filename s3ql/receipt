@@ -15,7 +15,7 @@ DEPENDS="sqlite"
 # http://pypi.python.org/pypi/pyliblzma
 # http://code.google.com/p/apsw/
 # http://pypi.python.org/pypi/pycryptopp
-BUILD_DEPENDS="python-dev sqlite-dev"
+BUILD_DEPENDS="python-dev sqlite-dev liblzma-dev fuse-dev attr-dev"
 
 # Rules to configure and make the package.
 compile_rules()
