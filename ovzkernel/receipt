@@ -41,6 +41,8 @@ compile_rules()
 	done <<EOT
 patch-dzhanibekov.1-combined.u
 EOT
+	sed -i 's/m elf_x86_64/m64/;s/m elf_i386/m32/' arch/x86/vdso/Makefile
+	
 	# Prepare to build
 	make mrproper 
 
@@ -56,11 +58,11 @@ EOT
 	# Apply kernel config and build
 	yes '' | make  oldconfig && \
 		make LOCALVERSION=${LOCALVERSION} prepare 
-	make bzImage && \
-	make modules
+	make bzImage &&
+	make modules &&
 	
 	# Install modules and headers
-	make INSTALL_MOD_PATH=$PWD/_pkg modules_install
+	make INSTALL_MOD_PATH=$PWD/_pkg modules_install &&
 	make INSTALL_HDR_PATH=$PWD/_pkg/usr headers_install 
 	
 	# Get kernel release 

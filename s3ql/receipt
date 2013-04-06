@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="s3ql"
+VERSION="1.13.2"
+CATEGORY="network"
+SHORT_DESC="A file system for Google Storage, Amazon S3 or OpenStack."
+MAINTAINER="pascal.bellard@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://code.google.com/p/$PACKAGE/"
+WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
+
+DEPENDS="sqlite"
+# python-llfuse pyliblzma python-apsw pycryptopp 
+# http://code.google.com/p/python-llfuse/
+# http://pypi.python.org/pypi/pyliblzma
+# http://code.google.com/p/apsw/
+# http://pypi.python.org/pypi/pycryptopp
+BUILD_DEPENDS="python-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	python setup.py build &&
+	python setup.py test &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}
