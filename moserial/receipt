@@ -38,7 +38,7 @@ genpkg_rules()
 	cp -a $install/usr/share/icons/hicolor/48x48/apps/moserial.png \
 		$fs/usr/share/pixmaps
 	for locale in $LOCALES; do
-		mv $install/usr/share/locale/$locale $fs/usr/share/locale
+		cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
 	done
 	chown -R root.root $fs
 }
