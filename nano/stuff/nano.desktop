@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=GNU Nano Text Editor
+Name[fr]=Editeur GNU Nano
+Name[ru]=Текстовый редактор GNU Nano
+Comment=Advanced text editor
+Comment[fr]=Editeur de texte avançé
+Comment[ru]=Консольный текстовый редактор
+Exec=/usr/bin/terminal -e nano
+Icon=nano
+Terminal=false
+Categories=Utility;TextEditor;
