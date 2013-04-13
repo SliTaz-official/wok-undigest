@@ -11,7 +11,7 @@ WGET_URL="http://ftp.gnu.org/gnu/nano/$TARBALL"
 TAGS="console text-editor"
 HOST_ARCH="i486 arm"
 
-TRACKER="http://sourcewell.berlios.de/appbyid.php?id=1733"
+TRACKER="http://sourcewell.berlios.de/appbyid.php?id=715"
 VERSION_NOTE="latest development"
 
 DEPENDS="ncursesw"
