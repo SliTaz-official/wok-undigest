@@ -2,7 +2,7 @@
 
 PACKAGE="qemacs-video"
 SOURCE="qemacs"
-VERSION="0.3.2"
+VERSION="0.3.3"
 CATEGORY="development"
 SHORT_DESC="Light emacs clone with video support."
 MAINTAINER="pascal.bellard@slitaz.org"
