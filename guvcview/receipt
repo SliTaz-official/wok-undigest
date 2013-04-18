@@ -9,8 +9,8 @@ TARBALL="${PACKAGE}-src-${VERSION}.tar.gz"
 WEB_SITE="http://guvcview.sourceforge.net/"
 WGET_URL="$SF_MIRROR/project/guvcview/source/$TARBALL"
 
-DEPENDS="gtk+ libsdl"
-BUILD_DEPENDS="gtk+-dev libsdl-dev"
+DEPENDS="gtk+3 libsdl portaudio libv4l ffmpeg udev"
+BUILD_DEPENDS="gtk+3-dev libsdl-dev portaudio-dev libv4l-dev ffmpeg-dev udev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
