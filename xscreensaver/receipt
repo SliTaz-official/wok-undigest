@@ -14,13 +14,15 @@ DEPENDS=""
 BUILD_DEPENDS="bc xorg-libX11-dev xorg-libXmu-dev xorg-libXext-dev \
 xorg-libXinerama-dev xorg-libXi-dev xorg-libXxf86vm-dev xorg-libXrandr-dev \
 gtk+-dev libxml2-dev mesa-dev gdk-pixbuf-dev xorg-libXpm-dev jpeg-dev \
-xorg-libXt-dev "
+xorg-libXt-dev libglade-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS $(pkg-config --libs gtk+-2.0 gdk-pixbuf-xlib-2.0.pc gl)"
-	./configure $CONFIGURE_ARGS && make && make install
+	./configure $CONFIGURE_ARGS &&
+	make && 
+	make install_prefix=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
