@@ -16,8 +16,6 @@ PROVIDE="linux-netfilter"
 genpkg_rules()
 {
     local path
-	src=$WOK/$WANTED/$SOURCE-$VERSION
-	_pkg=$WOK/$WANTED/$SOURCE-$VERSION/_pkg
 	KERNELRELEASE=$( cat $src/include/config/kernel.release 2> /dev/null)
     path=lib/modules/${KERNELRELEASE}/kernel
     mkdir -p $fs/$path
