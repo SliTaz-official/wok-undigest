@@ -42,6 +42,7 @@ compile_rules()
 patch-dzhanibekov.1-combined.u
 EOT
 	sed -i 's/m elf_x86_64/m64/;s/m elf_i386/m32/' arch/x86/vdso/Makefile
+	sed -i 's|video4linux/ ||' Documentation/Makefile 
 	
 	# Prepare to build
 	make mrproper 
