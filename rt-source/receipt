@@ -11,30 +11,27 @@ BUILD_DEPENDS="bzip2 rt-source-patch"
 SOURCE="linux"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 RT_TARBALL="patch-$VERSION$RT_VERSION.bz2"
-WGET_URL="http://www.kernel.org/pub/linux/kernel/v2.6/$TARBALL"
+WGET_URL="ftp://ftp.kernel.org/pub/linux/kernel/v2.6/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	mkdir -p _pkg/$PACKAGE-$VERSION$RT_VERSION
-	mv * _pkg/$PACKAGE-$VERSION$RT_VERSION 2> /dev/null
+	mkdir -p $install/$PACKAGE-$VERSION$RT_VERSION
+	mv * $install/$PACKAGE-$VERSION$RT_VERSION 2> /dev/null
 	# can't extract since its bzip2 only and not tar.bz2
-	if [ ! -f $SOURCE_REPOSITORY/$RT_TARBALL ]; then
-		tazwok get-src rt-source-patch
-	fi
 
 	if [ -f $SOURCE_REPOSITORY/$RT_TARBALL ]; then
 		cp $SOURCE_REPOSITORY/$RT_TARBALL .
 		bunzip2 -d $RT_TARBALL
 	fi
-	cd _pkg/$PACKAGE-$VERSION$RT_VERSION
-	patch -p1 < ../../patch-$VERSION$RT_VERSION
+	cd $install/$PACKAGE-$VERSION$RT_VERSION
+	patch -p1 < $src/patch-$VERSION$RT_VERSION
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr/src/
-	mv $_pkg/$PACKAGE-$VERSION$RT_VERSION $fs/usr/src/
+	mv $install/$PACKAGE-$VERSION$RT_VERSION $fs/usr/src/
 }
