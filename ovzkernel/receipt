@@ -54,7 +54,9 @@ EOT
 	sed -i s/CONFIG_LOCALVERSION_AUTO.*/CONFIG_LOCALVERSION_AUTO=y/ .config 
 	
 	# Disable Source Versio Control detection
-	[ -f scripts/setlocalversion ] && mv scripts/setlocalversion scripts/setlocalversion.disabled
+	[ -f scripts/setlocalversion ] &&
+	cp scripts/setlocalversion scripts/setlocalversion.disabled &&
+	sed -i '1!d' scripts/setlocalversion
 	
 	# Apply kernel config and build
 	yes '' | make  oldconfig && \
@@ -63,18 +65,18 @@ EOT
 	make modules &&
 	
 	# Install modules and headers
-	make INSTALL_MOD_PATH=$PWD/_pkg modules_install &&
-	make INSTALL_HDR_PATH=$PWD/_pkg/usr headers_install 
+	make -j 1 INSTALL_MOD_PATH=$_pkg modules_install 2>&1 | grep -v modules.builtin &&
+	make -j 1 INSTALL_HDR_PATH=$_pkg/usr headers_install 
 	
 	# Get kernel release 
 	KERNELRELEASE=$( cat include/config/kernel.release 2> /dev/null) ; export KERNELRELEASE
 
 	[ -s arch/x86/boot/bzImage ] || return 1
-	mkdir -p $PWD/_pkg/boot 2> /dev/null
-	cp -a  arch/x86/boot/bzImage $PWD/_pkg/boot/vmlinuz-${KERNELRELEASE}
+	mkdir -p $_pkg/boot 2> /dev/null
+	cp -a  arch/x86/boot/bzImage $_pkg/boot/vmlinuz-${KERNELRELEASE}
 	
 	# Compress all modules.
-	$WOK/$PACKAGE/stuff/gztazmod.sh $PWD/_pkg/lib/modules/${KERNELRELEASE}
+	$WOK/$PACKAGE/stuff/gztazmod.sh $_pkg/lib/modules/${KERNELRELEASE}
 	ln System.map System.map-modules
 	ln Module.symvers Module.symvers-modules
 }
