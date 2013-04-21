@@ -20,7 +20,7 @@ compile_rules()
 	mkdir -p $install/$PACKAGE-$VERSION$RT_VERSION
 	mv * $install/$PACKAGE-$VERSION$RT_VERSION 2> /dev/null
 	cd $install/$PACKAGE-$VERSION$RT_VERSION
-	bzcat /patch-* | patch -p1
+	bzcat /tmp/patch-* | patch -p1
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
