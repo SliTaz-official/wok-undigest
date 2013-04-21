@@ -11,7 +11,7 @@ WEB_SITE="http://pypi.python.org/pypi/pyliblzma"
 WGET_URL="http://pypi.python.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
 
 DEPENDS="liblzma python"
-BUILD_DEPENDS="liblzma-dev python-dev"
+BUILD_DEPENDS="liblzma-dev python-dev setuptools"
 
 # Rules to configure and make the package.
 compile_rules()

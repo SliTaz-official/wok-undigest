@@ -9,12 +9,11 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://code.google.com/p/$PACKAGE/"
 WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
-DEPENDS="sqlite python-llfuse"
-# pyliblzma python-apsw pycryptopp 
-# http://pypi.python.org/pypi/pyliblzma
+DEPENDS="sqlite python-llfuse python-pyliblzma python-pycryptopp"
+# python-apsw
 # http://code.google.com/p/apsw/
-# http://pypi.python.org/pypi/pycryptopp
-BUILD_DEPENDS="python-dev sqlite-dev liblzma-dev fuse-dev attr-dev python-llfuse"
+BUILD_DEPENDS="python-dev sqlite-dev liblzma-dev fuse-dev attr-dev \
+python-llfuse python-pyliblzma python-pycryptopp"
 
 # Rules to configure and make the package.
 compile_rules()
