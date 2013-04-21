@@ -19,14 +19,8 @@ compile_rules()
 	cd $src
 	mkdir -p $install/$PACKAGE-$VERSION$RT_VERSION
 	mv * $install/$PACKAGE-$VERSION$RT_VERSION 2> /dev/null
-	# can't extract since its bzip2 only and not tar.bz2
-
-	if [ -f $SOURCE_REPOSITORY/$RT_TARBALL ]; then
-		cp $SOURCE_REPOSITORY/$RT_TARBALL .
-		bunzip2 -d $RT_TARBALL
-	fi
 	cd $install/$PACKAGE-$VERSION$RT_VERSION
-	patch -p1 < $src/patch-$VERSION$RT_VERSION
+	bzcat /patch-* | patch -p1
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

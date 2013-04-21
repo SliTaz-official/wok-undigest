@@ -2,10 +2,17 @@
 
 PACKAGE="rt-source-patch"
 VERSION="2.6.33.9-rt31"
-CATEGORY="meta"
-SHORT_DESC="Realtime Preempation patch (empty package)"
+CATEGORY="development"
+SHORT_DESC="Realtime Preempation patch"
 MAINTAINER="slaxemulator@gmail.com"
 TARBALL="patch-$VERSION.bz2"
 WEB_SITE="ftp://ftp.kernel.org/pub/linux/kernel/projects/rt"
 WGET_URL="$WEB_SITE/${VERSION%.*}/$TARBALL"
-COOK_OPT="!unpack !repack_src !fs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir $fs/tmp
+	cp $SOURCES_REPOSITORY/$TARBALL $fs/tmp
+
+}
