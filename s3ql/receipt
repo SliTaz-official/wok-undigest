@@ -10,8 +10,9 @@ WEB_SITE="http://code.google.com/p/$PACKAGE/"
 WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
 DEPENDS="sqlite python-llfuse python-pyliblzma python-pycryptopp python-apsw"
-BUILD_DEPENDS="python-dev sqlite-dev liblzma-dev fuse-dev attr-dev \
-python-distribute python-llfuse python-pyliblzma python-pycryptopp python-apsw"
+BUILD_DEPENDS="python-dev sqlite-dev liblzma-dev fuse-dev attr-dev rsync \
+python-distribute python-llfuse python-pyliblzma python-pycryptopp python-apsw \
+python-pytest"
 
 # Rules to configure and make the package.
 compile_rules()
