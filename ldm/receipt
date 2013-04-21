@@ -10,14 +10,15 @@ WEB_SITE="http://github.com/LemonBoy/ldm"
 WGET_URL="https://github.com/LemonBoy/ldm/tarball/v${VERSION}"
 
 DEPENDS="udev"
-BUILD_DEPENDS="udev-dev util-linux-mount-dev wget"
+BUILD_DEPENDS="udev-dev util-linux-mount-dev util-linux-blkid wget"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	export LDFLAGS=""
-	make
+	make ldm.o &&
+	cc -o ldm ldm.o -ludev -lmount -lblkid &&
+	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
