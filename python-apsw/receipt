@@ -10,8 +10,8 @@ TARBALL="$SOURCE-$VERSION.zip"
 WEB_SITE="http://code.google.com/p/$PACKAGE/"
 WGET_URL="http://$SOURCE.googlecode.com/files/$TARBALL"
 
-DEPENDS=""
-BUILD_DEPENDS="python-dev"
+DEPENDS="sqlite"
+BUILD_DEPENDS="python-dev sqlite-dev"
 
 # Rules to configure and make the package.
 compile_rules()
