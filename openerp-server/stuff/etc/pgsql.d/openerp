@@ -1,4 +1,0 @@
-#!/bin/sh
-
-su - postgres -c "createuser -s openerp" 2> /dev/null || true
-chmod -x /etc/pgsql.d/openerp

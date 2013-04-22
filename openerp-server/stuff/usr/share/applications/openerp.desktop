@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=OpenERP Web Client
-Icon=openerp
-Exec=browser http://localhost:8069/
-Type=Application
-Categories=Office;
