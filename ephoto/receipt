@@ -1,25 +1,33 @@
 # SliTaz package receipt.
 
 PACKAGE="ephoto"
-VERSION="0.1.1.55225"
+VERSION="0.1.1.0"
 CATEGORY="graphics"
-SHORT_DESC="E17 images manager."
+SHORT_DESC="Enlightenment images manager."
 MAINTAINER="pankso@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://www.enlightenment.org/"
-WGET_URL="http://download.enlightenment.org/snapshots/2010-12-03/$TARBALL"
+WGET_URL="git://git.enlightenment.org/apps/$PACKAGE.git"
+TAGS="e enlightenment photo"
 
-DEPENDS="ecore efreet elementary ethumb"
-BUILD_DEPENDS="ecore-dev efreet-dev elementary-dev ethumb-dev"
+DEPENDS="elementary"
+BUILD_DEPENDS="elementary-dev autoconf automake git libtool subversion"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	./autogen.sh &&
 	./configure $CONFIGURE_ARGS && make && make install
+echo $?
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin $fs/usr
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so $fs/usr/lib
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share $fs/usr
 }
