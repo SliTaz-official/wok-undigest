@@ -16,9 +16,9 @@ BUILD_DEPENDS="elementary-dev autoconf automake git libtool subversion"
 # Rules to configure and make the package.
 compile_rules()
 {
+	touch config.cache-env 
 	./autogen.sh &&
 	./configure $CONFIGURE_ARGS && make && make install
-echo $?
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
