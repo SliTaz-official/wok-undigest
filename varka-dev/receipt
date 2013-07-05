@@ -5,7 +5,7 @@ VERSION="0.1"
 CATEGORY="development"
 SHORT_DESC="Development files for varka"
 MAINTAINER="al.bobylev@gmail.com"
-LICENSE="GNU GPL v3"
+LICENSE="GPL3"
 WEB_SITE="https://launchpad.net/varka"
 
 WANTED="varka"
