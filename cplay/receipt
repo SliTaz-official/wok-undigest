@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="cplay"
+VERSION="1.49"
+CATEGORY="multimedia"
+SHORT_DESC="Cplay is an ncurses front-end for various audio players."
+MAINTAINER="paul@slitaz.org"
+DEPENDS="python ncurses linux-sound"
+BUILD_DEPENDS="python-dev ncurses-dev git bzip2 gettext"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://github.com/res0nat0r/cplay"
+WGET_URL="git|"git://github.com/res0nat0r/cplay
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make
+	make cplayrc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/etc
+	cp -a $src/cplay $fs/usr/bin
+	cp -a $src/cplayrc $fs/etc
+}
+
+post_install()
+{
+	echo "Processing post-install commands..."
+	echo -n "Modprobing snd-pcm-oss for legacy volume controls..."
+	modprobe snd-pcm-oss
+	status
+}
+
