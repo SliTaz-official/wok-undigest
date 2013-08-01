@@ -15,18 +15,17 @@ BUILD_DEPENDS="iptables-dev libnfnetlink-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="-Wl,--copy-dt-needed-entries" 
 	sed -i 's,^EXTIF=eth0,EXTIF=$(route -n | awk ''/^0.0.0.0/ { print $8 }''),' netfilter/iptables_init.sh
 	make -f Makefile.linux config.h
 	KERNEL_VERSION=$(grep ^VERSION= $WOK/linux/receipt | cut -d '"' -f 2)
 	sed -i "s,OS_VERSION.*,OS_VERSION \"Linux/$KERNEL_VERSION\"," config.h
-	make -f Makefile.linux &&
+	make CFLAGS="-DIPTABLES_143" -f Makefile.linux &&
 	INSTALLPREFIX=$DESTDIR/usr make -f Makefile.linux install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/sbin $fs/usr
 }
