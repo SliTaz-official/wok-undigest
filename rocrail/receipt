@@ -5,6 +5,7 @@ VERSION="1.2.6"
 CATEGORY="games"
 SHORT_DESC="A model railroad control system."
 MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL3"
 TARBALL="Rocrail-Act-$VERSION.tar.gz"
 WEB_SITE="http://rocrail.net/"
 WGET_URL="http://launchpad.net/$PACKAGE/$PACKAGE-act/1.2/+download/$TARBALL"
@@ -15,7 +16,7 @@ xcb-util xorg-libICE xorg-libSM xorg-libX11 xorg-libXau xorg-libXcomposite \
 xorg-libXcursor xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes \
 xorg-libXinerama xorg-libXrender xorg-libXxf86vm"
 BUILD_DEPENDS="slitaz-toolchain wxWidgets-dev xorg-libXxf86vm-dev gtk+-dev \
-util-linux-uuid-dev"
+util-linux-uuid-dev coreutils"
 
 # Rules to configure and make the package.
 compile_rules()
