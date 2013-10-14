@@ -5,14 +5,16 @@ VERSION="2.28.1"
 CATEGORY="network"
 SHORT_DESC="Integrated mail, addressbook and calendaring"
 MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://projects.gnome.org/evolution/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
 DEPENDS="glib libgnomecanvas libbonobo libglade"
 BUILD_DEPENDS="gnome-desktop gnome-doc-utils-dev GConf-dev glib-dev \
 libgnomecanvas-dev libbonobo-dev libglade-dev shared-mime-info-dev \
 libbonoboui-dev libgnomeui-dev gnome-desktop-dev evolution-data-server-dev \
 gnome-icon-theme libgtkhtml-dev bison flex"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WEB_SITE="http://projects.gnome.org/evolution/"
-WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -23,13 +25,13 @@ compile_rules()
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+	make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $install/usr/bin $fs/usr
 }
 

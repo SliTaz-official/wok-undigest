@@ -5,6 +5,7 @@ VERSION="4.8.3"
 CATEGORY="development"
 SHORT_DESC="KDElibs include files."
 MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
 WANTED="kdelibs"
 WEB_SITE="http://www.kde.org/"
 
@@ -12,5 +13,5 @@ WEB_SITE="http://www.kde.org/"
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/include $fs/usr
+	cp -a $install/usr/include $fs/usr
 }

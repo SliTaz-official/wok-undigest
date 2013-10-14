@@ -5,10 +5,12 @@ VERSION="2.28.1"
 CATEGORY="network"
 SHORT_DESC="Integrated mail, addressbook and calendaring plugins."
 MAINTAINER="erjo@slitaz.org"
-DEPENDS=""
+LICENSE="LGPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://projects.gnome.org/evolution/download.shtml"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/evolution-data-server/${VERSION%.*}/$TARBALL"
+
+DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
@@ -19,13 +21,13 @@ compile_rules()
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$PWD/_pkg install
+	make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $install/usr/bin $fs/usr
 }
 

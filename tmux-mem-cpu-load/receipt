@@ -5,11 +5,13 @@ VERSION="2.2.1"
 CATEGORY="utilities"
 SHORT_DESC="CPU, RAM memory, and load monitor for use with tmux."
 MAINTAINER="paul@slitaz.org"
-DEPENDS="tmux"
-BUILD_DEPENDS="cmake python bzip2 git"
+LICENSE="Apache"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://github.com/thewtex/tmux-mem-cpu-load"
 WGET_URL="git|git://github.com/thewtex/tmux-mem-cpu-load"
+
+DEPENDS="tmux"
+BUILD_DEPENDS="cmake python bzip2 git"
 
 # Rules to configure and make the package.
 compile_rules()
