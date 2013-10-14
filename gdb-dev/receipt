@@ -5,9 +5,11 @@ VERSION="7.6"
 CATEGORY="development"
 SHORT_DESC="The GNU Project Debugger dev files."
 MAINTAINER="erjo@slitaz.org"
-DEPENDS="gdb"
+LICENSE="GPL2"
 WANTED="gdb"
 WEB_SITE="http://www.gnu.org/software/gdb/"
+
+DEPENDS="gdb"
 
 genpkg_rules()
 {

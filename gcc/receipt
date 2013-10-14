@@ -49,7 +49,7 @@ precook_tmp_toolchain()
 		--without-ppl --without-cloog &&
 	make &&
 	make install
-	} | sed 's/: execvp: No such file/: execvp: no such file/' || 
+	} 2>&1 | sed 's/: execvp: No such file/: execvp: no such file/' || 
 	{ report close-bloc; return 1; }
 
 	# See LFS for more detais about this.
