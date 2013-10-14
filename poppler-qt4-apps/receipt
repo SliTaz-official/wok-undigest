@@ -5,10 +5,12 @@ VERSION="0.22.0"
 CATEGORY="office"
 SHORT_DESC="Poppler utilities to manipulate PDF file."
 MAINTAINER="pankso@slitaz.org"
-WANTED="poppler-qt4"
+LICENSE="GPL2"
+WANTED="poppler"
+WEB_SITE="http://poppler.freedesktop.org/"
+
 DEPENDS="fontconfig poppler-qt4 cairo zlib libpng gcc-lib-base libQtCore \
 libQtXml libQtGui"
-WEB_SITE="http://poppler.freedesktop.org/"
 
 PROVIDE="poppler-apps"
 
@@ -16,7 +18,7 @@ PROVIDE="poppler-apps"
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/bin $fs/usr
+	cp -a $install/usr/bin $fs/usr
 	if [ -f $fs/usr/bin/poppler-glib-demo ]; then
 		rm -rf $fs/usr/bin/poppler-glib-demo
 	fi
