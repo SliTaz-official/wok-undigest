@@ -112,7 +112,8 @@ cook_tmp_toolchain()
 		--without-ppl --without-cloog &&
 	make &&
 	make install
-	} || { report close-bloc; return 1; }
+	} 2>&1 | sed 's/: execvp: No such file/: execvp: no such file/' || 
+	{ report close-bloc; return 1; }
 	ln -s gcc /tools/bin/cc
 	report close-bloc
 }
@@ -185,7 +186,7 @@ compile_rules()
 				--build=$HOST_SYSTEM \
 				--host=$HOST_SYSTEM &&
 			make && make install ;;
-	esac
+	esac 2>&1 | sed 's/: execvp: No such file/: execvp: no such file/'
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
