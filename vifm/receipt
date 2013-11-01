@@ -1,12 +1,13 @@
 # SliTaz package receipt.
 
 PACKAGE="vifm"
-VERSION="0.7.6-beta"
-CATEGORY="network"
+VERSION="0.7.6-beta2"
+CATEGORY="utilities"
 SHORT_DESC="Vi File Manager."
 MAINTAINER="paul@slitaz.org"
-DEPENDS="ncurses libmagic xorg-libX11 vim"
-BUILD_DEPENDS="ncurses-dev libmagic-dev xorg-libX11-dev util-linux-whereis vim"
+LICENCE="GPL2"
+DEPENDS="ncurses libmagic xorg-libX11 vim file"
+BUILD_DEPENDS="ncurses-dev libmagic-dev xorg-libX11-dev util-linux-whereis vim file"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://vifm.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
