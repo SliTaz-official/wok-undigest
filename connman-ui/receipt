@@ -11,7 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="git|git://github.com/tbursztyka/$PACKAGE.git"
 
 DEPENDS="connman dbus gtk+3"
-BUILD_DEPENDS="git autoconf automake libtool connman-dev gtk+3-dev dbus-dev"
+BUILD_DEPENDS="git autoconf automake libtool connman-dev gtk+3-dev dbus-dev \
+libxml2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
