@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="evas_generic_loaders"
+VERSION="1.8.0-beta1"
+CATEGORY="base-system"
+SHORT_DESC="Loaders for Evas using 'generic' module"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.enlightenment.org/"
+WGET_URL="http://download.enlightenment.org/rel/libs/$PACKAGE/$TARBALL"
+TAGS="e enlightenment efl python"
+
+DEPENDS="efl poppler librsvg libraw"
+BUILD_DEPENDS="efl-dev poppler-dev librsvg-dev libraw-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+    make $MAKEFLAGS all && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/evas $fs/usr/lib
+}
