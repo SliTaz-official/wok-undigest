@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="terminology"
+VERSION="0.4.0-alpha3"
+CATEGORY="base-system"
+SHORT_DESC="Terminology is a terminal emulator with innovative features."
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="http://www.enlightenment.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://download.enlightenment.org/rel/apps/$PACKAGE/$TARBALL"
+TAGS="e enlightenment terminal"
+
+DEPENDS="elementary"
+BUILD_DEPENDS="elementary-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		-with-maximum-log-level=1 \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
