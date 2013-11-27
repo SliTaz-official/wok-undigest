@@ -2,10 +2,10 @@
 
 PACKAGE="bullet"
 VERSION="2.82-r2704"
-CATEGORY="libs"
+CATEGORY="graphics"
 SHORT_DESC="3D Real-Time Multiphysics Library"
 MAINTAINER="domcox@slitaz.org"
-LICENSE="ZLIB"
+LICENSE="zlib/libpng"
 WEB_SITE="http://bulletphysics.org"
 TARBALL="$PACKAGE-$VERSION.tgz"
 WGET_URL="http://bullet.googlecode.com/files/$TARBALL"
