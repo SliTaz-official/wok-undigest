@@ -1,0 +1,25 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Elementary Configuration
+Name[cs]=Konfigurace Elementary
+Name[eo]=Agordi Elementary
+Name[es]=Configure Elementary
+Name[fr]=Configuration pour Elementary
+Name[gl]=Configure Elementary
+Name[it]=Configurazione di Elementary
+Name[pt]=Configure o Elementary
+Name[ru]=Конфигурация для Elementary (Элементарий)
+Comment=Elementary Configuration
+Comment[cs]=Konfigurace Elementary
+Comment[eo]=Agordi Elementary
+Comment[es]=Configure Elementary
+Comment[fr]=Configuration pour Elementary
+Comment[gl]=Configure Elementary
+Comment[it]=Configurazione di Elementary
+Comment[pt]=Configure o Elementary
+Comment[ru]=Конфигурация для Elementary (Элементарий)
+Icon=elementary
+Exec=elementary_config
+Terminal=false
+Categories=System;Settings;DesktopSettings;

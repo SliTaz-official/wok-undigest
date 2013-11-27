@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="elementary-dev"
+VERSION="1.8.0-beta1"
+CATEGORY="development"
+SHORT_DESC="EFL full regular widget set - Devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WANTED="elementary"
+WEB_SITE="http://www.enlightenment.org/"
+
+DEPENDS="elementary"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/applications
+	# include
+	cp -a $install/usr/include $fs/usr
+	# lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/cmake $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	# share
+	cp -a $stuff/* $fs/usr/share/applications
+	cp -a $install/usr/share/icons $fs/usr/share/pixmaps
+}
