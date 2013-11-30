@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="elementary"
-VERSION="1.8.0-beta1"
+VERSION="1.8.0-beta2"
 CATEGORY="x-window"
 SHORT_DESC="EFL full regular widget set."
 MAINTAINER="pankso@slitaz.org"
