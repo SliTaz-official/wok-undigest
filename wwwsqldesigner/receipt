@@ -5,6 +5,7 @@ VERSION="2.6"
 CATEGORY="development"
 SHORT_DESC="Js SQL designer"
 MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
 WEB_SITE="http://ondras.zarovi.cz/sql/demo/"
 
 # Rules to configure and make the package.
@@ -37,5 +38,5 @@ EOT
 # Rules to gen a SliTaz package suitable for Tazpkg.   
 genpkg_rules()                                      
 {
-	cp -a $_pkg/* $fs/
+	cp -a $install/* $fs/
 }

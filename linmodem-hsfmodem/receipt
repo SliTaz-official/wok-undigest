@@ -6,6 +6,7 @@ VERSION="7.80.02.06full"
 CATEGORY="non-free"
 SHORT_DESC="Driver for the Conexant (formerly Rockwell) HSF Softmodem family."
 MAINTAINER="orphaned@slitaz.org"
+LICENSE="other"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://www.linuxant.com/drivers"
 WGET_URL="http://www.linuxant.com/drivers/hsf/full/archive/$SOURCE-$VERSION/$TARBALL"
@@ -43,11 +44,11 @@ genpkg_rules()
 	rm -r /lib/modules/$kvers/extra
 	# command files
 	mkdir -p $fs/usr
-	cp -a $_pkg/usr/sbin $fs/usr
-	cp -a $_pkg/usr/lib $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib $fs/usr
 	# config files
 	mkdir -p $fs/etc
-	cp -a $_pkg/etc/hsfmodem $fs/etc
+	cp -a $install/etc/hsfmodem $fs/etc
 	cp -a $stuff/zone.tab $fs/etc/hsfmodem
 }
 

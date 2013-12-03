@@ -5,11 +5,13 @@ VERSION="3.0.4"
 CATEGORY="utilities"
 SHORT_DESC="Displays file system space usage using graphs and colors."
 MAINTAINER="paul@slitaz.org"
-DEPENDS="ncurses"
-BUILD_DEPENDS="ncurses-dev cmake gettext"
+LICENSE="BSD"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://projects.gw-computing.net/projects/dfc"
 WGET_URL="http://projects.gw-computing.net/attachments/download/79/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev cmake gettext"
 
 # Rules to configure and make the package.
 compile_rules()

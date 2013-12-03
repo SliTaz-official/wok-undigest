@@ -6,12 +6,14 @@ RT_VERSION=".2-rt30"
 CATEGORY="development"
 SHORT_DESC="Realtime Preemption patched low latency Linux kernel sources."
 MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
 WEB_SITE="http://www.kernel.org/pub/linux/kernel/projects/rt/"
-BUILD_DEPENDS="bzip2 rt-source-patch"
 SOURCE="linux"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 RT_TARBALL="patch-$VERSION$RT_VERSION.bz2"
 WGET_URL="ftp://ftp.kernel.org/pub/linux/kernel/v2.6/$TARBALL"
+
+BUILD_DEPENDS="bzip2 rt-source-patch"
 
 # Rules to configure and make the package.
 compile_rules()
