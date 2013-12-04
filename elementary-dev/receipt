@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="elementary-dev"
-VERSION="1.8.0-beta2"
+VERSION="1.8.0"
 CATEGORY="development"
 SHORT_DESC="EFL full regular widget set - Devel files."
 MAINTAINER="pankso@slitaz.org"
