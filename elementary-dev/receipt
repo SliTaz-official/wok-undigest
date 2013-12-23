@@ -15,13 +15,13 @@ DEPENDS="elementary efl-dev"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/share/applications
-	# include
+	# /usr/include
 	cp -a $install/usr/include $fs/usr
-	# lib
+	# /usr/lib
 	cp -a $install/usr/lib/*.*a $fs/usr/lib
 	cp -a $install/usr/lib/cmake $fs/usr/lib
 	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	# share
+	# /usr/share
 	cp -a $stuff/* $fs/usr/share/applications
 	cp -a $install/usr/share/icons $fs/usr/share/pixmaps
 }
