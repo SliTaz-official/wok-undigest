@@ -10,10 +10,10 @@ WANTED="efl"
 WEB_SITE="http://www.enlightenment.org/"
 
 DEPENDS="efl gstreamer-dev gst-plugins-base-dev check-dev
-util-linux-mount-dev util-linux-blkid-dev util-linux-uuid-dev
+util-linux-mount-dev util-linux-blkid-dev udev-dev openssl-dev dbus-dev
 jpeg-dev fribidi-dev giflib-dev tiff-dev libsndfile-dev lua-dev
 xorg-libXp-dev xorg-printproto xorg-scrnsaverproto xorg-libXScrnSaver-dev
-mesa-dev bullet-dev libxml2-dev udev-dev openssl-dev dbus-dev"
+mesa-dev util-linux-uuid-dev libxml2-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
