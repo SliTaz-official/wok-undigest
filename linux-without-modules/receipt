@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="linux-without-modules"
+VERSION="3.2.53"
+BASEVER="${VERSION:0:3}"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel without module support."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WANTED="linux"
+WEB_SITE="http://www.kernel.org/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/boot   
+	cp -a $install/bzImage $fs/boot/vmlinuz-$VERSION-slitaz-without-modules
+}
+
