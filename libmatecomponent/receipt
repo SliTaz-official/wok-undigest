@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatecomponent"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop componment library."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib libxml2 mate-corba popt"
+BUILD_DEPENDS="automake autoconf libtool glib-dev flex libxml2-dev mate-common \
+mate-corba-dev popt-dev libIDL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib/matecomponent \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	# Libs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/matecomponent* $fs/usr/lib
+	cp -a $install/usr/lib/matecorba-2.0 $fs/usr/lib
+	rm -f $fs/usr/lib/*/*.*a $fs/usr/lib/*/*/*.*a
+}

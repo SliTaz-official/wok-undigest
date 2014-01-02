@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-dialogs"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop dialogs utility."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="mate-doc-utils libmatenotify libxml2-python"
+BUILD_DEPENDS="autoconf automake mate-common mate-doc-utils \
+libmatenotify-dev libxml2-python docbook-xml"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--disable-scrollkeeper \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/mate* $fs/usr/share
+	cp -a $install/usr/share/omf $fs/usr/share
+}

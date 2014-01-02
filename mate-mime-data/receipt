@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-mime-data"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop mime data files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib"
+BUILD_DEPENDS="mate-common glib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $install/usr/share/application-* $fs/usr/share
+	cp -a $install/usr/share/mime-info $fs/usr/share
+	cp -a $install/usr/share/pkgconfig $fs/usr/lib
+}

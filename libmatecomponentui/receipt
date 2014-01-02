@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatecomponentui"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop UI componment library."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib libxml2 mate-common mate-corba libmatecanvas libmatecomponent \
+libmate mate-conf gtk+"
+BUILD_DEPENDS="automake autoconf libtool glib-dev libxml2-dev mate-common \
+mate-corba-dev libmatecanvas-dev libmatecomponent-dev libmate-dev mate-conf-dev \
+gtk+-dev mate-vfs-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/libglade/2.0
+	cp -a $install/usr/bin $fs/usr
+	# Libs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/libglade/2.0/*.so $fs/usr/lib/libglade/2.0
+	cp -a $install/usr/lib/matecomponent* $fs/usr/lib
+}

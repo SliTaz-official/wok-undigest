@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="libmate"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop library."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib mate-conf mate-vfs mate-corba libmatecomponent libcanberra"
+BUILD_DEPENDS="glib-dev libxml2-dev mate-common mate-conf-dev mate-vfs-dev \
+libmatecomponent-dev libcanberra-dev mate-corba-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib/libmate \
+		--disable-esd \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	# Libs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/matecomponent $fs/usr/lib
+	rm -f $fs/usr/lib/*/*/*.*a
+	
+	cp -a $install/usr/share/mate-* $fs/usr/share
+}

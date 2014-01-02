@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-vfs"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop common files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib mate-corba mate-conf mate-mime-data libxml2 bzlib dbus dbus-glib"
+BUILD_DEPENDS="glib-dev libIDL mate-common mate-conf-dev mate-mime-data \
+mate-corba-dev libxml2-dev bzip2-dev dbus-dev dbus-glib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib/mate-vfs \
+		--disable-howl \
+		--disable-gnutls \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/mate-vfs-2.0 $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/mate-vfs $fs/usr/lib
+	cp -a $install/usr/lib/mate-vfs-2.0/modules $fs/usr/lib/mate-vfs-2.0
+	rm -f $fs/usr/lib/mate-vfs-2.0/modules/*.*a
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+}

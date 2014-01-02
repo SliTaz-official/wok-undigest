@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatecanvas-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="MATE Canvas devel files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+WANTED="libmatecanvas"
+
+DEPENDS="libglade-dev libart_lgpl-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/libglade $fs/usr/lib
+	rm -f $fs/usr/lib/libglade/2.0/*.so
+}

@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatecanvas"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop componment library."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib pango libxml2 gtk+ libart_lgpl libglade"
+BUILD_DEPENDS="glib-dev pango-dev libxml2-dev mate-common gtk+-dev \
+libart_lgpl-dev libglade-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--enable-glade \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/libglade $fs/usr/lib
+	rm -f $fs/usr/lib/libglade/2.0/*.*a
+}

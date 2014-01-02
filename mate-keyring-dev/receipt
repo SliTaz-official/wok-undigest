@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-keyring-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="MATE keyring devel files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+WANTED="mate-keyring"
+
+DEPENDS="libgcrypt-dev libcap-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/mate-keyring $fs/usr/lib
+	cp -a $install/usr/lib/pkcs11 $fs/usr/lib
+	rm -f $fs/usr/lib/mate-keyring/*/*.so*
+	rm -f $fs/usr/lib/pkcs11/*.so*
+}

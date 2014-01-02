@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-conf"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop configuration database system."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib gobject-introspection libxml2 mate-corba dbus dbus-glib gtk+ \
+polkit expat"
+BUILD_DEPENDS="autoconf automake libtool gtk-doc mate-common glib-dev \
+gobject-introspection-dev libxml2-dev mate-corba-dev dbus-dev \
+dbus-glib-dev gtk+-dev polkit-dev libIDL expat-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libexecdir=/usr/lib/MateConf \
+		--enable-defaults-service \
+		--enable-gsettings-backend=no \
+		--without-openldap \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/MateConf $fs/usr/lib
+	rm -f $fs/usr/lib/MateConf/2/*.*a
+	cp -a $install/usr/share/*-1 $fs/usr/share
+	cp -a $install/usr/share/sgml $fs/usr/share
+}

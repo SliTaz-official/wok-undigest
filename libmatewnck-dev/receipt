@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatewnck-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="MATE WNCK devel files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+WANTED="libmatewnck"
+
+DEPENDS="libcanberra-dev mate-vfs-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-conf-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="MATE Corba devel files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+WANTED="mate-conf"
+
+DEPENDS="dbus-dev dbus-glib-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	cp -a $install/usr/lib/MateConf $fs/usr/lib
+	rm -f $fs/usr/lib/MateConf/2/*.so
+	rm -f $fs/usr/lib/MateConf/mate*
+	
+	cp -a $install/usr/share/aclocal $fs/usr/share
+	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+}

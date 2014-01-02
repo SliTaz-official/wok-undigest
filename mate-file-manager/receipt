@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-file-manager"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop file manager (caja)."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="mate-common glib gtk+ libxml2 gobject-introspection mate-conf \
+mate-desktop libunique"
+BUILD_DEPENDS="autoconf automake libtool gtk-doc mate-common glib-dev \
+gtk+-dev libxml2-dev gobject-introspection-dev mate-conf-dev mate-desktop-dev \
+libunique-dev startup-notification-dev mate-corba-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--disable-static \
+		--sysconfdir=/etc \
+        --localstatedir=/var \
+		--libexecdir=/usr/lib/mate-file-manager \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/mate-file-manager $fs/usr/lib
+	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	# /usr/share
+	cp -a $install/usr/share/caja $fs/usr/share
+	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/mime $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+}

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatekbd"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop keyboard library."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib gtk+ mate-conf mate-corba libxklavier"
+BUILD_DEPENDS="automake autoconf libtool gtk-doc mate-common glib-dev \
+gettext gtk+-dev mate-conf-dev libxklavier-dev mate-corba-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/libmatekbd $fs/usr/share
+}

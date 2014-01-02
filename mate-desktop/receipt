@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-desktop"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="mate-common startup-notification glib gtk+ mate-conf libxml2 \
+libxml2-python libunique"
+BUILD_DEPENDS="autoconf automake mate-common startup-notification-dev \
+libtool gtk-doc mate-doc-utils glib-dev gtk+-dev mate-conf-dev mate-corba-dev \
+libxml2-dev libxml2-python docbook-xml libunique-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--disable-static \
+		--disable-scrollkeeper \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/libmate-desktop $fs/usr/share
+	cp -a $install/usr/share/mate* $fs/usr/share
+	cp -a $install/usr/share/omf $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+}

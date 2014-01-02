@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-keyring"
+VERSION="1.4.0"
+CATEGORY="x-window"
+SHORT_DESC="MATE Desktop keyring tools."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
+
+DEPENDS="glib gtk+ libxml2 libtasn1 mate-conf mate-common libgcrypt libcap"
+BUILD_DEPENDS="automake autoconf libtool gtk-doc glib-dev gtk+-dev libxml2-dev \
+libtasn1-dev mate-conf-dev mate-common libgcrypt-dev libcap-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libexecdir=/usr/lib/mate-keyring \
+		--with-pam-dir=/lib/security \
+		--with-root-certs=/etc/ssl/certs \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/mate-keyring $fs/usr/lib
+	cp -a $install/usr/lib/pkcs11 $fs/usr/lib
+	rm -f $fs/usr/lib/mate-keyring/*/*.*a
+	rm -f $fs/usr/lib/pkcs11/*.*a
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+	cp -a $install/usr/share/glib-2.0 $fs/usr/share
+	cp -a $install/usr/share/MateConf $fs/usr/share
+	cp -a $install/usr/share/mategcr $fs/usr/share
+	cp -a $install/usr/share/mate-keyring $fs/usr/share
+}

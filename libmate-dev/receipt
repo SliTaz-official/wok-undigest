@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="libmate-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="MATE Corba devel files."
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="http://mate-desktop.org"
+WANTED="libmate"
+
+DEPENDS="libcanberra-dev mate-vfs-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/matecomponent
+	cp -a $install/usr/include $fs/usr
+	# Libs
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/matecomponent/monikers $fs/usr/lib/matecomponent
+	cp -a $install/usr/lib/matecomponent/servers $fs/usr/lib/matecomponent
+	rm -f $fs/usr/lib/matecomponent/*/*.so \
+		$fs/usr/lib/matecomponent/*/*.server
+}
