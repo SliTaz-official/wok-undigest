@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib"
-BUILD_DEPENDS="mate-common glib-dev"
+BUILD_DEPENDS="mate-common glib-dev autoconf automake"
 
 # Rules to configure and make the package.
 compile_rules()
