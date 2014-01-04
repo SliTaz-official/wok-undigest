@@ -16,6 +16,7 @@ BUILD_DEPENDS="automake autoconf"
 compile_rules()
 {
 	cd $src
+	sed -i 's/automake-1.12/automake-1.13 &/' macros/mate-autogen
 	./autogen.sh $CONFIGURE_ARGS &&
 	make && make install
 }
