@@ -11,7 +11,7 @@ WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib pango libxml2 gtk+ libart_lgpl libglade"
 BUILD_DEPENDS="glib-dev pango-dev libxml2-dev mate-common gtk+-dev \
-libart_lgpl-dev libglade-dev"
+libart_lgpl-dev libglade-dev gtk-doc autoconf automake libtool"
 
 # Rules to configure and make the package.
 compile_rules()
