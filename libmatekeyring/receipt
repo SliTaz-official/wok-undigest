@@ -10,7 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib mate-common libgcrypt dbus"
-BUILD_DEPENDS="glib-dev mate-common libgcrypt-dev dbus-dev"
+BUILD_DEPENDS="glib-dev mate-common libgcrypt-dev dbus-dev gtk-doc \
+autoconf automake libtool"
 
 # Rules to configure and make the package.
 compile_rules()
