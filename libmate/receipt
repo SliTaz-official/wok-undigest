@@ -11,7 +11,7 @@ WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib mate-conf mate-vfs mate-corba libmatecomponent libcanberra"
 BUILD_DEPENDS="glib-dev libxml2-dev mate-common mate-conf-dev mate-vfs-dev \
-libmatecomponent-dev libcanberra-dev mate-corba-dev"
+libmatecomponent-dev libcanberra-dev mate-corba-dev libtool gtk-doc"
 
 # Rules to configure and make the package.
 compile_rules()

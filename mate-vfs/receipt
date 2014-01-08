@@ -11,12 +11,13 @@ WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib mate-corba mate-conf mate-mime-data libxml2 bzlib dbus dbus-glib"
 BUILD_DEPENDS="glib-dev libIDL mate-common mate-conf-dev mate-mime-data \
-mate-corba-dev libxml2-dev bzip2-dev dbus-dev dbus-glib-dev"
+mate-corba-dev libxml2-dev bzip2-dev dbus-dev dbus-glib-dev libtool gtk-doc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	sed -i 's/\$(srcdir)/./' test/Makefile.am
 	./autogen.sh \
 		--sysconfdir=/etc \
 		--libexecdir=/usr/lib/mate-vfs \

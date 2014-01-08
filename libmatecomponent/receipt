@@ -11,12 +11,13 @@ WGET_URL="http://pub.mate-desktop.org/releases/1.4/$TARBALL"
 
 DEPENDS="glib libxml2 mate-corba popt"
 BUILD_DEPENDS="automake autoconf libtool glib-dev flex libxml2-dev mate-common \
-mate-corba-dev popt-dev libIDL"
+mate-corba-dev popt-dev libIDL gtk-doc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	sed -i 's/\$(srcdir)/./' tests/Makefile.am
 	./autogen.sh \
 		--sysconfdir=/etc \
 		--libexecdir=/usr/lib/matecomponent \

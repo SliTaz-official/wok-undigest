@@ -13,7 +13,7 @@ DEPENDS="glib libxml2 mate-common mate-corba libmatecanvas libmatecomponent \
 libmate mate-conf gtk+"
 BUILD_DEPENDS="automake autoconf libtool glib-dev libxml2-dev mate-common \
 mate-corba-dev libmatecanvas-dev libmatecomponent-dev libmate-dev mate-conf-dev \
-gtk+-dev mate-vfs-dev"
+gtk+-dev mate-vfs-dev gtk-doc"
 
 # Rules to configure and make the package.
 compile_rules()
