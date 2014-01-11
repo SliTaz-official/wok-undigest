@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="tv-maxe"
+VERSION="0.09"
+CATEGORY="network"
+SHORT_DESC="Watch TV stations and listen radio via different streams."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://code.google.com/p/tv-maxe/"
+WGET_URL="http://tv-maxe.googlecode.com/files/$TARBALL"
+
+DEPENDS="python pygtk"
+SUGGESTED="vlc mplayer gstreamer"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/bin
+	cp -a $src $fs/usr/share/tv-maxe
+	mv $fs/usr/share/tv-maxe/tv-maxe $fs/usr/bin
+}
