@@ -10,7 +10,7 @@ LICENSE="LGPL2.1"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://bellard.org/$SOURCE/"
 DEPENDS="xorg-libX11 xorg-libXext xorg-libXv libxcb xorg-libXau xorg-libXdmcp"
-BUILD_DEPENDS="gcc3 xorg-libX11-dev xorg-libXext-dev xorg-libXv-dev"
+BUILD_DEPENDS="gcc3 xorg-libX11-dev xorg-libXext-dev xorg-libXv-dev libav-dev"
 WGET_URL="${WEB_SITE}$TARBALL"
 PROVIDE="qemacs"
 TAGS="editor"
@@ -21,8 +21,12 @@ TODO="force png support ?"
 compile_rules()
 {
 	cd $src
-	ffmpegdir=$(ls -d $WOK/ffmpeg-svn/source/ffmpeg*)
-	[ -n "$ffmpegdir" ] &&
+	ffmpegdir=$(ls -d $WOK/ffmpeg/source/ffmpeg*)
+	if [ ! -d "$ffmpegdir" ]; then
+		tar xf $(ls -t $SOURCES_REPOSITORY/ffmpeg-* | sed q)
+		ffmpegdir=$(ls -d $src/ffmpeg-*)
+	fi
+	[ -d "$ffmpegdir" ] &&
 	CFLAGS="-I$ffmpegdir" ./configure --prefix=/usr \
 		--with-ffmpegdir=$ffmpegdir \
 		$CONFIGURE_ARGS && make CC=gcc-3
