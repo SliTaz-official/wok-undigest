@@ -26,7 +26,9 @@ compile_rules()
 		tar xf $(ls -t $SOURCES_REPOSITORY/ffmpeg-* | sed q)
 		ffmpegdir=$(ls -d $src/ffmpeg-*)
 	fi
-	[ -d "$ffmpegdir" ] &&
+	[ -d "$ffmpegdir" ] || return 1
+	cp /usr/lib/libavcodec.a $ffmpegdir/libavcodec
+	cp /usr/lib/libavformat.a $ffmpegdir/libavformat
 	CFLAGS="-I$ffmpegdir" ./configure --prefix=/usr \
 		--with-ffmpegdir=$ffmpegdir \
 		$CONFIGURE_ARGS && make CC=gcc-3
