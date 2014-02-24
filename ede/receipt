@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+PACKAGE="ede"
+VERSION="2.0"
+CATEGORY="x-window"
+SHORT_DESC="Light Window Manager using FLTK toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://equinox-project.org/"
+WGET_URL="$SF_MIRROR/project/ede/ede/$VERSION/$TARBALL"
+
+DEPENDS="fltk edelib startup-notification"
+BUILD_DEPENDS="ftjam fltk-dev edelib-dev startup-notification-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	# http://sourceforge.net/projects/ede/forums/forum/249616/topic/5288645
+    sed -i '15i unset XDG_{DATA,CONFIG,CACHE,MENUS}_{HOME,DIRS,PREFIX}' \
+		data/startede &&
+	jam && jam install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+	cp -a $install/usr/share/desktop-* $fs/usr/share
+	cp -a $install/usr/share/ede $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/pekwm $fs/usr/share
+	cp -a $install/usr/share/xsessions $fs/usr/share
+}
+
+post_install()
+{
+	res=$(cat $root/etc/slim.conf | grep ^session | sed s/"sessions. *"//)
+	# Adding WM to SLIM available sessions.
+	if ! echo "$res" | grep -q startede; then
+		echo -n "Adding $PACKAGE to /etc/slim.conf..."
+		sed -i "s/^sessions.*/sessions            ${res},startede/" $root/etc/slim.conf
+		status
+	fi
+}
+
+post_remove()
+{
+	# Remove WM from SLIM available sessions.
+	if grep -q startede $root/etc/slim.conf; then
+		sed -i s/,startede// $root/etc/slim.conf
+	fi
+}

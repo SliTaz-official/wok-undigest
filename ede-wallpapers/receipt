@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="ede-wallpapers"
+VERSION="2.0"
+CATEGORY="x-window"
+SHORT_DESC="EDE additionnal wallpapers."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL"
+WEB_SITE="http://equinox-project.org/"
+
+WANTED="ede"
+DEPENDS="ede"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/wallpapers $fs/usr/share
+}

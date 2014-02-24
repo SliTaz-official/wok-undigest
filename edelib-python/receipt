@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="edelib-python"
+VERSION="2.0"
+CATEGORY="x-window"
+SHORT_DESC="EDE library theme tools written in Python."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL"
+WEB_SITE="http://equinox-project.org/"
+
+WANTED="edelib"
+DEPENDS="edelib python"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	for tool in 'edelib-convert-icontheme' 'edelib-mk-indextheme'; do
+		install -m 0755 $install/usr/bin/$tool $fs/usr/bin/$tool
+	done
+}

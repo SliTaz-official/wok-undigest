@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="edelib"
+VERSION="2.0"
+CATEGORY="x-window"
+SHORT_DESC="EDE Window Manager shared library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://equinox-project.org/"
+WGET_URL="$SF_MIRROR/project/ede/edelib/$VERSION/$TARBALL"
+
+DEPENDS="fltk dbus"
+BUILD_DEPENDS="ftjam fltk-dev dbus-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	jam && jam install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib
+	for tool in 'edelib-catchsegv' 'edelib-dbus-introspect' 'edelib-script' \
+		'edelib-update-font-cache'; do
+		install -m 0755 $install/usr/bin/$tool $fs/usr/bin/$tool
+	done
+}
