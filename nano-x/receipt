@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="nano-x"
+VERSION="0.92"
+CATEGORY="x-window"
+SHORT_DESC="The Nano-X Window System provide a small X server."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="microwindows-full-$VERSION.tar.gz"
+WEB_SITE="http://www.microwindows.org/"
+WGET_URL="ftp://microwindows.censoft.com/pub/microwindows/$TARBALL"
+
+DEPENDS="libpng jpeg freetype"
+BUILD_DEPENDS="libpng-dev jpeg-dev freetype-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	cp -f Configs/config.x11 config
+	sed -i s'/^SHAREDLIBS.*/SHAREDLIBS = Y/' config
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+}

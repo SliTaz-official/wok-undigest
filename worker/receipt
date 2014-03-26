@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="worker"
+VERSION="3.3.3"
+CATEGORY="x-window"
+SHORT_DESC="Worker is a two-pane file manager for the X Window System."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.boomerangsworld.de/cms/worker/index.html"
+WGET_URL="http://www.boomerangsworld.de/cms/worker/downloads/$TARBALL"
+HOST_ARCH="i486 arm"
+
+DEPENDS="xorg-libX11 xorg-libXft"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXft-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/${PACKAGE} $fs/usr/share
+	cp -a $install/usr/share/pixmaps/WorkerIcon.xpm \
+		$fs/usr/share/pixmaps
+}

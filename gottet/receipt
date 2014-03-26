@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="gottet"
+VERSION="1.0.6"
+CATEGORY="games"
+SHORT_DESC="Gottet is a tetris clone using QT."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION-src.tar.bz2"
+WEB_SITE="http://gottcode.org/gottet/"
+WGET_URL="http://gottcode.org/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="qt4-dev qmake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	qmake PREFIX=/usr && make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
