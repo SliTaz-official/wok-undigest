@@ -19,7 +19,7 @@ compile_rules()
 	sed -i 's|errno.h>|linux/ptrace.h>\n#include <&|' src/task.cc src/util.cc
 	mkdir ../obj
 	cd ../obj
-	cmake $src
+	cmake -DCMAKE_INSTALL_PREFIX=/usr $src
 	make &&
 	make DESTDIR=$DESTDIR install
 }
