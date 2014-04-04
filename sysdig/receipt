@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="sysdig"
+VERSION="0.1.72"
+CATEGORY="misc"
+SHORT_DESC="A System Troubleshooting Tool."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.sysdig.org/"
+WGET_URL="https://github.com/draios/sysdig/archive/$VERSION.tar.gz"
+
+DEPENDS=""
+#BUILD_DEPENDS="wget cmake linux-api-headers   linux-module-headers"
+BUILD_DEPENDS="wget cmake linux-module-headers"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir ../obj
+	cd ../obj
+	cmake -DCMAKE_INSTALL_PREFIX=/usr $src
+#cmake --debug-output --trace -DCMAKE_INSTALL_PREFIX=/usr $src
+	make KERNELDIR=/usr/src/linux &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
