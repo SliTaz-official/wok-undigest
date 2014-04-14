@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="gmpc-plugins"
+VERSION="11.8.16"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="A GTK2 client for MPD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gmpclient.org"
+WGET_URL="http://download.sarine.nl/Programs/gmpc/11.8/$TARBALL"
+HOST_ARCH="i486 arm"
+
+DEPENDS="gmpc taglib"
+BUILD_DEPENDS="gmpc-dev taglib-dev"
+
+case $ARCH in
+	i?86) BUILD_DEPENDS="$BUILD_DEPENDS vala"
+esac
+
+# Rules to configure and make the package.
+compile_rules() {
+	./configure \
+		--disable-avahi \
+		--disable-mmkeys \
+		--disable-awn \
+		--disable-alarm \
+		--enable-jamendo \
+		--enable-wikipedia \
+		--enable-albumview \
+		--enable-playlistsort \
+		--enable-tagedit \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	cp -a $install/usr/share/icons/hicolor/16x16 $fs/usr/share/icons/hicolor
+	
+}

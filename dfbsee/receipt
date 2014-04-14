@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="dfbsee"
+VERSION="0.6"
+CATEGORY="graphics"
+SHORT_DESC="DirectFB image viewer and video player."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SOURCE="DFBSee"
+TARBALL="${SOURCE}-${VERSION}.tar.gz"
+WEB_SITE="http://directfb.org/index.php?path=Projects/DFBSee"
+WGET_URL="http://directfb.org/downloads/Old/$TARBALL"
+
+DEPENDS="directfb"
+BUILD_DEPENDS="directfb-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	 ./configure \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+}
