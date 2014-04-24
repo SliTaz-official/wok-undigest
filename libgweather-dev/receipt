@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libgweather-dev"
+VERSION="2.30.3"
+CATEGORY="development"
+SHORT_DESC="libgweather devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="libgweather"
+WEB_SITE="http://www.gnome.org/"
+
+DEPENDS="python-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}
+
