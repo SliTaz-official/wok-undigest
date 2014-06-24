@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nvidia-96xx"
-VERSION="96.43.20"
+VERSION="96.43.23"
 CATEGORY="network"
 MAINTAINER="jozee@slitaz.org"
 LICENSE="other"
