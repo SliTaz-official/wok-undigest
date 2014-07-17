@@ -9,7 +9,7 @@ LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.kernel.org/"
 WGET_URL="ftp://ftp.kernel.org/pub/linux/kernel/v3.0/$TARBALL"
-HOST_ARCH="i486 arm x86_64"
+HOST_ARCH="i486"
 
 DEPENDS="kmod"
 BUILD_DEPENDS="slitaz-toolchain perl git xz lzma patch kmod \
