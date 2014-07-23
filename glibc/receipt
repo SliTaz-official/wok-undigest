@@ -34,12 +34,12 @@ cook_tmp_toolchain()
 	# glibc no longer support i386, so use -march=i486 for better compatibility.
 	# If i686 ???
 	unset CFLAGS CXXFLAGS
-	case $ARCH in
-		i386|i486)
+	#case $ARCH in
+		#i386|i486)
 			echo "CFLAGS += -O2 -march=i486 -mtune=i686" > configparms ;;
-		*)
-			echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
-	esac
+		#*)
+			#echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
+	#esac
 
 	{ $src/configure \
 		--host=$HOST_SYSTEM \
@@ -108,12 +108,12 @@ compile_rules()
 	# "The higher the VERSION number is, the less compatibility code is
 	# added, and the faster the code gets."
 	unset CFLAGS CXXFLAGS
-	case "$ARCH" in
-		i386|i486)
+	#case "$ARCH" in
+		#i386|i486)
 			echo "CFLAGS += -O2 -march=i486 -mtune=i686" > configparms ;;
-		*)
-			echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
-	esac
+		#*)
+			#echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
+	#esac
 	{ $src/configure \
 		--disable-profile \
 		--enable-add-ons \
