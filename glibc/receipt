@@ -36,7 +36,7 @@ cook_tmp_toolchain()
 	unset CFLAGS CXXFLAGS
 	#case $ARCH in
 		#i386|i486)
-			echo "CFLAGS += -O2 -march=i486 -mtune=i686" > configparms ;;
+			echo "CFLAGS += -O2 -march=i486 -mtune=generic" > configparms ;;
 		#*)
 			#echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
 	#esac
@@ -110,7 +110,7 @@ compile_rules()
 	unset CFLAGS CXXFLAGS
 	#case "$ARCH" in
 		#i386|i486)
-			echo "CFLAGS += -O2 -march=i486 -mtune=i686" > configparms ;;
+			echo "CFLAGS += -O2 -march=i486 -mtune=generic" > configparms ;;
 		#*)
 			#echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
 	#esac
