@@ -11,7 +11,7 @@ WEB_SITE="http://gottcode.org/gottet/"
 WGET_URL="http://gottcode.org/$PACKAGE/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="qt4-dev qmake"
+BUILD_DEPENDS="Qt4-dev qmake"
 
 # Rules to configure and make the package.
 compile_rules()
