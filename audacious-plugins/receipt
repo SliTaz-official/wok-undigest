@@ -23,7 +23,7 @@ libcddb-dev curl-dev neon-dev libmms-dev libcue-dev lame-dev libsamplerate-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
+	TPUT=/bin/true ./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
