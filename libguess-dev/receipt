@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libguess-dev"
+VERSION="1.2"
+CATEGORY="development"
+SHORT_DESC="Character set guessing library, development files"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="http://atheme.org/projects/libguess.html"
+
+WANTED="libguess"
+DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

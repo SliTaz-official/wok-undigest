@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="libcue"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="CUE Sheet Parser Library"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="BSD GPL2"
+WEB_SITE="http://sourceforge.net/projects/libcue/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="flex"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

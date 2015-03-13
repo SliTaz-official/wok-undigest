@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libcue-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="CUE Sheet Parser Library, development files"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="BSD GPL2"
+WEB_SITE="http://sourceforge.net/projects/libcue/"
+
+WANTED="libcue"
+DEPENDS="libcue"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include       $fs/usr
+	cp -a $install/usr/lib/*.*a      $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}
