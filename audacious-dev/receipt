@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="audacious-dev"
+VERSION="3.6"
+CATEGORY="development"
+SHORT_DESC="Audacious development files"
+WEB_SITE="http://audacious-media-player.org/"
+MAINTAINER="mimas@slitaz.org"
+LICENSE="GPL"
+WANTED="audacious"
+
+DEPENDS="pkg-config libguess-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}
