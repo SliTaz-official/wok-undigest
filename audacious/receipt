@@ -12,7 +12,7 @@ WGET_URL="http://distfiles.audacious-media-player.org/$TARBALL"
 TAGS="music audio player mp3 ogg m4a"
 
 DEPENDS="gtk+ libguess audacious-plugins"
-BUILD_DEPENDS="gtk+-dev libguess-dev"
+BUILD_DEPENDS="gtk+-dev libguess-dev coreutils-file-attributes"
 
 # Rules to configure and make the package.
 compile_rules()
