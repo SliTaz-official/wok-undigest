@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/kaniini/libguess/archive/$COMMIT.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="autoconf automake"
+BUILD_DEPENDS="wget autoconf automake"
 
 # Rules to configure and make the package.
 compile_rules()
