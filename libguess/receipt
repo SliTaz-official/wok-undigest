@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/kaniini/libguess/archive/$COMMIT.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="wget autoconf automake"
+BUILD_DEPENDS="wget cacerts autoconf automake coreutils-file-attributes"
 
 # Rules to configure and make the package.
 compile_rules()
