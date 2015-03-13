@@ -18,7 +18,8 @@ BUILD_DEPENDS="gtk+-dev audacious-dev libguess-dev zlib-dev mpg123-dev \
 dbus-glib-dev lirc-dev xorg-libXcomposite-dev libnotify-dev libvorbis-dev \
 flac-dev wavpack-dev faad2-dev libsndfile-dev libmodplug-dev ffmpeg-dev \
 jack-audio-connection-kit-dev alsa-lib-dev fluidsynth-dev libcdio-dev \
-libcddb-dev curl-dev neon-dev libmms-dev libcue-dev lame-dev libsamplerate-dev"
+libcddb-dev curl-dev neon-dev libmms-dev libcue-dev lame-dev libsamplerate-dev \
+coreutils-file-attributes"
 
 # Rules to configure and make the package.
 compile_rules()
