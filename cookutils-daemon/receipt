@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="cookutils-daemon"
+VERSION="731"
+CATEGORY="system-tools"
+SHORT_DESC="SliTaz Cooker daemon script for build host."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WANTED="cookutils"
+WEB_SITE="http://www.slitaz.org/"
+TAGS="slitaz"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc
+	cp -a $install/etc/init.d $fs/etc
+}
