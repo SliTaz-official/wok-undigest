@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="slitaz-base-files"
-VERSION="5.6.5"
+VERSION="278"
 CATEGORY="base-system"
 SHORT_DESC="Linux tree and the necessary files for the base system."
 MAINTAINER="pankso@slitaz.org"
@@ -58,7 +58,6 @@ genpkg_rules()
 		$fs/usr/bin \
 		$fs/usr/games \
 		$fs/usr/lib \
-		$fs/usr/local \
 		$fs/usr/sbin \
 		$fs/usr/share/doc \
 		$fs/var/cache \
@@ -86,21 +85,24 @@ genpkg_rules()
 	# Populate /dev with $fs/sbin/mktazdevs.sh.
 	$fs/sbin/mktazdevs.sh $fs/dev
 
-	# Creat /etc/mtab symlink.
+	# Create /etc/mtab symlink.
 	cd $fs/etc
 	ln -s /proc/mounts mtab
 
 	# Fix httphelper link
 	cd $fs/usr/lib/slitaz
 	ln -s httphelper.sh httphelper
+
+	# Update copyright year
+	grep -rl 'copy; 2' $fs/var/www | xargs \
+		sed -i "s/copy; [0-9]*/copy; $(date +%Y)/"
 }
 
 # Pre and post install to backup all /etc/settings
 #
 pre_install()
 {
-	local root
-	root=$1
+	local root="$1"
 	cp -a $root/etc $root/tmp/etc.bak 2>/dev/null
 	# Remove old /var/run symlink
 	rm -f $root/var/run
@@ -108,8 +110,7 @@ pre_install()
 
 post_install()
 {
-	local root
-	root=$1
+	local root="$1"
 	cp -a $root/tmp/etc.bak/* $root/etc 2>/dev/null
 	rm -rf $root/tmp/etc.bak
 
@@ -124,6 +125,6 @@ post_install()
 
 pre_remove()
 {
-	# We can not remove this package !
+	# We can not remove this package!
 	exit 1
 }
