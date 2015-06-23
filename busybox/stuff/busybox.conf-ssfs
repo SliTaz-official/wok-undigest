@@ -1,6 +1,0 @@
-# Ssfs Busybox configuration file.
-#
-
-[SUID]
-su = --- root.root
-who = --- root.root
