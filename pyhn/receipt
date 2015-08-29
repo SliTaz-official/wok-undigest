@@ -16,6 +16,12 @@ BUILD_DEPENDS="python-dev python-urwid git bzip2"
 # Rules to configure and make the package.
 compile_rules()
 {
+	# hack config.py
+	cd $src/pyhn
+	sed -i 's/__default__/tazweb __url__/; \
+		s/black||/light red||/' config.py
+
+	cd $src
 	python setup.py install --root=$DESTDIR
 }
 
