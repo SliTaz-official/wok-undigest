@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="kdelibs-dev"
-VERSION="4.8.3"
+VERSION="4.14.3"
 CATEGORY="development"
 SHORT_DESC="KDElibs include files."
 MAINTAINER="pankso@slitaz.org"
