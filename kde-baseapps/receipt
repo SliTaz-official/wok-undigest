@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="kde-baseapps"
+VERSION="4.14.3"
+CATEGORY="x-window"
+SHORT_DESC="This package provides various applications, such as Dolphin (file manager) and Konqueror (web browser)."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://www.kde.org/"
+WGET_URL="http://download.kde.org/stable/$VERSION/src/$TARBALL"
+
+DEPENDS="kdelibs"
+BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libpng-dev jpeg-dev \
+shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
+polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
+ kactivities kdepimlibs kde-runtime"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd /usr/share/xml/docbook/stylesheet/docbook-xsl
+	wget ftp://cook.slitaz.org/docbook-xsl/source/docbook-xsl-1.76.1/VERSION
+	cd $src
+	mkdir -p build && cd build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DSYSCONF_INSTALL_DIR=/etc/kde \
+		.. &&
+		#-Wno-dev .. &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

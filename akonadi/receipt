@@ -1,0 +1,37 @@
+ SliTaz package receipt.
+
+PACKAGE="akonadi"
+VERSION="1.13.0"
+CATEGORY="x-window"
+SHORT_DESC="The KDE library, storage service for PIM data and metadata"
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.kde.org/"
+WGET_URL="http://download.kde.org/stable/$PACKAGE/src/$TARBALL"
+
+DEPENDS="libQtCore libQtGui libQtDBus libQtNetwork libQtXml libQtSql sqlite \
+shared-mime-info libboost-program-options"
+BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libboost sqlite-dev \
+shared-mime-info-dev soprano soprano-dev libboost-dev libboost-program-options-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+        # export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
+        # export CC='gcc-49'
+        # export CXX='g++-49'
+	# -DINSTALL_QSQLITE_IN_QT_PREFIX=TRUE \
+        mkdir -p build && cd build
+        cmake \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_INSTALL_PREFIX=/usr \        
+                .. &&
+        make -j 1 && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+        cp -a $install/* $fs
+}
