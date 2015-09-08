@@ -13,8 +13,9 @@ WGET_URL="http://download.kde.org/stable/$VERSION/src/$TARBALL"
 DEPENDS="kdelibs"
 BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libpng-dev jpeg-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
-polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
- kactivities kdepimlibs kde-runtime attica-dev kfilemetadata"
+attica-dev polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
+ kactivities kdepimlibs kde-runtime kfilemetadata"
+# 
 
 # Rules to configure and make the package.
 compile_rules()
@@ -28,7 +29,7 @@ compile_rules()
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DSYSCONF_INSTALL_DIR=/etc/kde \
 		.. &&
-		#-Wno-dev .. &&
+		#-Wno-dev
 	make && make install
 }
 
