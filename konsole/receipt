@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
-PACKAGE="kde-baseapps"
+PACKAGE="konsole"
 VERSION="4.14.3"
 CATEGORY="x-window"
-SHORT_DESC="This package provides various applications, such as Dolphin (file manager) and Konqueror (web browser)."
+SHORT_DESC="Kde terminal emulator"
 MAINTAINER="psychomaniak@xakep.ru"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
@@ -11,10 +11,12 @@ WEB_SITE="http://www.kde.org/"
 WGET_URL="http://download.kde.org/stable/$VERSION/src/$TARBALL"
 
 DEPENDS="kdelibs"
-BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libpng-dev jpeg-dev \
+BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libssh libssh-dev \
+jpeg libpng giflib giflib-dev libpng-dev jpeg-dev liblzma-dev gpgme-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
 polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
- kactivities kdepimlibs kde-runtime attica-dev kfilemetadata"
+ kactivities kdepimlibs  \
+alsa-lib-dev exiv2-dev attica-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -26,9 +28,7 @@ compile_rules()
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DSYSCONF_INSTALL_DIR=/etc/kde \
-		.. &&
-		#-Wno-dev .. &&
+		-Wno-dev .. &&
 	make && make install
 }
 
