@@ -21,12 +21,11 @@ compile_rules()
         # export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
         # export CC='gcc-49'
         # export CXX='g++-49'
-	# -DINSTALL_QSQLITE_IN_QT_PREFIX=TRUE \
-        mkdir -p build && cd build
-        cmake \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_INSTALL_PREFIX=/usr \        
-                .. &&
+	# -DINSTALL_QSQLITE_IN_QT_PREFIX=TRUE
+
+        cd $src
+	#mkdir -p build && cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr . &&
         make -j 1 && make install
 }
 

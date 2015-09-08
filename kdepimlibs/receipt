@@ -15,7 +15,7 @@ cyrus-sasl shared-mime-info"
 BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev strigi-dev \
 libboost-graph-dev cyrus-sasl-dev libical-dev qjson-dev gpgme-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
-polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev"
+polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative akonadi kdelibs kdelibs-dev"
 
 # Rules to configure and make the package.
 compile_rules()

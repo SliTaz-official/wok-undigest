@@ -15,7 +15,7 @@ BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libssh libssh-dev \
  jpeg libpng giflib giflib-dev libpng-dev jpeg-dev liblzma-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
 polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
- kactivities kdepimlibs \
+ kactivities kdepimlibs  \
 alsa-lib-dev exiv2-dev"
 
 # Rules to configure and make the package.
