@@ -21,12 +21,15 @@ alsa-lib-dev exiv2-dev attica-dev libboost libboost-dev kactivities kfilemetadat
 # Rules to configure and make the package.
 compile_rules()
 {
+	cd /usr/share/xml/docbook/stylesheet/docbook-xsl
+	wget ftp://cook.slitaz.org/docbook-xsl/source/docbook-xsl-1.76.1/VERSION
+	cd $src
 	mkdir -p build && cd build
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-Wno-dev .. &&
-	make && make install
+	make -j1 && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
