@@ -14,7 +14,7 @@ DEPENDS="kdelibs"
 BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libpng-dev jpeg-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
 polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
- kactivities kdepimlibs kde-runtime "
+ kactivities kdepimlibs kde-runtime attica-dev"
 
 # Rules to configure and make the package.
 compile_rules()

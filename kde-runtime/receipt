@@ -10,13 +10,13 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.kde.org/"
 WGET_URL="http://download.kde.org/stable/$VERSION/src/$TARBALL"
 
-DEPENDS="kdelibs"
+DEPENDS="kdelibs libssh gpgme giflib phonon exiv2 attica"
 BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libssh libssh-dev \
- jpeg libpng giflib giflib-dev libpng-dev jpeg-dev liblzma-dev \
+jpeg libpng giflib giflib-dev libpng-dev jpeg-dev liblzma-dev gpgme-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev \
 polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
  kactivities kdepimlibs  \
-alsa-lib-dev exiv2-dev"
+alsa-lib-dev exiv2-dev attica-dev"
 
 # Rules to configure and make the package.
 compile_rules()
