@@ -12,13 +12,13 @@ WEB_SITE="http://www.kde.org/"
 WGET_URL="http://download.kde.org/stable/$KDE_SRC_DIR_VERSION/src/$TARBALL"
 
 DEPENDS="kdelibs phonon kactivities xcb-util xcb-util-image xcb-util-keysyms \
- xcb-util-wm xcb-util-renderutil"
+ xcb-util-wm xcb-util-renderutil strigi"
 BUILD_DEPENDS="cmake qmake automoc4 Qt4-dev libxslt-dev libpng-dev jpeg-dev mesa-dev \
 shared-mime-info-dev phonon phonon-dev docbook-xml docbook-xsl dbus-dev libglu-mesa-dev \
 attica-dev polkit-qt-dev libdbusmenu-qt-dev libQtDeclarative kdelibs kdelibs-dev \
 kactivities kdepimlibs kde-runtime kfilemetadata qimageblitz libboost libboost-dev \
 libxcb-dev xcb-util-image-dev xcb-proto xcb-util-dev xcb-util-keysyms-dev \
-xcb-util-wm-dev xcb-util-renderutil-dev"
+xcb-util-wm-dev xcb-util-renderutil-dev strigi strigi-dev"
 # 
 
 # Rules to configure and make the package.
