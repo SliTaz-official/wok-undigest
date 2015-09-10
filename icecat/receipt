@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="icecat"
+VERSION="31.8.0"
+CATEGORY="network"
+SHORT_DESC="Official IceCat build by the Gnuzilla Project."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPLv3"
+SOURCE="icecat"
+TARBALL="$SOURCE-$VERSION.en-US.linux-i686.tar.bz2"
+WEB_SITE="http://ftp.gnu.org/gnu/gnuzilla"
+WGET_URL="http://ftp.gnu.org/gnu/gnuzilla/$VERSION/$TARBALL"
+
+TAGS="web-browser"
+HOST_ARCH="i486"
+
+DEPENDS="gtk+"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+    mkdir -p \
+        ${DESTDIR}/usr/bin \
+        ${DESTDIR}/usr/lib/icecat-${VERSION} \
+        ${DESTDIR}/usr/share/pixmaps
+    cp -a ${src}/* ${DESTDIR}/usr/lib/icecat-${VERSION}
+    # /usr/bin/icecat-official + pixmap
+    ln -s ../lib/icecat-${VERSION}/icecat ${DESTDIR}/usr/bin/${PACKAGE}
+    ln -s ../../lib/icecat-${VERSION}/browser/icons/mozicon128.png \
+        ${DESTDIR}/usr/share/pixmaps/${PACKAGE}.png
+    # Remove updater files (users can't upgrade anyway)
+    rm -f ${DESTDIR}/usr/lib/icecat-${VERSION}/update*
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p ${fs} && cp -a ${install}/* ${fs}
+}
