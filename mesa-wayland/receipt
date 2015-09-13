@@ -1,0 +1,70 @@
+# SliTaz package receipt.
+
+PACKAGE="mesa-wayland"
+VERSION="10.5.4"
+CATEGORY="x-window"
+SHORT_DESC="3D Graphics Library that is an open-source implementaton of OpenGL."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+SUGGESTED="nvidia"
+SOURCE="Mesa"
+TARBALL="${SOURCE}Lib-$VERSION.tar.xz"
+WEB_SITE="http://www.mesa3d.org/"
+WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$VERSION/$TARBALL"
+#HOST_ARCH="arm i486"
+
+# Have Wayland support by default ?
+PROVIDE="libgl libegl-mesa libglw-mesa"
+
+DEPENDS="expat libdrm xorg-libXdamage xorg-libXxf86vm xorg-libXt udev \
+wayland"
+BUILD_DEPENDS="expat-dev libdrm-dev xorg-libXdamage-dev pkg-config \
+xorg-libXxf86vm-dev xorg-libXt-dev xorg-dri2proto xorg-glproto \
+lesstif libxml2-python lesstif-dev xorg-server-dev udev-dev wayland-dev \
+xorg-dri3proto xorg-presentproto gcc49"
+
+# Use some build system tools
+case "$ARCH" in
+	i?86) 
+		BUILD_DEPENDS="$BUILD_DEPENDS talloc xorg-makedepend xorg-imake \
+		file libdrm-nouveau llvm libtool automake autoconf libpthread-stubs-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/HAVE_LLVM/0x0306/' src/gallium/auxiliary/draw/draw_vs.h \
+		src/gallium/auxiliary/draw/draw_llvm.c
+	export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
+	./autogen.sh \
+		CC=gcc-49 CXX=g++-49 \
+		--prefix=/usr \
+		--sysconfdir=/etc/X11/${PACKAGE} \
+		--enable-gles2 \
+		--disable-gallium-egl \
+		--disable-gallium-llvm \
+		--with-egl-platforms=x11,wayland,drm \
+		--enable-gbm \
+		--enable-shared-glapi \
+		--with-gallium-drivers=r300,r600,swrast,nouveau \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/dri
+	cp -a $install/etc $fs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/dri/*.so* $fs/usr/lib/dri
+
+	# libGLU is included in the package libglu-mesa
+	#rm -r -f $fs/usr/lib/libGLU*
+
+	#libGLw is included in the package libglw-mesa
+	#rm -r -f $fs/usr/lib/libGLw*
+
+	#libEGL is included in the package libegl-mesa
+	#rm -r -f $fs/usr/lib/libEGL*
+}

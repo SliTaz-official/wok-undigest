@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="mesa"
+VERSION="10.5.4"
+CATEGORY="x-window"
+SHORT_DESC="3D Graphics Library that is an open-source implementaton of OpenGL."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+SUGGESTED="nvidia"
+SOURCE="Mesa"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://www.mesa3d.org/"
+WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$VERSION/$TARBALL"
+PROVIDE="libgl"
+
+DEPENDS="expat libdrm xorg-libXdamage xorg-libXxf86vm xorg-libXt udev \
+libpthread-stubs"
+BUILD_DEPENDS="expat-dev libdrm-dev xorg-libXdamage-dev pkg-config \
+xorg-libXxf86vm-dev xorg-libXt-dev xorg-dri2proto xorg-glproto \
+talloc xorg-makedepend lesstif libxml2-python xorg-imake lesstif-dev \
+xorg-server-dev udev-dev file libdrm-nouveau llvm libpthread-stubs-dev \
+libtool automake autoconf xorg-dri3proto xorg-presentproto gcc49"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/HAVE_LLVM/0x0306/' #src/gallium/auxiliary/draw/draw_llvm.c
+	export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
+	./autogen.sh \
+		CC=gcc-49 CXX=g++-49 \
+		--disable-gallium-llvm \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+
+	# libGLU is included in the package libglu-mesa
+	rm -r -f $fs/usr/lib/libGLU*
+
+	#libGLw is included in the package libglw-mesa
+	rm -r -f $fs/usr/lib/libGLw*
+
+	#libEGL is included in the package libegl-mesa
+	rm -r -f $fs/usr/lib/libEGL*
+}
