@@ -19,7 +19,8 @@ BUILD_DEPENDS="wget nasm alsa-lib-dev coreutils-file-format libogg-dev \
 libvorbis-dev libtheora-dev openexr-dev libdv-dev libpng-dev jpeg-dev tiff-dev \
 x264-dev util-linux-uuid-dev mjpegtools-dev fftw-dev lame-dev libsndfile-dev \
 faac-dev faad2-dev libraw1394-dev libavc1394-dev libiec61883-dev mesa-dev \
-ilmbase-dev a52dec-dev ffmpeg-dev xorg-libXv-dev flac-dev libglu-mesa-dev"
+ilmbase-dev a52dec-dev ffmpeg-dev xorg-libXv-dev flac-dev libglu-mesa-dev \
+libtinfo"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -32,6 +33,7 @@ compile_rules()
 		patch -p1 < $SOURCES_REPOSITORY/$i
 	done
 	./autogen.sh
+	touch config.rpath
 
 	CXXFLAGS="-O2 -D__STDC_CONSTANT_MACROS" \
 	CFLAGS="-O2 -D__STDC_CONSTANT_MACROS" \
