@@ -9,12 +9,13 @@ LICENSE="GPL2"
 WEB_SITE="http://cinelerra-cv.org"
 TARBALL="CinelerraCV-$VERSION.tar.xz"
 WGET_URL="http://cinelerra-cv.org/releases/$TARBALL"
+EXTRA_SOURCE_FILES="cinelerra-cv-ffmpeg_api2.2.patch cinelerra-cv-ffmpeg2.0.patch"
 TAGS="video editor nonlinear"
 
 DEPENDS="alsa-lib libogg libvorbis libtheora openexr libdv libpng libjpeg tiff \
 x264 util-linux-uuid mjpegtools fftw lame libsndfile faac faad2 libraw1394 \
 libavc1394 libiec61883 mesa ilmbase a52dec ffmpeg xorg-libXv flac libglu-mesa"
-BUILD_DEPENDS="nasm alsa-lib-dev coreutils-file-format libogg-dev \
+BUILD_DEPENDS="wget nasm alsa-lib-dev coreutils-file-format libogg-dev \
 libvorbis-dev libtheora-dev openexr-dev libdv-dev libpng-dev jpeg-dev tiff-dev \
 x264-dev util-linux-uuid-dev mjpegtools-dev fftw-dev lame-dev libsndfile-dev \
 faac-dev faad2-dev libraw1394-dev libavc1394-dev libiec61883-dev mesa-dev \
@@ -23,12 +24,13 @@ ilmbase-dev a52dec-dev ffmpeg-dev xorg-libXv-dev flac-dev libglu-mesa-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-        cd $src
-		# Install ffmpeg 2.x patches, internal ffmpeg errors out
-		wget https://raw.githubusercontent.com/sergiomb2/cinelerra-cv/master/cinelerra-cv-ffmpeg_api2.2.patch
-		wget https://raw.githubusercontent.com/sergiomb2/cinelerra-cv/master/cinelerra-cv-ffmpeg2.0.patch
-		patch -p1 < cinelerra-cv-ffmpeg_api2.2.patch
-		patch -p1 < cinelerra-cv-ffmpeg2.0.patch
+	# Install ffmpeg 2.x patches, internal ffmpeg errors out
+	for i in $EXTRA_SOURCE_FILES ; do
+		[ -s $SOURCES_REPOSITORY/$i ] ||
+		wget --no-check-certificate -P $SOURCES_REPOSITORY \
+		https://raw.githubusercontent.com/sergiomb2/cinelerra-cv/master/$i
+		patch -p1 < $SOURCES_REPOSITORY/$i
+	done
 	./autogen.sh
 
 	CXXFLAGS="-O2 -D__STDC_CONSTANT_MACROS" \
