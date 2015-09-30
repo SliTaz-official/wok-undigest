@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="a52dec"
+VERSION="0.7.4"
+CATEGORY="multimedia"
+SHORT_DESC="liba52 is a free library for decoding ATSC A/52 streams"
+MAINTAINER="danny@schmarsel.de"
+LICENSE="GPL"
+WEB_SITE="http://liba52.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://liba52.sourceforge.net/files/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr \
+        --libdir=/usr/lib${LIBDIRSUFFIX} \
+        --enable-shared
+        
+        make &&
+        make DESTDIR=$DESTDIR install
+        
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+        mkdir -p $fs/usr/bin
+     	cp -a $install/usr/lib/liba52.so* $fs/usr/lib
+        cp -a $install/usr/bin/* $fs/usr/bin
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="a52dec-dev"
+VERSION="0.7.4"
+CATEGORY="development"
+SHORT_DESC="liba52 devel files"
+MAINTAINER="danny@schmarsel.de"
+WANTED="a52dec"
+LICENSE="GPL"
+WEB_SITE="http://liba52.sourceforge.net/"
+
+DEPENDS="a52dec"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+        mkdir -p $fs/usr/lib
+     	cp -a $install/usr/include $fs/usr
+     	cp -a $install/usr/lib/*.*a $fs/usr/lib
+}
