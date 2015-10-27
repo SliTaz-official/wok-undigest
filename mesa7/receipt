@@ -27,7 +27,7 @@ compile_rules()
 	./configure \
 		--prefix=/usr \
 		--with-x \
-		--with-dri-driverdir=/usr/lib/xorg/modules/dri \
+		--with-dri-driverdir=/usr/lib/dri \
 		--with-dri-drivers=unichrome,i810,mach64,mga,r128,savage,sis,tdfx \
 		--disable-gallium-llvm \
 		--enable-glx-tls \
@@ -40,7 +40,7 @@ compile_rules()
 		--enable-texture-float \
 		--disable-shared-dricore \
         $CONFIGURE_ARGS &&
-	make $MAKEFLAGS && make install
+	(make $MAKEFLAGS && make install) 2>/dev/null | sed '/No such file or directory/d'
 }
         
 # Rules to gen a SliTaz package suitable for Tazpkg.
