@@ -40,4 +40,3 @@ genpkg_rules()
 	
 	#cp -a $install/usr/share/dbus-1 $fs/usr/share
 }
-

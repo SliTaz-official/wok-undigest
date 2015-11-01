@@ -1,0 +1,61 @@
+# SliTaz package receipt.
+
+PACKAGE="mplayer"
+VERSION="1.2"
+CATEGORY="multimedia"
+SHORT_DESC="The Ultimate Movie Player For Linux."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SOURCE="MPlayer"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="http://www.mplayerhq.hu/design7/news.html"
+WGET_URL="http://www1.mplayerhq.hu/MPlayer/releases/$TARBALL"
+HOST_ARCH="i486"
+
+DEPENDS="gtk+ libmad xorg-libXv alsa-lib ncurses \
+xorg-libXdamage giflib enca lirc xorg-libXxf86vm esound \
+audiofile zlib xorg-libXss"
+BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev \
+alsa-lib-dev ncurses-dev xorg-libXdamage-dev giflib-dev \
+xorg-libXxf86vm-dev esound-dev enca-dev lirc-dev \
+zlib-dev xorg-xextproto pkg-config yasm "
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	ARCH_ARGS="--target=i486-linux --disable-sdl --enable-runtime-cpudetection" 
+	./configure \
+		--prefix=/usr \
+		--confdir=/etc/mplayer \
+		--libdir=/usr/lib/mplayer \
+		--enable-gui \
+	--disable-mencoder \
+		--language="en de es fr it ru" \
+		--disable-gl \
+		--disable-jack \
+		--disable-liblzo \
+		--disable-libdv \
+		--disable-fribidi \
+		--disable-ivtv \
+		--disable-smb \
+		--disable-ftp \
+		--disable-openal \
+		--disable-faac \
+		--disable-speex \
+		${ARCH_ARGS} &&
+	CFLAGS="$CFLAGS -mtune=i686" make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/mplayer/skins
+	cp -a $install/usr/bin $fs/usr
+	[ -d "$install/usr/share/mplayer" ] && \
+		cp -a $install/usr/share/mplayer $fs/usr/share
+	cp -a $install/etc $fs
+	cp $src/etc/example.conf $fs/etc/mplayer
+	# Config to use Xv by default.
+	cp $stuff/mplayer.conf $fs/etc/mplayer
+}
