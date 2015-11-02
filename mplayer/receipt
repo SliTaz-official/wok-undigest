@@ -18,7 +18,7 @@ zlib xorg-libXss"
 BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev \
 alsa-lib-dev ncurses-dev xorg-libXdamage-dev giflib-dev \
 xorg-libXxf86vm-dev enca-dev \
-zlib-dev xorg-xextproto pkg-config yasm glib-dev"
+zlib-dev xorg-xextproto pkg-config yasm glib-dev libgio-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -31,7 +31,7 @@ compile_rules()
 		--confdir=/etc/mplayer \
 		--libdir=/usr/lib/mplayer \
 		--enable-gui \
-	--disable-mencoder \
+		--disable-mencoder \
 		--language="en de es fr it ru" \
 		--disable-gl \
 		--disable-jack \

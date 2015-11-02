@@ -14,7 +14,7 @@ DEPENDS="GConf gtk+ librsvg gnome-desktop gnome-menus dbus-glib libcanberra \
 libwnck libsoup libgweather"
 BUILD_DEPENDS="GConf-dev gtk+-dev librsvg-dev gnome-desktop-dev gnome-menus-dev
 dbus-glib-dev libcanberra-dev python-dev libwnck-dev libgweather-dev \
-libsoup-dev gnome-doc-utils-dev"
+libsoup-dev gnome-doc-utils-dev libgio-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -47,3 +47,4 @@ genpkg_rules()
 		$fs/usr/share/icons/hicolor
 	rm $fs/usr/share/gnome-panelrc
 }
+
