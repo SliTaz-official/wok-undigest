@@ -71,3 +71,4 @@ genpkg_rules()
 	chown -R root:root $fs/usr/include/libiberty.h
 	chmod 644 $fs/usr/include/libiberty.h
 }
+

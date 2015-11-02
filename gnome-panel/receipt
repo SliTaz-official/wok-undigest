@@ -47,4 +47,3 @@ genpkg_rules()
 		$fs/usr/share/icons/hicolor
 	rm $fs/usr/share/gnome-panelrc
 }
-
