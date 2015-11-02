@@ -23,7 +23,8 @@ zlib-dev xorg-xextproto pkg-config yasm glib-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-
+	export CFLAGS="$CFLAGS -mtune=i686"
+	export CXXFLAGS="$CFLAGS"
 	ARCH_ARGS="--target=i486-linux --disable-sdl --enable-runtime-cpudetection"
 	./configure \
 		--prefix=/usr \
@@ -44,8 +45,6 @@ compile_rules()
 		--disable-faac \
 		--disable-speex \
 		${ARCH_ARGS} &&
-	export CFLAGS="$CFLAGS -mtune=i686"
-        export CXXFLAGS="$CFLAGS"
 	make $MAKEFLAGS &&
 	make DESTDIR=$DESTDIR install
 }
