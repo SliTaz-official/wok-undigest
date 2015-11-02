@@ -14,7 +14,7 @@ DEPENDS="glibc-base libxml2 zlib glib glib-networking libgio gtk+ \
 libgnutls libtasn1 libgcrypt sqlite"
 BUILD_DEPENDS="gtk+-dev glib-networking-dev libgio libgio-dev libxml2-dev \
 libgcrypt-dev libtasn1-dev gobject-introspection-dev gnutls-dev zlib-dev \
-sqlite-dev"
+sqlite-dev glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

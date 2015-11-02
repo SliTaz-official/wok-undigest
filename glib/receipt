@@ -78,3 +78,4 @@ genpkg_rules()
 		[ -x "/usr/bin/cook" ] && echo cook $w
 	done
 }
+

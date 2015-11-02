@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="pcre"
+VERSION="8.35"
+CATEGORY="system-tools"
+SHORT_DESC="Perl 5 Compatible Regular Expression Library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.pcre.org/"
+WGET_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$TARBALL"
+HOST_ARCH="i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--enable-unicode-properties \
+		--enable-pcre16 \
+		--enable-pcre32 \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

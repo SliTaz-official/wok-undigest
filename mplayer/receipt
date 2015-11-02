@@ -13,12 +13,12 @@ WGET_URL="http://www1.mplayerhq.hu/MPlayer/releases/$TARBALL"
 HOST_ARCH="i486"
 
 DEPENDS="gtk+ libmad xorg-libXv alsa-lib ncurses \
-xorg-libXdamage giflib enca lirc xorg-libXxf86vm esound \
-audiofile zlib xorg-libXss"
+xorg-libXdamage giflib enca xorg-libXxf86vm \
+zlib xorg-libXss"
 BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev \
 alsa-lib-dev ncurses-dev xorg-libXdamage-dev giflib-dev \
-xorg-libXxf86vm-dev esound-dev enca-dev lirc-dev \
-zlib-dev xorg-xextproto pkg-config yasm "
+xorg-libXxf86vm-dev enca-dev \
+zlib-dev xorg-xextproto pkg-config yasm glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
