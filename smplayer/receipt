@@ -11,7 +11,7 @@ WEB_SITE="http://smplayer.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="player audio video movie"
 
-DEPENDS="mplayer-opt libQtCore libQtGui libQtXml gcc-lib-base"
+DEPENDS="mplayer libQtCore libQtGui libQtDBus libQtXml libQtScript libQtNetwork"
 BUILD_DEPENDS="qt4 Qt4-dev qmake libQtNetwork libQtDeclarative libegl-mesa"
 
 # Rules to configure and make the package.
@@ -25,5 +25,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $install $fs
+	cp -a $install/* $fs
+	rm -rf $fs/usr/share/doc
 }
