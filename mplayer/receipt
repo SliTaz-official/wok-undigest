@@ -23,7 +23,8 @@ zlib-dev xorg-xextproto pkg-config yasm "
 # Rules to configure and make the package.
 compile_rules()
 {
-	ARCH_ARGS="--target=i486-linux --disable-sdl --enable-runtime-cpudetection" 
+
+	ARCH_ARGS="--target=i486-linux --disable-sdl --enable-runtime-cpudetection"
 	./configure \
 		--prefix=/usr \
 		--confdir=/etc/mplayer \
@@ -43,7 +44,9 @@ compile_rules()
 		--disable-faac \
 		--disable-speex \
 		${ARCH_ARGS} &&
-	CFLAGS="$CFLAGS -mtune=i686" make $MAKEFLAGS &&
+	export CFLAGS="$CFLAGS -mtune=i686"
+        export CXXFLAGS="$CFLAGS"
+	make $MAKEFLAGS &&
 	make DESTDIR=$DESTDIR install
 }
 

@@ -48,4 +48,3 @@ genpkg_rules()
 	#Remove unnecessary fonts
 	rm $fs/usr/share/$PACKAGE/skins2/fonts/*
 }
-

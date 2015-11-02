@@ -20,4 +20,3 @@ genpkg_rules()
 	# Remove libtool archives
 	rm $fs/usr/lib/vlc/plugins/*/*.la
 }
-
