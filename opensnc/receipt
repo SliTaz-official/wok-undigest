@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="opensnc"
+VERSION="0.1.4"
+CATEGORY="games"
+SHORT_DESC="Open Sonic is an open-source game based on the (Sonic the Hedgehog) universe."
+MAINTAINER="hackdorte@sapo.pt"
+LICENSE="GPL2"
+WEB_SITE="http://opensnc.sourceforge.net/"
+
+TARBALL="opensnc-linux-0.1.4.tar.gz"
+WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/Open%20Sonic/$VERSION/$TARBALL/download"
+
+DEPENDS=""
+BUILD_DEPENDS="wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+  mkdir -p $install/usr/share/games/opensnc-linux-0.1.4
+  cp -a $src/* $install/usr/share/games/opensnc-linux-0.1.4
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+  cp -a $install/* $fs
+  mkdir -p $fs/usr/share/applications
+  cp -a stuff/* $fs/usr/share/applications
+}

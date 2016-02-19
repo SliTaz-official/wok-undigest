@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Opensonic
+Comment=Open Sonic is an game based on the (Sonic the Hedgehog) universe.
+Exec=/usr/share/games/opensnc-linux-0.1.4/opensonic
+Icon=/usr/share/games/opensnc-linux-0.1.4/icon.png
+Categories=Game;ArcadeGame;

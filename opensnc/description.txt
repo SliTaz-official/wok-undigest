@@ -1,0 +1,12 @@
+| - [Slitaz GNU/Linux] Package Description ------------------ |
+|                                                             |
+|  Opensonic 0.1.4                                            |
+|                                                             |
+|  Open Sonic is a free open-source game based on the "Sonic  |
+|  the Hedgehog" universe. It introduces a different style of |
+|  gameplay called cooperative play, in which it's possible   |
+|  to control 3 characters simultaneously.                    |
+|                                                             |
+|  http://opensnc.sourceforge.net/                            |
+|                                                             |
+| ---------------------------------------- (www.slitaz.org) - |
