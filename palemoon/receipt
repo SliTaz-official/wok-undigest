@@ -58,7 +58,8 @@ ac_add_options --disable-websms-backend
 ac_add_options --disable-windows-mobile-components
 ac_add_options --disable-valgrind
 EOT
-
+	chmod -R +x build/autoconf/* python/*                                                               
+	find . -name '*.sh' -exec chmod +x {} \;
 	export MOZBUILD_STATE_PATH="$src/mozbuild"
 	export MOZCONFIG="$src/mozconfig"
 	export CPPFLAGS="$CPPFLAGS -O2 -std=gnu++0x"
