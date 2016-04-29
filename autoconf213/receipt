@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://ftpmirror.gnu.org/autoconf/autoconf-$VERSION.tar.gz"
 
 DEPENDS="m4 perl"
-BUILD_DEPENDS="m4 perl"
+BUILD_DEPENDS="m4 perl sed"
 
 # Rules to configure and make the package.
 compile_rules()
