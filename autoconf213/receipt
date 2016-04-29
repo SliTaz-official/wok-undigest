@@ -18,7 +18,7 @@ compile_rules()
 {
 	./configure --prefix=/usr --program-suffix=-2.13
 	make &&
-	make install
+	make prefix="$DESTDIR/usr" install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
