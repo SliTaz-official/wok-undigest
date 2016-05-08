@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SQLite Databases
+Name[fr]=Bases de données SQLite
+Icon=b_sql
+Exec=browser http://127.0.0.1/phpliteadmin/
+Type=Application
+Categories=Development;

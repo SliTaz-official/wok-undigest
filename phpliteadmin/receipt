@@ -1,0 +1,66 @@
+# SliTaz package receipt.
+
+PACKAGE="phpliteadmin"
+VERSION="1.9.6"
+CATEGORY="misc"
+SHORT_DESC="Administration of SQLite over the Web."
+MAINTAINER="pascal.bellard@slitaz.org"
+#TARBALL="phpLiteAdmin_v${VERSION//./-}.zip"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.phpliteadmin.org/"
+#WGET_URL="https://bitbucket.org/phpliteadmin/public/downloads/$TARBALL"
+WGET_URL="https://github.com/phpLiteAdmin/pla/archive/$VERSION.tar.gz"
+CONFIG_FILES="/etc/phpliteadmin/config.php"
+
+DEPENDS="php-sqlite"
+BUILD_DEPENDS="wget"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/phpliteadmin $fs/etc/phpliteadmin $fs/usr/share/applications
+	cp -a $src/. $fs/usr/share/phpliteadmin
+	ln -s /etc/phpliteadmin/config.php $fs/usr/share/phpliteadmin/phpliteadminconfig.php
+	cp $src/phpliteadmin.config.sample.php $fs/etc/phpliteadmin/config.php
+	cp $stuff/phpliteadmin.desktop $fs/usr/share/applications
+	chown -R www.www $fs/usr/share/phpliteadmin $fs/etc/phpliteadmin
+	chmod 700 $fs/etc/phpliteadmin
+	chmod 644 $fs/etc/phpliteadmin/config.php
+}
+
+post_install()
+{
+	# Configure lighttpd server
+	if [ -f $1/etc/lighttpd/lighttpd.conf ]; then
+		if ! grep -q /usr/share/phpliteadmin/ $1/etc/lighttpd/lighttpd.conf; then
+	    		sed -e 's|.*"/examples/" => "/usr/share/examples/",|    "/examples/" => "/usr/share/examples/",\n    "/phpliteadmin/" => "/usr/share/phpmliteadmin/",|g' -i $1/etc/lighttpd/lighttpd.conf
+			if [ -z "$1" ]; then
+				# Start Web server.
+				/etc/init.d/lighttpd stop
+				/etc/init.d/lighttpd start
+			fi
+		fi
+	fi
+	# Configure apache server
+	if [ -f $1/etc/apache/httpd.conf ]; then
+		if [ ! -f $1/etc/apache/conf.d/phpliteadmin ]; then
+			cat > $1/etc/apache/conf.d/phpliteadmin <<EOT
+<IfModule mod_alias.c>
+    Alias /phpliteadmin /usr/share/phpliteadmin
+</IfModule>
+<Directory /usr/share/phpliteadmin/>
+    DirectoryIndex index.php
+    Options +FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+EOT
+			if [ -z "$1" ]; then
+				# Start Web server.
+				/etc/init.d/apache stop
+				/etc/init.d/apache start
+			fi
+		fi
+	fi
+}
