@@ -26,6 +26,8 @@ genpkg_rules()
 	chown -R www.www $fs/usr/share/phpliteadmin $fs/etc/phpliteadmin
 	chmod 700 $fs/etc/phpliteadmin
 	chmod 644 $fs/etc/phpliteadmin/config.php
+	find $fs/usr/share/phpliteadmin/ $fs/etc/phpliteadmin/ \
+		-type f -exec dos2unix {} \;
 }
 
 post_install()
