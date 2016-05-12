@@ -68,8 +68,8 @@ ac_add_options --disable-webgl
 ac_add_options --with-system-libevent
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
-ac_add_options --enable-system-sqlite
-ac_add_options --enable-system-ffi
+# ac_add_options --enable-system-sqlite
+# ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 EOT
 	chmod -R +x build/autoconf/* python/*                                                               
@@ -81,7 +81,7 @@ EOT
 	python2 mach build || echo "Next =>"
 	python2 mach build
 	cd $src/obj-i686-pc-linux-gnu
-	make package | egrep -v 'error|ERROR'
+	(make package) > ./instLOG 2>&1
 	cd dist
 	install -d "$DESTDIR"/usr/bin
 	install -d "$DESTDIR"/usr/lib
