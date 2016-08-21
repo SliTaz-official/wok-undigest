@@ -11,7 +11,7 @@ WEB_SITE="https://pdfgrep.org/"
 WGET_URL="https://pdfgrep.org/download/$TARBALL"
 
 DEPENDS="poppler pcre"
-BUILD_DEPENDS="poppler-dev pcre-dev wget"
+BUILD_DEPENDS="poppler-dev pcre-dev wget asciidoc"
 
 # Rules to configure and make the package.
 compile_rules()
