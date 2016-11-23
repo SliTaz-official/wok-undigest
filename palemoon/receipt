@@ -15,7 +15,7 @@ PROVIDE="browser-html5"
 DEPENDS="gtk+ bzip2 libevent libffi sqlite"
 BUILD_DEPENDS="autoconf213 gtk+-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
 iw libpng-dev gstreamer gstreamer-dev gst-plugins-base-dev gst-plugins-base \
-libvpx-dev mesa-dev setuptools virtualenv zlib-dev bzip2-dev python-dev"
+libvpx-dev mesa-dev setuptools virtualenv zlib-dev bzip2-dev python-dev wget cacerts openssl"
 #pixman pixman-dev sqlite sqlite-dev libffi libffi-dev libevent libevent-dev"
 
 # Rules to configure and make the package.
