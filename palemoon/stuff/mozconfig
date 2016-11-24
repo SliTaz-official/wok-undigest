@@ -54,3 +54,5 @@ ac_add_options --enable-system-pixman
 ac_add_options --enable-chrome-format=omni
 
 ac_add_options --disable-gstreamer
+
+ac_add_options --without-intl-api
