@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="cryptpad"
+VERSION="0.3.0"
+CATEGORY="network"
+SHORT_DESC="CryptPad is the zero knowledge realtime collaborative editor."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="AGPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://cryptpad.fr/"
+WGET_URL="https://github.com/xwiki-labs/cryptpad/archive/$VERSION.tar.gz"
+CONFIG_FILES="/etc/cryptpad/config.js"
+
+DEPENDS="node"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/node_modules $fs/etc/cryptpad
+	cp -a $src $fs/usr/lib/node_modules/cryptpad
+	cp $src/config.js.dist $fs/etc/cryptpad/config.js
+	ln -s /etc/cryptpad/config.js $fs/usr/lib/node_modules/cryptpad/
+}
+
+post_install()
+{
+	chroot $1/ /bin/sh <<EOT
+cd /usr/lib/node_modules/cryptpad
+npm install
+#npm install -g bower
+#bower install
+#node ./server.js
+EOT
+}
