@@ -12,6 +12,7 @@ WGET_URL="https://github.com/xwiki-labs/cryptpad/archive/$VERSION.tar.gz"
 CONFIG_FILES="/etc/cryptpad/config.js"
 
 DEPENDS="node"
+BUILD_DEPENDS="wget"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
