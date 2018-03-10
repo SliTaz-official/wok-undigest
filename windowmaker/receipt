@@ -1,0 +1,50 @@
+# SliTaz package receipt.
+
+PACKAGE="windowmaker"
+VERSION="0.95.8"
+CATEGORY="x-window"
+SHORT_DESC="An X11 window manager with a NEXTSTEP look and feel"
+MAINTAINER="aledie@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://windowmaker.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/pub/source/release/$TARBALL"
+TAGS="window-manager"
+
+LOCALES="en en_US de es fr it pt ru zh_CN zh_TW"
+
+SUGGESTED="xfe aterm"
+DEPENDS="xorg-libXinerama xorg-libXrandr xorg-libXmu libpng xorg-libXpm xorg-libXft tiff jpeg libjpeg giflib libexif"
+BUILD_DEPENDS="slitaz-toolchain slitaz-dev-pkgs util-linux-uuid-dev xorg-libXinerama-dev xorg-libXrandr-dev xorg-libXmu-dev xorg-libXpm-dev xorg-libXft-dev giflib-dev libexif-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
+
+post_install()
+{
+	res=$(cat "$1/etc/slim.conf" | grep ^session | sed s/"sessions. *"//)
+	# Adding WM to SLIM available sessions.
+	if ! echo "$res" | grep -q wmaker; then
+		echo -n "Adding wmaker to /etc/slim.conf..."
+		sed -i "s/^sessions.*/sessions            ${res},wmaker/" "$1/etc/slim.conf"
+		status
+	fi
+}
+
+post_remove()
+{
+	# Remove WM from SLIM available sessions.
+	if grep -q wmaker "$1/etc/slim.conf"; then
+		sed -i s/,wmaker// "$1/etc/slim.conf"
+	fi
+}
+
