@@ -3,7 +3,7 @@
 PACKAGE="windowmaker"
 VERSION="0.95.8"
 CATEGORY="x-window"
-SHORT_DESC="An X11 window manager with a NEXTSTEP look and feel"
+SHORT_DESC="An X11 window manager with a NEXTSTEP look and feel."
 MAINTAINER="aledie@slitaz.org"
 LICENSE="GPL2"
 SOURCE="WindowMaker"
@@ -28,6 +28,10 @@ compile_rules()
 genpkg_rules()
 {
 	cp -a $install/* $fs
+	#remove stuff
+	rm -rf $fs/usr/include
+	rm -rf $fs/usr/lib/pkgconfig
+	find $fs/usr/lib -name "*.*a" -delete
 }
 
 post_install()
@@ -48,4 +52,3 @@ post_remove()
 		sed -i s/,wmaker// "$1/etc/slim.conf"
 	fi
 }
-
