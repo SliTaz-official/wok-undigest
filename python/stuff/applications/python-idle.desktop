@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Python IDLE
+Exec=idle
+Icon=python
+Categories=Development;
