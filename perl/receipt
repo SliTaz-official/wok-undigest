@@ -1,0 +1,70 @@
+# SliTaz package receipt v2.
+
+PACKAGE="perl"
+VERSION="5.28.1"
+CATEGORY="development"
+SHORT_DESC="Perl interpreter and modules"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://www.perl.org/"
+LFS="http://www.linuxfromscratch.org/lfs/view/stable/chapter06/perl.html"
+
+# WARNING
+# Due to Perl libraries use versioned paths like
+#   /usr/lib/perl5/$VERSION/
+#   /usr/lib/perl5/site_perl/$VERSION/
+# etc., you need to update ALL the Perl related packages on ANY change
+# of the Perl version!
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://www.cpan.org/src/5.0/$TARBALL"
+# Integrity check: http://www.cpan.org/src/5.0/
+TARBALL_SHA256="fea7162d4cca940a387f0587b93f6737d884bf74d8a9d7cfd978bc12cd0b202d"
+
+# force-arch: architecture-dependent paths here,
+# perl-dev contains /usr/lib/perl5/5.28.1/i486-linux-thread-multi/CORE/EXTERN.h
+# and so on
+COOKOPTS="!perlz force-arch"
+BUILD_DEPENDS="zlib-dev bzip2-dev less gdbm-dev"
+SPLIT="$PACKAGE-core $PACKAGE $PACKAGE-dev"
+
+compile_rules() {
+	export BUILD_ZLIB=False
+	export BUILD_BZIP2=0
+	sh Configure -des \
+		-Dprefix=/usr \
+		-Dvendorprefix=/usr \
+		-Dman1dir=/usr/share/man/man1 \
+		-Dman3dir=/usr/share/man/man3 \
+		-Dpager="/usr/bin/less -isR" \
+		-Duseshrplib \
+		-Dusethreads &&
+	make &&
+	make install || return 1
+
+	find $install -type f -exec chmod u+w '{}' \; # 444->644, 555->755
+}
+
+genpkg_rules() {
+	case $PACKAGE in
+		perl-core)
+			copy perl perl$VERSION libperl.so
+			DEPENDS="glibc-base"
+			CAT="development|minimal interpreter"
+			;;
+		perl)
+			copy @std @rm
+			DEPENDS="libbzip2 libgdbm zlib perl-core"
+			PROVIDE="microperl"
+			TAGS="LFS"
+			;;
+		*-dev)
+			copy @dev
+			;;
+	esac
+}
+
+# Remove perl link to microperl if any.
+pre_install_perl_core() {
+	rm -f "$1/usr/bin/perl"
+}
