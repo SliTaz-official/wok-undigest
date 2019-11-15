@@ -1,0 +1,88 @@
+# SliTaz package receipt v2.
+
+PACKAGE="gettext"
+VERSION="0.19.8.1"
+CATEGORY="development"
+SHORT_DESC="Utilities for the GNU Translation Project"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/gettext/"
+LFS="http://www.linuxfromscratch.org/lfs/view/stable/chapter06/gettext.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="libcroco-dev libxml2-dev glib-dev acl-dev emacs \
+libxrandr-dev libxfixes-dev"
+SPLIT="$PACKAGE-base $PACKAGE emacs-pkg-po-mode $PACKAGE-dev"
+
+compile_rules() {
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install || return 1
+
+	chmod 0755 $install/usr/lib/preloadable_libintl.so
+
+	# stripped gettext.sh
+	rm $install/usr/bin/gettext.sh
+	install -m755 $stuff/gettext.sh $install/usr/bin
+
+	# emacs-pkg-po-mode --------
+
+	site_lisp="$install/usr/share/emacs/site-lisp"
+	# Installing start file
+	mkdir -p $site_lisp/site-start.d
+	cp -a $src/gettext-tools/misc/start-po.el $site_lisp/site-start.d/50-start-po.el
+
+	# Installing po-mode
+	mkdir -p $site_lisp/po-mode
+	cp -a $src/gettext-tools/misc/po*.el $site_lisp/po-mode
+
+	# byte-compile files, remove src
+	for file in $site_lisp/po-mode/*.el; do
+		echo -n "Byte-compiling $(basename $file)"
+		emacs -batch -f batch-byte-compile $file 2>/dev/null; err=$?
+		status
+		[ "$err" -eq 0 ] && rm -f $file
+	done
+}
+
+# Just to be sure when cross compiling, gettext is part of base system.
+testsuite() {
+	readelf -h $install/usr/bin/gettext
+}
+
+genpkg_rules() {
+	case $PACKAGE in
+		gettext-base)
+			copy gettext gettext.sh envsubst ngettext
+			CAT="base-system|base tools"
+			DEPENDS="glibc-base"
+			;;
+		gettext)
+			copy msgcat msgfmt msgmerge xgettext \
+				libgettextlib*.so* libgettextsrc*.so*
+			DEPENDS="acl glib libcroco libgomp libxml2 ncurses"
+			TAGS="LFS"
+			;;
+		emacs-pkg-po-mode)
+			copy emacs/
+			DEPENDS="emacs"
+			CAT="development|Emacs major mode for editing or modifying PO files"
+			;;
+		*-dev)
+			copy @std @dev @rm
+			rm -rf $fs/usr/share/doc/ # @dev files here
+			# Runtime depends, then dev-depends
+			DEPENDS="gettext-base gettext libxml2"
+			;;
+	esac
+}
+
+post_install_emacs_pkg_po_mode() {
+	chroot "$1/" tazpkg reconfigure emacs
+}
+
+post_remove_emacs_pkg_po_mode() {
+	chroot "$1/" tazpkg reconfigure emacs
+}
