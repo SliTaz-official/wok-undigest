@@ -13,7 +13,7 @@ TARBALL="Python-$VERSION.tar.xz"
 WGET_URL="https://www.python.org/ftp/python/$VERSION/$TARBALL"
 TARBALL_SHA1="c3dc6928516bcb934cf4740461044c79c7c35494"
 
-BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev sqlite3-dev zlib-dev tk-dev \
+BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev sqlite-dev zlib-dev tk-dev \
 ncurses-dev xz-dev bzip2-dev expat-dev libffi-dev"
 SPLIT="$PACKAGE-idle $PACKAGE-tcltk $PACKAGE-ensurepip $PACKAGE $PACKAGE-dev"
 
