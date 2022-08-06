@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libffi-dev"
+VERSION="3.4.2"
+CATEGORY="development"
+SHORT_DESC="Libffi, development files."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="MIT"
+WEB_SITE="https://sourceware.org/libffi/"
+
+DEPENDS="libffi pkg-config"
+WANTED="libffi"
+
+HOST_ARCH="i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	get_dev_files
+}
