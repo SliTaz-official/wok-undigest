@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="audacity"
+VERSION="3.1.3"
+CATEGORY="multimedia"
+TAGS="sound audio recorder editor"
+SHORT_DESC="A free multi-track audio editor and recorder."
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.audacityteam.org/"
+
+SOURCE="Audacity"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$TARBALL"
+
+DEPENDS="alsa-lib ffmpeg flac gcc83-lib-base imlib2 lame libatomic libid3tag libmad
+	libsndfile libvorbis wxWidgets xorg-libXxf86vm"
+BUILD_DEPENDS="alsa-lib-dev bash cmake expat-dev ffmpeg-dev flac-dev
+	gcc83 lame-dev libatomic libid3tag-dev libmad-dev libsndfile-dev libtool
+	libvorbis-dev opus-dev portaudio-dev portmidi py3k sqlite-dev wxWidgets-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CC=gcc-83
+	export	CXX=g++-83
+	export	SHELL=/bin/bash
+	export	CONFIG_SHELL=/bin/bash
+	export	LDFLAGS="$LDFLAGS -l:libatomic.so.1"
+
+	mkdir	_build &&
+	cd	_build &&
+	mkdir -p src/private &&
+	touch src/private/RevisionIdent.h &&
+	cmake	..				\
+		-D audacity_conan_enabled=Off	\
+		-D audacity_use_portsmf=off	\
+		-D CMAKE_BUILD_TYPE=Release	\
+		-D CMAKE_INSTALL_PREFIX=/usr &&
+	make &&
+	make install DESTDIR=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/icons		$fs/usr/share
+	cp -a $install/usr/share/audacity	$fs/usr/share
+	cp -a $install/usr/share/pixmaps	$fs/usr/share
+	cp -a $install/usr/share/applications	$fs/usr/share
+}
