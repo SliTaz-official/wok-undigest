@@ -17,13 +17,13 @@ HOST_ARCH="i486 arm"
 
 SUGGESTED="wpa_supplicant connman pm-utils"
 DEPENDS="efl elementary pam xcb-util-keysyms"
-BUILD_DEPENDS="bullet-dev check-dev dbus-dev efl efl-dev elementary-dev gstreamer-1.0 gstreamer-1.0-dev
-	gst-plugins-base-1.0-dev pam-dev
-	util-linux-mount-dev util-linux-blkid-dev udev-dev openssl-dev
-	jpeg-dev fribidi-dev giflib-dev tiff-dev libsndfile-dev lua-dev \
-	xorg-libXp-dev xorg-printproto xorg-scrnsaverproto xorg-libXScrnSaver-dev \
-	mesa-dev shared-mime-info util-linux-uuid-dev libxml2-dev autoconf automake icu-dev \
-	harfbuzz-dev luajit-dev xcb-util-keysyms-dev"
+BUILD_DEPENDS="automake bullet-dev check-dev dbus-dev efl efl-dev elementary-dev
+	fribidi-dev giflib-dev gst-plugins-base-1.0-dev gstreamer-1.0
+	gstreamer-1.0-dev harfbuzz-dev icu-dev jpeg-dev libsndfile-dev
+	libxml2-dev lua-dev luajit-dev mesa-dev openssl-dev pam-dev
+	shared-mime-info tiff-dev udev-dev util-linux-blkid-dev
+	util-linux-mount-dev util-linux-uuid-dev xcb-util-keysyms-dev
+	xorg-libXp-dev xorg-printproto xorg-libXScrnSaver-dev xorg-scrnsaverproto"
 
 # Handle cross compilation
 case "$ARCH" in

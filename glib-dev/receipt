@@ -56,3 +56,4 @@ post_install()
 		mv -f $i ${i//-.-/.}
 	  done
 }
+

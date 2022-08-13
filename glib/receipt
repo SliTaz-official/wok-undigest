@@ -31,7 +31,8 @@ compile_rules()
 {
 	case "$ARCH" in
 		i?86)
-			meson . _build --prefix=/usr ;;
+			meson _build --prefix=/usr
+			;;
 		arm*)
 			# not updated for 2.62.4 !
 			# Native ARM build --> if ARCH != SLITAZ_ARCH ?
@@ -54,7 +55,8 @@ compile_rules()
 				--host=$ARCH-slitaz-linux-gnueabi \
 				--enable-shared=yes \
 				--enable-static=yes \
-				--disable-rpath ;;
+				--disable-rpath
+			;;
 	esac &&
 	ninja -C _build &&
 	ninja -C _build install

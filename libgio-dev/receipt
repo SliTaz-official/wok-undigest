@@ -23,3 +23,4 @@ genpkg_rules()
 	cp -a $install/usr/lib/pkgconfig/gio*.pc	$fs/usr/lib/pkgconfig
 	cp -a $install/usr/include/gio-unix-2.0	$fs/usr/include
 }
+
