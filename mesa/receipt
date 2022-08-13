@@ -13,9 +13,9 @@ WEB_SITE="http://www.mesa3d.org/"
 WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$VERSION/$TARBALL"
 PROVIDE="libgl"
 
-DEPENDS="expat libdrm libpthread-stubs udev xorg-libXdamage
+DEPENDS="expat gcc83-lib-base libdrm libpthread-stubs udev xorg-libXdamage
 	xorg-libXxf86vm xorg-libXt"
-BUILD_DEPENDS="automake expat-dev file gcc49 lesstif lesstif-dev
+BUILD_DEPENDS="automake expat-dev file gcc83 lesstif lesstif-dev
 	libdrm-dev libdrm-nouveau libpthread-stubs-dev libtool
 	libxml2-python llvm pkg-config talloc udev-dev
 	xorg-dri2proto xorg-dri3proto xorg-glproto xorg-imake
@@ -26,11 +26,11 @@ BUILD_DEPENDS="automake expat-dev file gcc49 lesstif lesstif-dev
 compile_rules()
 {
 	sed -i 's/HAVE_LLVM/0x0306/' #src/gallium/auxiliary/draw/draw_llvm.c
-	export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
+#	export LD_LIBRARY_PATH="/usr/libgcc49:$LD_LIBRARY_PATH"
 
 	./autogen.sh			\
-		CC=gcc-49		\
-		CXX=g++-49		\
+		CC=gcc-83		\
+		CXX=g++-83		\
 		--disable-gallium-llvm	\
 		--prefix=/usr		\
 		$CONFIGURE_ARGS &&
